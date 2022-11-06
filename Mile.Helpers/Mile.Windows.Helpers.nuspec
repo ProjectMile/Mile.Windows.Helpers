@@ -30,6 +30,7 @@
     <file src="Mile.Helpers.h" target="build\native\Include" />
 
     <file src="Mile.Windows.Helpers.props" target="build\native"/>
+    <file src="Mile.Windows.Helpers.targets" target="build\native"/> 
 
     <file src="..\ReadMe.md" target="."/>
     <file src="..\License.md" target="."/>

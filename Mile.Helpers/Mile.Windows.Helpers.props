@@ -10,15 +10,6 @@
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MileWindowsHelpersIncludePath>$(MSBuildThisFileDirectory)Include\</MileWindowsHelpersIncludePath>
-    <MileWindowsHelpersLibraryPath>$(MSBuildThisFileDirectory)Lib\$(PlatformTarget)\</MileWindowsHelpersLibraryPath>
+    <IncludePath>$(MSBuildThisFileDirectory)Include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <PropertyGroup>
-    <IncludePath>$(MileWindowsHelpersIncludePath);$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <ItemDefinitionGroup>
-    <Link>
-      <AdditionalDependencies>$(MileWindowsHelpersLibraryPath)Mile.Helpers.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
 </Project>
