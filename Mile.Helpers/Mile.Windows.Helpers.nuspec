@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PROJECT:   Mouri Internal Library Essentials
+  FILE:      Mile.Windows.Helpers.nuspec
+  PURPOSE:   NuGet package definition for Mile.Windows.Helpers
+
+  LICENSE:   The MIT License
+
+  DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
+-->
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Mile.Windows.Helpers</id>
+    <version>1.0.1.0</version>
+    <description>Merged FFmpeg Dynamic Linked Library</description>
+    <authors>Kenji Mouri</authors>
+    <projectUrl>https://github.com/ProjectMile/Mile.Windows.Helpers</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">License.md</license>
+    <readme>ReadMe.md</readme>
+    <repository type="git" url="https://github.com/ProjectMile/Mile.Windows.Helpers.git" />
+  </metadata>
+  <files>
+
+    <file src="..\Output\Binaries\Release\Win32\Mile.Helpers.Static.lib" target="build\native\Lib\x86"/>
+    <file src="..\Output\Binaries\Release\x64\Mile.Helpers.Static.lib" target="build\native\Lib\x64"/>
+    <file src="..\Output\Binaries\Release\ARM\Mile.Helpers.Static.lib" target="build\native\Lib\ARM"/>
+    <file src="..\Output\Binaries\Release\ARM64\Mile.Helpers.Static.lib" target="build\native\Lib\ARM64"/>
+
+    <file src="Mile.Helpers.h" target="build\native\Include" />
+
+    <file src="Mile.Windows.Helpers.props" target="build\native"/>
+
+    <file src="..\ReadMe.md" target="."/>
+    <file src="..\License.md" target="."/>
+    <file src="..\ReleaseNotes.md" target="."/>
+
+  </files>
+</package>

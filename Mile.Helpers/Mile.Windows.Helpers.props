@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PROJECT:   Mouri Internal Library Essentials
+  FILE:      Mile.Windows.Helpers.props
+  PURPOSE:   MSBuild props file for Mile.Windows.Helpers
+
+  LICENSE:   The MIT License
+
+  DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MileWindowsHelpersIncludePath>$(MSBuildThisFileDirectory)Include\</MileWindowsHelpersIncludePath>
+    <MileWindowsHelpersLibraryPath>$(MSBuildThisFileDirectory)Lib\$(PlatformTarget)\</MileWindowsHelpersLibraryPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(MileWindowsHelpersIncludePath);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>$(MileWindowsHelpersLibraryPath)Mile.Helpers.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>
