@@ -3,3 +3,4 @@
 EXPORTS
 
 MileIsWindowsVersionAtLeast
+MileEnablePerMonitorDialogScaling

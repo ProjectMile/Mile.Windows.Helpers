@@ -5,3 +5,4 @@
 - Provide static library mode.
 - Provide NuGet package.
 - Add MileIsWindowsVersionAtLeast function.
+- Add MileEnablePerMonitorDialogScaling function.
