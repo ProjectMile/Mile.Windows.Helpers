@@ -38,6 +38,12 @@ namespace
 
         return CachedResult;
     }
+
+    static bool IsWindows10Version20H1OrLater()
+    {
+        static bool CachedResult = ::MileIsWindowsVersionAtLeast(10, 0, 19041);
+        return CachedResult;
+    }
 }
 
 EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
@@ -102,4 +108,18 @@ EXTERN_C HRESULT WINAPI MileSetWindowCaptionColorAttribute(
         DWMWA_CAPTION_COLOR,
         &Value,
         sizeof(COLORREF));
+}
+
+EXTERN_C HRESULT WINAPI MileSetWindowUseImmersiveDarkModeAttribute(
+    _In_ HWND WindowHandle,
+    _In_ BOOL Value)
+{
+    const DWORD DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
+    return ::DwmSetWindowAttribute(
+        WindowHandle,
+        (::IsWindows10Version20H1OrLater()
+            ? DWMWA_USE_IMMERSIVE_DARK_MODE
+            : DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1),
+        &Value,
+        sizeof(BOOL));
 }

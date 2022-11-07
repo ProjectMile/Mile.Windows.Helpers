@@ -7,3 +7,4 @@
 - Add MileIsWindowsVersionAtLeast function.
 - Add MileEnablePerMonitorDialogScaling function.
 - Add MileSetWindowCaptionColorAttribute function.
+- Add MileSetWindowUseImmersiveDarkModeAttribute function.
