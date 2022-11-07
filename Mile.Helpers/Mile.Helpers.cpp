@@ -10,6 +10,9 @@
 
 #include "Mile.Helpers.h"
 
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
+
 namespace
 {
     static bool IsPrivatePerMonitorSupportExtensionApplicable()
@@ -88,4 +91,15 @@ EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling()
     }
 
     return ProcAddress();
+}
+
+EXTERN_C HRESULT WINAPI MileSetWindowCaptionColorAttribute(
+    _In_ HWND WindowHandle,
+    _In_ COLORREF Value)
+{
+    return ::DwmSetWindowAttribute(
+        WindowHandle,
+        DWMWA_CAPTION_COLOR,
+        &Value,
+        sizeof(COLORREF));
 }

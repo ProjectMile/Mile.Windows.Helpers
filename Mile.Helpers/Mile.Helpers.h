@@ -47,4 +47,16 @@ EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
 */
 EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling();
 
+/**
+ * @brief Specifies the color of the caption for the window.
+ * @param WindowHandle The handle to the window for which the attribute value
+ *                     is to be set.
+ * @param Value The color of the caption for the window.
+ * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
+ *         HRESULT error code.
+*/
+EXTERN_C HRESULT WINAPI MileSetWindowCaptionColorAttribute(
+    _In_ HWND WindowHandle,
+    _In_ COLORREF Value);
+
 #endif // !MILE_WINDOWS_HELPERS

@@ -6,3 +6,4 @@
 - Provide NuGet package.
 - Add MileIsWindowsVersionAtLeast function.
 - Add MileEnablePerMonitorDialogScaling function.
+- Add MileSetWindowCaptionColorAttribute function.

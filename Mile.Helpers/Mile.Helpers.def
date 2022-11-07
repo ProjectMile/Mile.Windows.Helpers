@@ -4,3 +4,4 @@ EXPORTS
 
 MileIsWindowsVersionAtLeast
 MileEnablePerMonitorDialogScaling
+MileSetWindowCaptionColorAttribute
