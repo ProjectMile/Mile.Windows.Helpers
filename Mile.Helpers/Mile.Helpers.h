@@ -16,6 +16,43 @@
 #include <Windows.h>
 
 /**
+ * @brief Flags for specifying the system-drawn backdrop material of a window,
+ *        including behind the non-client area.
+*/
+typedef enum MILE_WINDOW_SYSTEM_BACKDROP_TYPE
+{
+    /**
+     * @brief The default. Let the Desktop Window Manager (DWM) automatically
+              decide the system-drawn backdrop material for this window.
+    */
+    MILE_WINDOW_SYSTEM_BACKDROP_TYPE_AUTO = 0,
+
+    /**
+     * @brief Don't draw any system backdrop.
+    */
+    MILE_WINDOW_SYSTEM_BACKDROP_TYPE_NONE = 1,
+
+    /**
+     * @brief Draw the backdrop material effect corresponding to a long-lived
+     *        window.
+    */
+    MILE_WINDOW_SYSTEM_BACKDROP_TYPE_MICA = 2,
+
+    /**
+     * @brief Draw the backdrop material effect corresponding to a transient
+     *        window.
+    */
+    MILE_WINDOW_SYSTEM_BACKDROP_TYPE_ACRYLIC = 3,
+
+    /**
+     * @brief Draw the backdrop material effect corresponding to a window with
+     *        a tabbed title bar.
+    */
+    MILE_WINDOW_SYSTEM_BACKDROP_TYPE_MICA_ALT = 4
+
+} MILE_WINDOW_SYSTEM_BACKDROP_TYPE, *PMILE_WINDOW_SYSTEM_BACKDROP_TYPE;
+
+/**
  * @brief Indicates if the current OS version matches, or is greater than, the
  *        provided version information.
  * @param Major The major version number of the operating system.
