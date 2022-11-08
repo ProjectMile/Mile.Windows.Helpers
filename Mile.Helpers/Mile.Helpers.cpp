@@ -139,3 +139,30 @@ EXTERN_C HRESULT WINAPI MileGetWindowSystemBackdropTypeAttribute(
         Value,
         sizeof(MILE_WINDOW_SYSTEM_BACKDROP_TYPE));
 }
+
+EXTERN_C HRESULT WINAPI MileSetWindowSystemBackdropTypeAttribute(
+    _In_ HWND WindowHandle,
+    _In_ MILE_WINDOW_SYSTEM_BACKDROP_TYPE Value)
+{
+    HRESULT hr = S_OK;
+
+    if (MILE_WINDOW_SYSTEM_BACKDROP_TYPE_AUTO != Value &&
+        MILE_WINDOW_SYSTEM_BACKDROP_TYPE_NONE != Value)
+    {
+        // Reset the caption color of a window before apply the backdrop.
+        hr = ::MileSetWindowCaptionColorAttribute(
+            WindowHandle,
+            DWMWA_COLOR_DEFAULT);
+    }
+
+    if (S_OK == hr)
+    {
+        hr = ::DwmSetWindowAttribute(
+            WindowHandle,
+            DWMWA_SYSTEMBACKDROP_TYPE,
+            &Value,
+            sizeof(MILE_WINDOW_SYSTEM_BACKDROP_TYPE));
+    }
+
+    return hr;
+}
