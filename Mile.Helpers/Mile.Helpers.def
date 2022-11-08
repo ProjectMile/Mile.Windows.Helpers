@@ -6,3 +6,4 @@ MileIsWindowsVersionAtLeast
 MileEnablePerMonitorDialogScaling
 MileSetWindowCaptionColorAttribute
 MileSetWindowUseImmersiveDarkModeAttribute
+MileGetWindowSystemBackdropTypeAttribute

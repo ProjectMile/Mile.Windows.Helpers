@@ -9,3 +9,4 @@
 - Add MileSetWindowCaptionColorAttribute function.
 - Add MileSetWindowUseImmersiveDarkModeAttribute function.
 - Add MILE_WINDOW_SYSTEM_BACKDROP_TYPE enum.
+- Add MileGetWindowSystemBackdropTypeAttribute function.

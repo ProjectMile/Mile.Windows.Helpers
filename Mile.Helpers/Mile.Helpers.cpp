@@ -123,3 +123,19 @@ EXTERN_C HRESULT WINAPI MileSetWindowUseImmersiveDarkModeAttribute(
         &Value,
         sizeof(BOOL));
 }
+
+EXTERN_C HRESULT WINAPI MileGetWindowSystemBackdropTypeAttribute(
+    _In_ HWND WindowHandle,
+    _Out_ PMILE_WINDOW_SYSTEM_BACKDROP_TYPE Value)
+{
+    if (!Value)
+    {
+        return E_INVALIDARG;
+    }
+
+    return ::DwmGetWindowAttribute(
+        WindowHandle,
+        DWMWA_SYSTEMBACKDROP_TYPE,
+        Value,
+        sizeof(MILE_WINDOW_SYSTEM_BACKDROP_TYPE));
+}
