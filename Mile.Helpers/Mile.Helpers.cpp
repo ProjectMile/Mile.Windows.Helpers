@@ -39,9 +39,41 @@ namespace
         return CachedResult;
     }
 
+    static bool IsWindows10Version1903OrLater()
+    {
+        static bool CachedResult = ::MileIsWindowsVersionAtLeast(10, 0, 18362);
+        return CachedResult;
+    }
+
     static bool IsWindows10Version20H1OrLater()
     {
         static bool CachedResult = ::MileIsWindowsVersionAtLeast(10, 0, 19041);
+        return CachedResult;
+    }
+
+    static HMODULE GetUxThemeModuleHandle()
+    {
+        static HMODULE CachedResult = ::LoadLibraryExW(
+            L"uxtheme.dll",
+            nullptr,
+            LOAD_LIBRARY_SEARCH_SYSTEM32);
+        return CachedResult;
+    }
+
+    static FARPROC GetUxThemeOrdinal135ProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetUxThemeModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    reinterpret_cast<LPCSTR>(135));
+            }
+            return nullptr;
+        }());
+
         return CachedResult;
     }
 }
@@ -165,4 +197,23 @@ EXTERN_C HRESULT WINAPI MileSetWindowSystemBackdropTypeAttribute(
     }
 
     return hr;
+}
+
+EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
+    _In_ MILE_PREFERRED_APP_MODE NewMode)
+{
+    if (!::IsWindows10Version1903OrLater())
+    {
+        return MILE_PREFERRED_APP_MODE_DEFAULT;
+    }
+
+    typedef MILE_PREFERRED_APP_MODE(WINAPI* ProcType)(MILE_PREFERRED_APP_MODE);
+    ProcType ProcAddress = reinterpret_cast<ProcType>(
+        ::GetUxThemeOrdinal135ProcAddress());
+    if (!ProcAddress)
+    {
+        return MILE_PREFERRED_APP_MODE_DEFAULT;
+    }
+
+    return ProcAddress(NewMode);
 }

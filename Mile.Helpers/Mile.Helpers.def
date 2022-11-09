@@ -8,3 +8,4 @@ MileSetWindowCaptionColorAttribute
 MileSetWindowUseImmersiveDarkModeAttribute
 MileGetWindowSystemBackdropTypeAttribute
 MileSetWindowSystemBackdropTypeAttribute
+MileSetPreferredAppMode

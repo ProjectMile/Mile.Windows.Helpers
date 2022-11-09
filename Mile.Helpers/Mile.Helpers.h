@@ -165,4 +165,12 @@ EXTERN_C HRESULT WINAPI MileSetWindowSystemBackdropTypeAttribute(
     _In_ HWND WindowHandle,
     _In_ MILE_WINDOW_SYSTEM_BACKDROP_TYPE Value);
 
+/**
+ * @brief Specifies the preferred app color mode.
+ * @param NewMode The new preferred app color mode.
+ * @return The previous preferred app color mode.
+*/
+EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
+    _In_ MILE_PREFERRED_APP_MODE NewMode);
+
 #endif // !MILE_WINDOWS_HELPERS
