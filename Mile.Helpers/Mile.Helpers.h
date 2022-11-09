@@ -53,6 +53,33 @@ typedef enum MILE_WINDOW_SYSTEM_BACKDROP_TYPE
 } MILE_WINDOW_SYSTEM_BACKDROP_TYPE, *PMILE_WINDOW_SYSTEM_BACKDROP_TYPE;
 
 /**
+ * @brief Flags for specifying the preferred app color mode.
+*/
+typedef enum MILE_PREFERRED_APP_MODE
+{
+    /**
+     * @brief Use the default behavior.
+    */
+    MILE_PREFERRED_APP_MODE_DEFAULT = 0,
+
+    /**
+     * @brief Let the OS decide to use light mode or dark mode.
+    */
+    MILE_PREFERRED_APP_MODE_AUTO = 1,
+
+    /**
+     * @brief Force dark mode.
+    */
+    MILE_PREFERRED_APP_MODE_DARK = 2,
+
+    /**
+     * @brief Force light mode.
+    */
+    MILE_PREFERRED_APP_MODE_LIGHT = 3
+
+} MILE_PREFERRED_APP_MODE;
+
+/**
  * @brief Indicates if the current OS version matches, or is greater than, the
  *        provided version information.
  * @param Major The major version number of the operating system.
