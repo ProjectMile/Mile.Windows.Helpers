@@ -13,3 +13,4 @@
 - Add MileSetWindowSystemBackdropTypeAttribute function.
 - Add MILE_PREFERRED_APP_MODE enum.
 - Add MileSetPreferredAppMode function.
+- Add MileAllowDarkModeForApp function.

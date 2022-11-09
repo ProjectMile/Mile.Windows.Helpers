@@ -39,6 +39,12 @@ namespace
         return CachedResult;
     }
 
+    static bool IsWindows10Version1809OrLater()
+    {
+        static bool CachedResult = ::MileIsWindowsVersionAtLeast(10, 0, 17763);
+        return CachedResult;
+    }
+
     static bool IsWindows10Version1903OrLater()
     {
         static bool CachedResult = ::MileIsWindowsVersionAtLeast(10, 0, 18362);
@@ -216,4 +222,32 @@ EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
     }
 
     return ProcAddress(NewMode);
+}
+
+EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
+    _In_ BOOL NewPolicy)
+{
+    if (::IsWindows10Version1809OrLater())
+    {
+        if (::IsWindows10Version1903OrLater())
+        {
+            return (MILE_PREFERRED_APP_MODE_AUTO == ::MileSetPreferredAppMode(
+                NewPolicy
+                ? MILE_PREFERRED_APP_MODE_AUTO
+                : MILE_PREFERRED_APP_MODE_DEFAULT));
+        }
+        else
+        {
+            // Use original AllowDarkModeForApp
+            typedef BOOL(WINAPI* ProcType)(BOOL);
+            ProcType ProcAddress = reinterpret_cast<ProcType>(
+                ::GetUxThemeOrdinal135ProcAddress());
+            if (ProcAddress)
+            {
+                return ProcAddress(NewPolicy);
+            }
+        }
+    }
+
+    return false;
 }

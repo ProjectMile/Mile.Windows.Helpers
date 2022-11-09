@@ -173,4 +173,12 @@ EXTERN_C HRESULT WINAPI MileSetWindowSystemBackdropTypeAttribute(
 EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
     _In_ MILE_PREFERRED_APP_MODE NewMode);
 
+/**
+ * @brief Specifies the policy for enabling or disabling dark mode for app.
+ * @param NewPolicy The policy for enabling or disabling dark mode for app.
+ * @return The previous policy for enabling or disabling dark mode for app.
+*/
+EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
+    _In_ BOOL NewPolicy);
+
 #endif // !MILE_WINDOWS_HELPERS

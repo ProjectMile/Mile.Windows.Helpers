@@ -9,3 +9,4 @@ MileSetWindowUseImmersiveDarkModeAttribute
 MileGetWindowSystemBackdropTypeAttribute
 MileSetWindowSystemBackdropTypeAttribute
 MileSetPreferredAppMode
+MileAllowDarkModeForApp
