@@ -10,3 +10,4 @@ MileGetWindowSystemBackdropTypeAttribute
 MileSetWindowSystemBackdropTypeAttribute
 MileSetPreferredAppMode
 MileAllowDarkModeForApp
+MileGetDefaultBackgroundColorValue

@@ -181,4 +181,12 @@ EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
 EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
     _In_ BOOL NewPolicy);
 
+/**
+ * @brief Gets the default background color value.
+ * @param UseImmersiveDarkMode TRUE to use dark mode, FALSE to use light mode.
+ * @return The default background color value.
+*/
+EXTERN_C COLORREF WINAPI MileGetDefaultBackgroundColorValue(
+    _In_ BOOL UseImmersiveDarkMode);
+
 #endif // !MILE_WINDOWS_HELPERS
