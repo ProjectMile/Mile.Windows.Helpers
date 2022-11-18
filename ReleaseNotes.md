@@ -15,3 +15,4 @@
 - Add MileSetPreferredAppMode function.
 - Add MileAllowDarkModeForApp function.
 - Add MileGetDefaultBackgroundColorValue function.
+- Add MileEnableImmersiveDarkModeForWindow function.

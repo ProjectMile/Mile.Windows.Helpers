@@ -189,4 +189,16 @@ EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
 EXTERN_C COLORREF WINAPI MileGetDefaultBackgroundColorValue(
     _In_ BOOL UseImmersiveDarkMode);
 
+/**
+ * @brief Enable the dark mode or light mode policy for the window.
+ * @param WindowHandle The handle to the window for which the attribute value
+ *                     is to be set.
+ * @param UseImmersiveDarkMode TRUE to use dark mode, FALSE to use light mode.
+ * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
+ *         HRESULT error code.
+*/
+EXTERN_C HRESULT WINAPI MileEnableImmersiveDarkModeForWindow(
+    _In_ HWND WindowHandle,
+    _In_ BOOL UseImmersiveDarkMode);
+
 #endif // !MILE_WINDOWS_HELPERS

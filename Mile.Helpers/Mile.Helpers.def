@@ -11,3 +11,4 @@ MileSetWindowSystemBackdropTypeAttribute
 MileSetPreferredAppMode
 MileAllowDarkModeForApp
 MileGetDefaultBackgroundColorValue
+MileEnableImmersiveDarkModeForWindow
