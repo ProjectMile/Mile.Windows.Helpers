@@ -9,3 +9,9 @@
  */
 
 #include "Mile.Helpers.Base.h"
+
+EXTERN_C LPVOID WINAPI MileAllocateMemory(
+    _In_ SIZE_T Size)
+{
+    return ::HeapAlloc(::GetProcessHeap(), HEAP_ZERO_MEMORY, Size);
+}

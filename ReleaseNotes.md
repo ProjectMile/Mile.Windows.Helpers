@@ -17,3 +17,4 @@
 - Add MileGetDefaultBackgroundColorValue function.
 - Add MileEnableImmersiveDarkModeForWindow function.
 - Add MILE_TOKEN_PRIVILEGE_LUID_CLASS enum.
+- Add MileAllocateMemory function.
