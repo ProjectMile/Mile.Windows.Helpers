@@ -13,7 +13,7 @@
 #ifndef MILE_WINDOWS_HELPERS
 #define MILE_WINDOWS_HELPERS
 
-#include <Windows.h>
+#include "Mile.Helpers.Base.h"
 
 /**
  * @brief Flags for specifying the system-drawn backdrop material of a window,

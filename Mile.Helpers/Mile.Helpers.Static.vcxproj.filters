@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Mile.Helpers.Base.cpp">
+      <Filter>Mile.Helpers.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Mile.Helpers.cpp">
+      <Filter>Mile.Helpers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Mile.Helpers.Base.h">
+      <Filter>Mile.Helpers.Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Mile.Helpers.h">
+      <Filter>Mile.Helpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Mile.Helpers.Base">
+      <UniqueIdentifier>{3201b87e-4e60-4f6e-8fd9-b07cbab2b2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mile.Helpers">
+      <UniqueIdentifier>{3b209c24-48a1-4544-be40-a85cfc72d7e1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
