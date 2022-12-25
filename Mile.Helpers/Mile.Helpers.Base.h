@@ -47,4 +47,17 @@ EXTERN_C LPVOID WINAPI MileReallocateMemory(
     _In_ PVOID Block,
     _In_ SIZE_T Size);
 
+/**
+ * @brief Frees a memory block allocated from a heap by the MileAllocateMemory
+ *        and MileReallocateMemory function.
+ * @param Block A pointer to the memory block to be freed. This pointer is
+ *        returned by the Allocate or Reallocate method. If this pointer is
+ *        nullptr, the behavior is undefined.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. An application can call
+ *         GetLastError for extended error information.
+*/
+EXTERN_C BOOL WINAPI MileFreeMemory(
+    _In_ LPVOID Block);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

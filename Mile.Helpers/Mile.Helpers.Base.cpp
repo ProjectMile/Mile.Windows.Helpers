@@ -22,3 +22,9 @@ EXTERN_C LPVOID WINAPI MileReallocateMemory(
 {
     return ::HeapReAlloc(::GetProcessHeap(), HEAP_ZERO_MEMORY, Block, Size);
 }
+
+EXTERN_C BOOL WINAPI MileFreeMemory(
+    _In_ LPVOID Block)
+{
+    return ::HeapFree(::GetProcessHeap(), 0, Block);
+}
