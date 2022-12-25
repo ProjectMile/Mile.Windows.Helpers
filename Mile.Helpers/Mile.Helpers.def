@@ -3,6 +3,7 @@
 EXPORTS
 
 MileAllocateMemory
+MileReallocateMemory
 
 MileIsWindowsVersionAtLeast
 MileEnablePerMonitorDialogScaling
