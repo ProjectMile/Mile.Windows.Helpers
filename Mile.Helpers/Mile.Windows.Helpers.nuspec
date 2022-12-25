@@ -12,7 +12,7 @@
   <metadata>
     <id>Mile.Windows.Helpers</id>
     <version>1.0.9.0</version>
-    <description>Merged FFmpeg Dynamic Linked Library</description>
+    <description>The essential helper functions for the Windows platform</description>
     <authors>Kenji Mouri</authors>
     <projectUrl>https://github.com/ProjectMile/Mile.Windows.Helpers</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
