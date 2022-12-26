@@ -5,8 +5,8 @@ EXPORTS
 MileAllocateMemory
 MileReallocateMemory
 MileFreeMemory
-
 MileIsWindowsVersionAtLeast
+
 MileEnablePerMonitorDialogScaling
 MileSetWindowCaptionColorAttribute
 MileSetWindowUseImmersiveDarkModeAttribute

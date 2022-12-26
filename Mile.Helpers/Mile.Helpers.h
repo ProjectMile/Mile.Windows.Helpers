@@ -275,20 +275,6 @@ typedef enum MILE_TOKEN_PRIVILEGE_LUID_CLASS
 } MILE_TOKEN_PRIVILEGE_LUID_CLASS;
 
 /**
- * @brief Indicates if the current OS version matches, or is greater than, the
- *        provided version information.
- * @param Major The major version number of the operating system.
- * @param Minor The minor version number of the operating system.
- * @param Build The build number of the operating system.
- * @return TRUE if the specified version matches, or is greater than, the
- *         version of the current Windows operating system; otherwise, FALSE.
-*/
-EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
-    _In_ DWORD Major,
-    _In_ DWORD Minor,
-    _In_ DWORD Build);
-
-/**
  * @brief Enables automatic display scaling of the dialogs in high-DPI
  *        displays. Must be called before the creation of dialogs.
  * @return If the function succeeds, the return value is nonzero. If the

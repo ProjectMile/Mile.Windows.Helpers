@@ -15,42 +15,6 @@
 
 namespace
 {
-    static LPOSVERSIONINFOW GetWindowsVersionInformation()
-    {
-        static LPOSVERSIONINFOW CachedResult = ([]() -> LPOSVERSIONINFOW
-        {
-            static OSVERSIONINFOW VersionInformation = { 0 };
-            VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOW);
-
-            HMODULE ModuleHandle = ::GetModuleHandleW(L"ntdll.dll");
-            if (ModuleHandle)
-            {
-                // Reference: https://learn.microsoft.com/en-us/windows-hardware
-                //            /drivers/ddi/wdm/nf-wdm-rtlgetversion
-                typedef NTSTATUS(NTAPI* ProcType)(PRTL_OSVERSIONINFOW);
-
-                ProcType ProcAddress = reinterpret_cast<ProcType>(
-                    ::GetProcAddress(ModuleHandle, "RtlGetVersion"));
-                if (ProcAddress)
-                {
-                    // Use constant 0 due to STATUS_SUCCESS not defined in the
-                    // standard Windows SDK.
-                    if (0 == ProcAddress(&VersionInformation))
-                    {
-                        return &VersionInformation;
-                    }
-                }
-            }
-
-            // No fallback solution due to RtlGetVersion has been introduced
-            // since Windows 2000 and no interest to support earlier Windows
-            // version than that.
-            return nullptr;
-        }());
-
-        return CachedResult;
-    }
-
     static bool IsPrivatePerMonitorSupportExtensionApplicable()
     {
         static bool CachedResult = ([]() -> bool
@@ -118,32 +82,6 @@ namespace
 
         return CachedResult;
     }
-}
-
-EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
-    _In_ DWORD Major,
-    _In_ DWORD Minor,
-    _In_ DWORD Build)
-{
-    LPOSVERSIONINFOW VersionInformation = ::GetWindowsVersionInformation();
-    if (!VersionInformation)
-    {
-        return FALSE;
-    }
-
-    // Reference: https://github.com/dotnet/runtime/blob
-    //            /db213657acc53fc48212867d5728e83d9e36a558
-    //            /src/libraries/System.Private.CoreLib
-    //            /src/System/OperatingSystem.cs#L308
-    if (VersionInformation->dwMajorVersion != Major)
-    {
-        return (VersionInformation->dwMajorVersion > Major);
-    }
-    if (VersionInformation->dwMinorVersion != Minor)
-    {
-        return (VersionInformation->dwMinorVersion > Minor);
-    }
-    return (VersionInformation->dwBuildNumber >= Build);
 }
 
 EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling()
