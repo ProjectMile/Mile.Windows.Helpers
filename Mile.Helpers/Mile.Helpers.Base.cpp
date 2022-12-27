@@ -135,3 +135,10 @@ EXTERN_C HANDLE WINAPI MileCreateThread(
         dwCreationFlags,
         reinterpret_cast<unsigned*>(lpThreadId)));
 }
+
+EXTERN_C DWORD WINAPI MileGetNumberOfHardwareThreads()
+{
+    SYSTEM_INFO SystemInfo;
+    ::GetNativeSystemInfo(&SystemInfo);
+    return SystemInfo.dwNumberOfProcessors;
+}

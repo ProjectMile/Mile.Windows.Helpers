@@ -8,6 +8,7 @@ MileFreeMemory
 MileIsWindowsVersionAtLeast
 MileGetTickCount
 MileCreateThread
+MileGetNumberOfHardwareThreads
 
 MileEnablePerMonitorDialogScaling
 MileSetWindowCaptionColorAttribute

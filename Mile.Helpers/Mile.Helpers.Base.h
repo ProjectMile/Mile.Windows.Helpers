@@ -107,4 +107,10 @@ EXTERN_C HANDLE WINAPI MileCreateThread(
     _In_ DWORD dwCreationFlags,
     _Out_opt_ LPDWORD lpThreadId);
 
+/**
+ * @brief Retrieves the number of logical processors in the current group.
+ * @return The number of logical processors in the current group.
+*/
+EXTERN_C DWORD WINAPI MileGetNumberOfHardwareThreads();
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
