@@ -10,6 +10,9 @@
 
 #include "Mile.Helpers.Base.h"
 
+#include <assert.h>
+#include <process.h>
+
 EXTERN_C LPVOID WINAPI MileAllocateMemory(
     _In_ SIZE_T Size)
 {
@@ -107,4 +110,28 @@ EXTERN_C ULONGLONG WINAPI MileGetTickCount()
     }
 
     return ::GetTickCount64();
+}
+
+EXTERN_C HANDLE WINAPI MileCreateThread(
+    _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
+    _In_ SIZE_T dwStackSize,
+    _In_ LPTHREAD_START_ROUTINE lpStartAddress,
+    _In_opt_ LPVOID lpParameter,
+    _In_ DWORD dwCreationFlags,
+    _Out_opt_ LPDWORD lpThreadId)
+{
+    // sanity check for lpThreadId
+    assert(sizeof(DWORD) == sizeof(unsigned));
+
+    typedef unsigned(__stdcall* routine_type)(void*);
+
+    // _beginthreadex calls CreateThread which will set the last error
+    // value before it returns.
+    return reinterpret_cast<HANDLE>(::_beginthreadex(
+        lpThreadAttributes,
+        static_cast<unsigned>(dwStackSize),
+        reinterpret_cast<routine_type>(lpStartAddress),
+        lpParameter,
+        dwCreationFlags,
+        reinterpret_cast<unsigned*>(lpThreadId)));
 }

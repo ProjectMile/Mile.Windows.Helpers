@@ -21,3 +21,4 @@
 - Add MileReallocateMemory function.
 - Add MileFreeMemory function.
 - Add MileGetTickCount function.
+- Add MileCreateThread function.

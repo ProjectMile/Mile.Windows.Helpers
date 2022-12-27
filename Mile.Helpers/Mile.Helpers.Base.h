@@ -81,4 +81,30 @@ EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
 */
 EXTERN_C ULONGLONG WINAPI MileGetTickCount();
 
+/**
+ * @brief Creates a thread to execute within the virtual address space of the
+ *        calling process.
+ * @param lpThreadAttributes A pointer to a SECURITY_ATTRIBUTES structure that
+ *                           determines whether the returned handle can be
+ *                           inherited by child processes.
+ * @param dwStackSize The initial size of the stack, in bytes.
+ * @param lpStartAddress A pointer to the application-defined function to be
+ *                       executed by the thread.
+ * @param lpParameter A pointer to a variable to be passed to the thread.
+ * @param dwCreationFlags The flags that control the creation of the thread.
+ * @param lpThreadId A pointer to a variable that receives the thread
+ *                   identifier.
+ * @return If the function succeeds, the return value is a handle to the new
+ *         thread. If the function fails, the return value is nullptr. To get
+ *         extended error information, call GetLastError.
+ * @remark For more information, see CreateThread.
+*/
+EXTERN_C HANDLE WINAPI MileCreateThread(
+    _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
+    _In_ SIZE_T dwStackSize,
+    _In_ LPTHREAD_START_ROUTINE lpStartAddress,
+    _In_opt_ LPVOID lpParameter,
+    _In_ DWORD dwCreationFlags,
+    _Out_opt_ LPDWORD lpThreadId);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
