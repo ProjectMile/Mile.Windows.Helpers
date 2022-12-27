@@ -74,4 +74,11 @@ EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
     _In_ DWORD Minor,
     _In_ DWORD Build);
 
+/**
+ * @brief Retrieves the number of milliseconds that have elapsed since the
+ *        system was started.
+ * @return The number of milliseconds.
+*/
+EXTERN_C ULONGLONG WINAPI MileGetTickCount();
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

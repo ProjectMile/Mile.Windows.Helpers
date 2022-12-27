@@ -93,3 +93,18 @@ EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
     }
     return (VersionInformation->dwBuildNumber >= Build);
 }
+
+EXTERN_C ULONGLONG WINAPI MileGetTickCount()
+{
+    LARGE_INTEGER Frequency;
+    if (::QueryPerformanceFrequency(&Frequency))
+    {
+        LARGE_INTEGER PerformanceCount;
+        if (::QueryPerformanceCounter(&PerformanceCount))
+        {
+            return (PerformanceCount.QuadPart * 1000 / Frequency.QuadPart);
+        }
+    }
+
+    return ::GetTickCount64();
+}

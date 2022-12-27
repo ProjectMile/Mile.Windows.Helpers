@@ -6,6 +6,7 @@ MileAllocateMemory
 MileReallocateMemory
 MileFreeMemory
 MileIsWindowsVersionAtLeast
+MileGetTickCount
 
 MileEnablePerMonitorDialogScaling
 MileSetWindowCaptionColorAttribute
