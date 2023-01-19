@@ -9,6 +9,15 @@
     <RootNamespace>Mile.Helpers</RootNamespace>
     <MileProjectType>DynamicLibrary</MileProjectType>
     <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
+    <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
+    <MileProjectCompanyName>Project Mile</MileProjectCompanyName>
+    <MileProjectFileDescription>Mile.Windows.Helpers</MileProjectFileDescription>
+    <MileProjectInternalName>Mile.Windows.Helpers</MileProjectInternalName>
+    <MileProjectLegalCopyright>© Project Mile. All rights reserved.</MileProjectLegalCopyright>
+    <MileProjectOriginalFilename>Mile.Helpers.dll</MileProjectOriginalFilename>
+    <MileProjectProductName>Mile.Windows.Helpers</MileProjectProductName>
+    <MileProjectVersion>1.0.11.0</MileProjectVersion>
+    <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
   <ItemDefinitionGroup>
@@ -20,9 +29,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="Mile.Helpers.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Mile.Project.Properties.h" />
   </ItemGroup>
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
 </Project>
