@@ -19,6 +19,7 @@
     <MileProjectVersion>1.0.11.0</MileProjectVersion>
     <MileProjectVersionTag Condition="false">Alpha 1</MileProjectVersionTag>
   </PropertyGroup>
+  <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.Default.props" />
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.props" />
   <ItemDefinitionGroup>
     <Link>
