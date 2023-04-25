@@ -10,6 +10,6 @@
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <IncludePath>$(MSBuildThisFileDirectory)Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildThisFileDirectory)..\..\Source\Native\;$(IncludePath)</IncludePath>
   </PropertyGroup>
 </Project>

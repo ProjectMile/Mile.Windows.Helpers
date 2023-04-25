@@ -21,14 +21,11 @@
     <repository type="git" url="https://github.com/ProjectMile/Mile.Windows.Helpers.git" />
   </metadata>
   <files>
-
-    <file src="..\Output\Binaries\Release\Win32\Mile.Helpers.Static.lib" target="build\native\Lib\x86"/>
-    <file src="..\Output\Binaries\Release\x64\Mile.Helpers.Static.lib" target="build\native\Lib\x64"/>
-    <file src="..\Output\Binaries\Release\ARM\Mile.Helpers.Static.lib" target="build\native\Lib\ARM"/>
-    <file src="..\Output\Binaries\Release\ARM64\Mile.Helpers.Static.lib" target="build\native\Lib\ARM64"/>
-
-    <file src="Mile.Helpers.Base.h" target="build\native\Include" />
-    <file src="Mile.Helpers.h" target="build\native\Include" />
+  
+    <file src="Mile.Helpers.Base.h" target="Source\Native" />
+    <file src="Mile.Helpers.Base.cpp" target="Source\Native" />
+    <file src="Mile.Helpers.h" target="Source\Native" />
+    <file src="Mile.Helpers.cpp" target="Source\Native" />
 
     <file src="Mile.Windows.Helpers.props" target="build\native"/>
     <file src="Mile.Windows.Helpers.targets" target="build\native"/> 

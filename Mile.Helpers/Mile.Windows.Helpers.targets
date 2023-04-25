@@ -9,9 +9,10 @@
   DEVELOPER: Mouri_Naruto (Mouri_Naruto AT Outlook.com)
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemDefinitionGroup>
-    <Link>
-      <AdditionalDependencies>$(MSBuildThisFileDirectory)Lib\$(PlatformTarget)\Mile.Helpers.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
+  <Target Name="MileWindowsHelpersBuildNativeSource" BeforeTargets="BeforeClCompile">
+    <ItemGroup>
+      <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\Native\Mile.Helpers.Base.cpp" />
+      <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\Native\Mile.Helpers.cpp" />
+    </ItemGroup>
+  </Target>
 </Project>
