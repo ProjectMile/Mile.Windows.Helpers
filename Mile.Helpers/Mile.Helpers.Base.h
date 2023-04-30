@@ -61,6 +61,21 @@ EXTERN_C BOOL WINAPI MileFreeMemory(
     _In_ LPVOID Block);
 
 /**
+ * @brief Returns version information about the currently running operating
+ *        system.
+ * @param VersionInformation Pointer to either a OSVERSIONINFOW structure or a
+ *                           OSVERSIONINFOEXW structure that contains the
+ *                           version information about the currently running
+ *                           operating system. A caller specifies which input
+ *                           structure is used by setting the
+ *                           dwOSVersionInfoSize member of the structure to the
+ *                           size in bytes of the structure that is used.
+ * @return TRUE if the function succeeds; otherwise, FALSE.
+*/
+EXTERN_C BOOL WINAPI MileGetWindowsVersion(
+    _Inout_ LPOSVERSIONINFOW VersionInformation);
+
+/**
  * @brief Indicates if the current OS version matches, or is greater than, the
  *        provided version information.
  * @param Major The major version number of the operating system.

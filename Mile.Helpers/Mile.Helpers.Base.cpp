@@ -34,6 +34,82 @@ EXTERN_C BOOL WINAPI MileFreeMemory(
 
 namespace
 {
+    const NTSTATUS NtStatusSuccess = static_cast<NTSTATUS>(0x00000000L);
+    const NTSTATUS NtStatusNotImplemented = static_cast<NTSTATUS>(0xC0000002L);
+
+    static bool IsNtStatusSuccess(NTSTATUS Status)
+    {
+        return (Status >= 0);
+    }
+
+    typedef struct _NtUnicodeString
+    {
+        USHORT Length;
+        USHORT MaximumLength;
+        _Field_size_bytes_part_(MaximumLength, Length) PWCH Buffer;
+    } NtUnicodeString, * NtUnicodeStringPointer;
+
+    static HMODULE GetNtDllModuleHandle()
+    {
+        static HMODULE CachedResult = ::GetModuleHandleW(L"ntdll.dll");
+        return CachedResult;
+    }
+}
+
+namespace
+{
+    static FARPROC GetRtlGetVersionProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetNtDllModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    "RtlGetVersion");
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
+
+    static NTSTATUS NTAPI RtlGetVersionWrapper(
+        _Out_ PRTL_OSVERSIONINFOW VersionInformation)
+    {
+        // Reference: https://learn.microsoft.com/en-us/windows-hardware
+        //            /drivers/ddi/wdm/nf-wdm-rtlgetversion
+        using ProcType = decltype(::RtlGetVersionWrapper)*;
+
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetRtlGetVersionProcAddress());
+
+        if (ProcAddress)
+        {
+            return ProcAddress(VersionInformation);
+        }
+
+        return NtStatusNotImplemented;
+    }
+}
+
+EXTERN_C BOOL WINAPI MileGetWindowsVersion(
+    _Inout_ LPOSVERSIONINFOW VersionInformation)
+{
+    if (NtStatusSuccess == ::RtlGetVersionWrapper(VersionInformation))
+    {
+        return TRUE;
+    }
+
+    // No fallback solution due to RtlGetVersion has been introduced
+    // since Windows 2000 and no interest to support earlier Windows
+    // version than that.
+    return FALSE;
+}
+
+namespace
+{
      static LPOSVERSIONINFOW GetWindowsVersionInformation()
      {
         static LPOSVERSIONINFOW CachedResult = ([]() -> LPOSVERSIONINFOW
@@ -41,29 +117,11 @@ namespace
             static OSVERSIONINFOW VersionInformation = { 0 };
             VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOW);
 
-            HMODULE ModuleHandle = ::GetModuleHandleW(L"ntdll.dll");
-            if (ModuleHandle)
+            if (::MileGetWindowsVersion(&VersionInformation))
             {
-                // Reference: https://learn.microsoft.com/en-us/windows-hardware
-                //            /drivers/ddi/wdm/nf-wdm-rtlgetversion
-                typedef NTSTATUS(NTAPI* ProcType)(PRTL_OSVERSIONINFOW);
-
-                ProcType ProcAddress = reinterpret_cast<ProcType>(
-                    ::GetProcAddress(ModuleHandle, "RtlGetVersion"));
-                if (ProcAddress)
-                {
-                    // Use constant 0 due to STATUS_SUCCESS not defined in the
-                    // standard Windows SDK.
-                    if (0 == ProcAddress(&VersionInformation))
-                    {
-                        return &VersionInformation;
-                    }
-                }
+                return &VersionInformation;
             }
 
-            // No fallback solution due to RtlGetVersion has been introduced
-            // since Windows 2000 and no interest to support earlier Windows
-            // version than that.
             return nullptr;
         }());
 
