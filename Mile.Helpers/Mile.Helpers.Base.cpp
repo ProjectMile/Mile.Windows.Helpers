@@ -200,3 +200,233 @@ EXTERN_C DWORD WINAPI MileGetNumberOfHardwareThreads()
     ::GetNativeSystemInfo(&SystemInfo);
     return SystemInfo.dwNumberOfProcessors;
 }
+
+namespace
+{
+    static FARPROC GetLdrLoadDllProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetNtDllModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    "LdrLoadDll");
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
+
+    static FARPROC GetRtlNtStatusToDosErrorProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetNtDllModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    "RtlNtStatusToDosError");
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
+
+    static FARPROC GetRtlWow64EnableFsRedirectionExProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetNtDllModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    "RtlWow64EnableFsRedirectionEx");
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
+
+    static FARPROC GetRtlInitUnicodeStringProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetNtDllModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    "RtlInitUnicodeString");
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
+
+    static NTSTATUS NTAPI LdrLoadDllWrapper(
+        _In_opt_ PWSTR DllPath,
+        _In_opt_ PULONG DllCharacteristics,
+        _In_ NtUnicodeStringPointer DllName,
+        _Out_ PVOID* DllHandle)
+    {
+        using ProcType = decltype(::LdrLoadDllWrapper)*;
+
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetLdrLoadDllProcAddress());
+
+        if (ProcAddress)
+        {
+            return ProcAddress(
+                DllPath,
+                DllCharacteristics,
+                DllName,
+                DllHandle);
+        }
+
+        return NtStatusNotImplemented;
+    }
+
+    static ULONG NTAPI RtlNtStatusToDosErrorWrapper(
+        _In_ NTSTATUS Status)
+    {
+        using ProcType = decltype(::RtlNtStatusToDosErrorWrapper)*;
+
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetRtlNtStatusToDosErrorProcAddress());
+
+        if (ProcAddress)
+        {
+            return ProcAddress(Status);
+        }
+
+        return ERROR_PROC_NOT_FOUND;
+    }
+
+    static NTSTATUS NTAPI RtlWow64EnableFsRedirectionExWrapper(
+        _In_opt_ PVOID Wow64FsEnableRedirection,
+        _Out_opt_ PVOID* OldFsRedirectionLevel)
+    {
+        using ProcType = decltype(::RtlWow64EnableFsRedirectionExWrapper)*;
+
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetRtlWow64EnableFsRedirectionExProcAddress());
+
+        if (ProcAddress)
+        {
+            return ProcAddress(
+                Wow64FsEnableRedirection,
+                OldFsRedirectionLevel);
+        }
+
+        return NtStatusNotImplemented;
+    }
+
+    static void NTAPI RtlInitUnicodeStringWrapper(
+        _Out_ NtUnicodeStringPointer DestinationString,
+        _In_opt_ PCWSTR SourceString)
+    {
+        if (!DestinationString)
+        {
+            return;
+        }
+        DestinationString->Length = 0;
+        DestinationString->MaximumLength = 0;
+        DestinationString->Buffer = nullptr;
+
+        using ProcType = decltype(::RtlInitUnicodeStringWrapper)*;
+
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetRtlInitUnicodeStringProcAddress());
+        if (ProcAddress)
+        {
+            ProcAddress(DestinationString, SourceString);
+        }
+    }
+
+    static bool IsSecureLibraryLoaderAvailable()
+    {
+        static bool CachedResult = ([]() -> bool
+        {
+            // We should check the secure library loader by get the address of
+            // some APIs existed when the secure library loader is available.
+            // Because some environment will return the ERROR_ACCESS_DENIED
+            // instead of ERROR_INVALID_PARAMETER from GetLastError after
+            // calling the LoadLibraryEx with using the unsupported flags.
+            HMODULE ModuleHandle = ::GetModuleHandleW(L"kernel32.dll");
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(ModuleHandle, "AddDllDirectory");
+            }
+
+            return false;
+        }());
+
+        return CachedResult;
+    }
+}
+
+EXTERN_C HMODULE WINAPI MileLoadLibraryFromSystem32(
+    _In_ LPCWSTR lpLibFileName)
+{
+    // The secure library loader is available when you using Windows 8 and
+    // later, or you have installed the KB2533623 when you using Windows Vista
+    // and 7.
+    if (::IsSecureLibraryLoaderAvailable())
+    {
+        return ::LoadLibraryExW(
+            lpLibFileName,
+            nullptr,
+            LOAD_LIBRARY_SEARCH_SYSTEM32);
+    }
+
+    // We should re-enable the WoW64 redirection because Windows 7 RTM or
+    // earlier won't re-enable the WoW64 redirection when loading the library.
+    // It's vulnerable if someone put the malicious library under the native
+    // system directory.
+    PVOID OldRedirectionLevel = nullptr;
+    NTSTATUS RedirectionStatus = ::RtlWow64EnableFsRedirectionExWrapper(
+        nullptr,
+        &OldRedirectionLevel);
+
+    wchar_t System32Directory[MAX_PATH];
+    UINT Length = ::GetSystemDirectoryW(System32Directory, MAX_PATH);
+    if (Length == 0 || Length >= MAX_PATH)
+    {
+        // The length of the system directory path string (%windows%\system32)
+        // should be shorter than the MAX_PATH constant.
+        ::SetLastError(ERROR_FUNCTION_FAILED);
+        return nullptr;
+    }
+
+    NtUnicodeString ModuleFileName;
+    ::RtlInitUnicodeStringWrapper(&ModuleFileName, lpLibFileName);
+
+    HMODULE ModuleHandle = nullptr;
+    NTSTATUS Status = ::LdrLoadDllWrapper(
+        System32Directory,
+        nullptr,
+        &ModuleFileName,
+        reinterpret_cast<PVOID*>(&ModuleHandle));
+    if (!IsNtStatusSuccess(Status))
+    {
+        ::SetLastError(::RtlNtStatusToDosErrorWrapper(Status));
+    }
+
+    // Restore the old status of the WoW64 redirection.
+    if (IsNtStatusSuccess(RedirectionStatus))
+    {
+        ::RtlWow64EnableFsRedirectionExWrapper(
+            OldRedirectionLevel,
+            &OldRedirectionLevel);
+    }
+
+    return ModuleHandle;
+}

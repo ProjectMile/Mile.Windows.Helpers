@@ -23,3 +23,4 @@
 - Add MileCreateThread function.
 - Add MileGetNumberOfHardwareThreads function.
 - Add MileGetWindowsVersion function.
+- Add MileLoadLibraryFromSystem32 function.
