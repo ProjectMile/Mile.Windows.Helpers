@@ -37,7 +37,7 @@ namespace Mile::WinRT
 
         return {};
     }
-    
+
     /**
      * @brief A type that you can use to declare and implement a property of a
               specified type.
@@ -65,6 +65,33 @@ namespace Mile::WinRT
         }
 
         Type Value;
+    };
+
+    /**
+     * @brief A type that you can use to declare and implement an event of a
+     *        specified delegate type.
+     * @tparam Delegate The type of delegate that can register to handle the
+     *                  event.
+     * @remark https://devblogs.microsoft.com/oldnewthing/20230317-00/?p=107946.
+    */
+    template<typename Delegate>
+    struct Event : winrt::event<Delegate>
+    {
+        Event() = default;
+
+        using winrt::event<Delegate>::operator();
+
+        auto operator()(
+            Delegate const& Handler)
+        {
+            return this->add(Handler);
+        }
+
+        void operator()(
+            winrt::event_token const& Token)
+        {
+            this->remove(Token);
+        }
     };
 }
 
