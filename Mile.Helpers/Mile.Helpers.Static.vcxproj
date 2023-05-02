@@ -22,9 +22,11 @@
   <ItemGroup>
     <ClCompile Include="Mile.Helpers.Base.cpp" />
     <ClCompile Include="Mile.Helpers.cpp" />
+    <ClCompile Include="Mile.Helpers.CppWinRT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Helpers.Base.h" />
+    <ClInclude Include="Mile.Helpers.CppWinRT.h" />
     <ClInclude Include="Mile.Helpers.h" />
   </ItemGroup>
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />

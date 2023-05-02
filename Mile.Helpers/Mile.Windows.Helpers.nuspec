@@ -26,6 +26,8 @@
     <file src="Mile.Helpers.Base.cpp" target="Source\Native" />
     <file src="Mile.Helpers.h" target="Source\Native" />
     <file src="Mile.Helpers.cpp" target="Source\Native" />
+    <file src="Mile.Helpers.CppWinRT.h" target="Source\Native" />
+    <file src="Mile.Helpers.CppWinRT.cpp" target="Source\Native" />
 
     <file src="Mile.Windows.Helpers.props" target="build\native"/>
     <file src="Mile.Windows.Helpers.targets" target="build\native"/> 

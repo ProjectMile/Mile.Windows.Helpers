@@ -7,6 +7,9 @@
     <ClCompile Include="Mile.Helpers.cpp">
       <Filter>Mile.Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Mile.Helpers.CppWinRT.cpp">
+      <Filter>Mile.Helpers.CppWinRT</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Helpers.Base.h">
@@ -15,6 +18,9 @@
     <ClInclude Include="Mile.Helpers.h">
       <Filter>Mile.Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Mile.Helpers.CppWinRT.h">
+      <Filter>Mile.Helpers.CppWinRT</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Mile.Helpers.Base">
@@ -22,6 +28,9 @@
     </Filter>
     <Filter Include="Mile.Helpers">
       <UniqueIdentifier>{3b209c24-48a1-4544-be40-a85cfc72d7e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mile.Helpers.CppWinRT">
+      <UniqueIdentifier>{9917cf85-d8ae-443f-a052-a250954956da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
