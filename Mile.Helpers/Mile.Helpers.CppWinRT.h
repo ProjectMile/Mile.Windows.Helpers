@@ -38,6 +38,34 @@ namespace Mile::WinRT
         return {};
     }
     
+    /**
+     * @brief A type that you can use to declare and implement a property of a
+              specified type.
+     * @tparam Type The type of property.
+     * @remark https://devblogs.microsoft.com/oldnewthing/20230317-00/?p=107946.
+    */
+    template<typename Type>
+    struct Property
+    {
+        Property(
+            Type const& InitialValue = EmptyValue<Type>()) :
+            Value(InitialValue)
+        {
+        }
+
+        Type operator()() const
+        {
+            return this->Value;
+        }
+
+        void operator()(
+            Type const& NewValue)
+        {
+            this->Value = NewValue;
+        }
+
+        Type Value;
+    };
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPWINRT
