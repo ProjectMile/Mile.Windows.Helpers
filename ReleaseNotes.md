@@ -24,3 +24,4 @@
 - Add MileGetNumberOfHardwareThreads function.
 - Add MileGetWindowsVersion function.
 - Add MileLoadLibraryFromSystem32 function.
+- Add Mile::WinRT::EmptyValue template function.

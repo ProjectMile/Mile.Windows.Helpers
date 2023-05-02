@@ -15,8 +15,28 @@
 
 #include <winrt/Windows.Foundation.h>
 
+#include <type_traits>
+
 namespace Mile::WinRT
 {
+    /**
+     * @brief Helper to get the empty value.
+     * @tparam Type The type of the empty value.
+     * @return The empty value with a specified type.
+     * @remark https://devblogs.microsoft.com/oldnewthing/20220504-00/?p=106569.
+    */
+    template<typename Type>
+    constexpr Type EmptyValue() noexcept
+    {
+        if constexpr (std::is_base_of_v<
+            winrt::Windows::Foundation::IUnknown,
+            Type>)
+        {
+            return nullptr;
+        }
+
+        return {};
+    }
     
 }
 
