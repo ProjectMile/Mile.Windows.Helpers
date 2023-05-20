@@ -57,6 +57,12 @@ namespace
         return CachedResult;
     }
 
+    static bool IsWindows11Version21H2OrLater()
+    {
+        static bool CachedResult = ::MileIsWindowsVersionAtLeast(10, 0, 22000);
+        return CachedResult;
+    }
+
     static HMODULE GetUxThemeModuleHandle()
     {
         static HMODULE CachedResult = ::LoadLibraryExW(
@@ -230,7 +236,9 @@ EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
 EXTERN_C COLORREF WINAPI MileGetDefaultBackgroundColorValue(
     _In_ BOOL UseImmersiveDarkMode)
 {
-    return (UseImmersiveDarkMode ? RGB(32, 32, 32) : RGB(243, 243, 243));
+    return ::IsWindows11Version21H2OrLater()
+        ? (UseImmersiveDarkMode ? RGB(32, 32, 32) : RGB(243, 243, 243))
+        : (UseImmersiveDarkMode ? RGB(0, 0, 0) : RGB(255, 255, 255));
 }
 
 EXTERN_C HRESULT WINAPI MileEnableImmersiveDarkModeForWindow(
