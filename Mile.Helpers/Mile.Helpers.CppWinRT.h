@@ -93,6 +93,12 @@ namespace Mile::WinRT
             this->remove(Token);
         }
     };
+
+    /**
+     * @brief Indicates if the current environment is packaged mode.
+     * @return Return true if the current environment is packaged mode.
+    */
+    bool IsPackagedMode();
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPWINRT

@@ -27,3 +27,4 @@
 - Add Mile::WinRT::EmptyValue template function.
 - Add Mile::WinRT::Property template class.
 - Add Mile::WinRT::Event template class.
+- Add Mile::WinRT::IsPackagedMode method.

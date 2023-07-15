@@ -9,3 +9,28 @@
  */
 
 #include "Mile.Helpers.CppWinRT.h"
+
+#include <winrt/Windows.ApplicationModel.h>
+
+namespace winrt
+{
+    using Windows::ApplicationModel::Package;
+}
+
+bool Mile::WinRT::IsPackagedMode()
+{
+    static bool CachedResult = ([]() -> bool
+    {
+        try
+        {
+            const auto CurrentPackage = winrt::Package::Current();
+            return true;
+        }
+        catch (...)
+        {
+            return false;
+        }
+    }());
+
+    return CachedResult;
+}
