@@ -161,4 +161,10 @@ EXTERN_C DWORD WINAPI MileGetNumberOfHardwareThreads();
 EXTERN_C HMODULE WINAPI MileLoadLibraryFromSystem32(
     _In_ LPCWSTR lpLibFileName);
 
+/**
+ * @brief Indicates if the current process is elevated.
+ * @return TRUE if the current process is elevated; otherwise, FALSE.
+*/
+EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated();
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

@@ -430,3 +430,31 @@ EXTERN_C HMODULE WINAPI MileLoadLibraryFromSystem32(
 
     return ModuleHandle;
 }
+
+EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated()
+{
+    bool Result = false;
+
+    HANDLE CurrentProcessAccessToken = nullptr;
+    if (::OpenProcessToken(
+        ::GetCurrentProcess(),
+        TOKEN_ALL_ACCESS,
+        &CurrentProcessAccessToken))
+    {
+        TOKEN_ELEVATION Information = { 0 };
+        DWORD Length = sizeof(Information);
+        if (::GetTokenInformation(
+            CurrentProcessAccessToken,
+            TOKEN_INFORMATION_CLASS::TokenElevation,
+            &Information,
+            Length,
+            &Length))
+        {
+            Result = Information.TokenIsElevated;
+        }
+
+        ::CloseHandle(CurrentProcessAccessToken);
+    }
+
+    return Result ? TRUE : FALSE;
+}
