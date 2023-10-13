@@ -382,4 +382,17 @@ EXTERN_C HRESULT WINAPI MileEnableImmersiveDarkModeForWindow(
     _In_ HWND WindowHandle,
     _In_ BOOL UseImmersiveDarkMode);
 
+/**
+ * @brief Specifies the policy for enabling or disabling standard non-client
+ *        default drawing behavior of caption and system icon for the window.
+ * @param WindowHandle The handle to the window for which the attribute value
+ *                     is to be set.
+ * @param NewPolicy TRUE to enable the policy, FALSE to disable the policy.
+ * @return If this function succeeds, it returns S_OK. Otherwise, it returns an
+ *         HRESULT error code.
+*/
+EXTERN_C HRESULT WINAPI MileAllowNonClientDefaultDrawingForWindow(
+    _In_ HWND WindowHandle,
+    _In_ BOOL NewPolicy);
+
 #endif // !MILE_WINDOWS_HELPERS

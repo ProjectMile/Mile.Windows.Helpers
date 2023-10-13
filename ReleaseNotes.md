@@ -29,3 +29,4 @@
 - Add Mile::WinRT::Event template class.
 - Add Mile::WinRT::IsPackagedMode method.
 - Add MileIsCurrentProcessElevated function.
+- Add MileAllowNonClientDefaultDrawingForWindow function.
