@@ -99,6 +99,24 @@ namespace Mile::WinRT
      * @return Return true if the current environment is packaged mode.
     */
     bool IsPackagedMode();
+
+    /**
+     * @brief Retrieves the localized string from Package Resource Index.
+     * @param ResourcePath The resource path in Package Resource Index.
+     * @param FallbackString The fallback string when operation failed.
+     * @return The localized string from Package Resource Index.
+    */
+    winrt::hstring GetLocalizedString(
+        winrt::hstring const& ResourcePath,
+        winrt::hstring const& FallbackString);
+
+    /**
+     * @brief Retrieves the localized string from Package Resource Index.
+     * @param ResourcePath The resource path in Package Resource Index.
+     * @return The localized string from Package Resource Index.
+    */
+    winrt::hstring GetLocalizedString(
+        winrt::hstring const& ResourcePath);
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPWINRT
