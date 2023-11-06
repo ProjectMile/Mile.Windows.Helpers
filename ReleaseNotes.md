@@ -33,3 +33,4 @@
 - Add Mile::WinRT::GetLocalizedString method.
 - Add Mile::VFormatWideString method.
 - Add Mile::FormatWideString method.
+- Add Mile::VFormatString method.

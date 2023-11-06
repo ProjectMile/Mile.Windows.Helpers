@@ -56,3 +56,37 @@ std::wstring Mile::FormatWideString(
     va_end(ArgList);
     return Result;
 }
+
+std::string Mile::VFormatString(
+    _In_z_ _Printf_format_string_ char const* const Format,
+    _In_z_ _Printf_format_string_ va_list ArgList)
+{
+    // Check the argument list.
+    if (Format)
+    {
+        // Get the length of the format result.
+        std::size_t nLength =
+            static_cast<std::size_t>(::_vscprintf(Format, ArgList)) + 1;
+
+        // Allocate for the format result.
+        std::string Buffer(nLength + 1, '\0');
+
+        // Format the string.
+        int nWritten = ::_vsnprintf_s(
+            &Buffer[0],
+            Buffer.size(),
+            nLength,
+            Format,
+            ArgList);
+
+        if (nWritten > 0)
+        {
+            // If succeed, resize to fit and return result.
+            Buffer.resize(nWritten);
+            return Buffer;
+        }
+    }
+
+    // If failed, return an empty string.
+    return std::string();
+}
