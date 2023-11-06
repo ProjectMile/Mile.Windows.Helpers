@@ -90,3 +90,14 @@ std::string Mile::VFormatString(
     // If failed, return an empty string.
     return std::string();
 }
+
+std::string Mile::FormatString(
+    _In_z_ _Printf_format_string_ char const* const Format,
+    ...)
+{
+    va_list ArgList;
+    va_start(ArgList, Format);
+    std::string Result = Mile::VFormatString(Format, ArgList);
+    va_end(ArgList);
+    return Result;
+}
