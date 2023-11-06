@@ -45,3 +45,14 @@ std::wstring Mile::VFormatWideString(
     // If failed, return an empty string.
     return std::wstring();
 }
+
+std::wstring Mile::FormatWideString(
+    _In_z_ _Printf_format_string_ wchar_t const* const Format,
+    ...)
+{
+    va_list ArgList;
+    va_start(ArgList, Format);
+    std::wstring Result = Mile::VFormatWideString(Format, ArgList);
+    va_end(ArgList);
+    return Result;
+}

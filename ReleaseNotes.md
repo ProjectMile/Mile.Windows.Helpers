@@ -32,3 +32,4 @@
 - Add MileAllowNonClientDefaultDrawingForWindow function.
 - Add Mile::WinRT::GetLocalizedString method.
 - Add Mile::VFormatWideString method.
+- Add Mile::FormatWideString method.

@@ -28,6 +28,16 @@ namespace Mile
         _In_z_ _Printf_format_string_ wchar_t const* const Format,
         _In_z_ _Printf_format_string_ va_list ArgList);
 
+    /**
+     * @brief Write formatted data to a wide characters string, assumed UTF-16
+     *        in Windows.
+     * @param Format Format-control string.
+     * @param ... Optional arguments to be formatted.
+     * @return A formatted string if successful, an empty string otherwise.
+    */
+    std::wstring FormatWideString(
+        _In_z_ _Printf_format_string_ wchar_t const* const Format,
+        ...);
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
