@@ -5,7 +5,7 @@
  *
  * LICENSE:   The MIT License
  *
- * DEVELOPER: MouriNaruto (KurikoMouri@outlook.jp)
+ * MAINTAINER: MouriNaruto (Kenji.Mouri@outlook.com)
  */
 
 #pragma once
@@ -15,7 +15,7 @@
 
 namespace Mile
 {
-    
+
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
