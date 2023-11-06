@@ -10,6 +10,9 @@
     <ClCompile Include="Mile.Helpers.CppWinRT.cpp">
       <Filter>Mile.Helpers.CppWinRT</Filter>
     </ClCompile>
+    <ClCompile Include="Mile.Helpers.CppBase.cpp">
+      <Filter>Mile.Helpers.CppBase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mile.Helpers.Base.h">
@@ -21,6 +24,9 @@
     <ClInclude Include="Mile.Helpers.CppWinRT.h">
       <Filter>Mile.Helpers.CppWinRT</Filter>
     </ClInclude>
+    <ClInclude Include="Mile.Helpers.CppBase.h">
+      <Filter>Mile.Helpers.CppBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Mile.Helpers.Base">
@@ -31,6 +37,9 @@
     </Filter>
     <Filter Include="Mile.Helpers.CppWinRT">
       <UniqueIdentifier>{9917cf85-d8ae-443f-a052-a250954956da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mile.Helpers.CppBase">
+      <UniqueIdentifier>{8af1fc41-3aec-483d-9656-c733845ed5ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

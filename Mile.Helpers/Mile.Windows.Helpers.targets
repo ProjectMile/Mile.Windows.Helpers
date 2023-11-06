@@ -13,6 +13,7 @@
     <ItemGroup>
       <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\Native\Mile.Helpers.Base.cpp" />
       <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\Native\Mile.Helpers.cpp" />
+      <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\Native\Mile.Helpers.CppBase.cpp" />
       <ClCompile Include="$(MSBuildThisFileDirectory)..\..\Source\Native\Mile.Helpers.CppWinRT.cpp" />
     </ItemGroup>
   </Target>
