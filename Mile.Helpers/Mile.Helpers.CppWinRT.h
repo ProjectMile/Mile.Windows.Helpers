@@ -117,6 +117,16 @@ namespace Mile::WinRT
     */
     winrt::hstring GetLocalizedString(
         winrt::hstring const& ResourcePath);
+
+    /**
+     * @brief A helper function, for use in a catch block, that turns the last
+     *        exception thrown into winrt::hresult_error if the exception that
+     *        was thrown is any of: winrt::hresult_error, std::bad_alloc,
+     *        std::out_of_range, std::invalid_argument, or std::exception.
+     * @return The winrt::hresult_error struct represented by the last exception
+     *         thrown.
+    */
+    winrt::hresult_error ToHResultError();
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPWINRT

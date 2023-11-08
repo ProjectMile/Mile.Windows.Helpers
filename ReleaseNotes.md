@@ -37,3 +37,4 @@
 - Add Mile::FormatString method.
 - Add Mile::ToWideString method.
 - Add Mile::ToString method.
+- Add Mile::WinRT::ToHResultError method.
