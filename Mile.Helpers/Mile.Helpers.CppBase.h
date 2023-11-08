@@ -62,6 +62,21 @@ namespace Mile
     std::string FormatString(
         _In_z_ _Printf_format_string_ char const* const Format,
         ...);
+
+    /**
+     * @brief Converts from the onebyte or multibyte string to the wide
+     *        characters string.
+     * @param CodePage Code page to use in performing the conversion. This
+     *                 parameter can be set to the value of any code page
+     *                 that is installed or available in the operating system.
+     * @param InputString The onebyte or multibyte string you want to convert.
+     * @return A converted wide characters string if successful, an empty
+     *         string otherwise.
+     * @remark For more information, see MultiByteToWideChar.
+    */
+    std::wstring ToWideString(
+        std::uint32_t CodePage,
+        std::string_view const& InputString);
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE

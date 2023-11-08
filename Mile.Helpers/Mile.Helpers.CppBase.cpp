@@ -101,3 +101,32 @@ std::string Mile::FormatString(
     va_end(ArgList);
     return Result;
 }
+
+std::wstring Mile::ToWideString(
+    std::uint32_t CodePage,
+    std::string_view const& InputString)
+{
+    std::wstring OutputString;
+
+    int OutputStringLength = ::MultiByteToWideChar(
+        CodePage,
+        0,
+        InputString.data(),
+        static_cast<int>(InputString.size()),
+        nullptr,
+        0);
+    if (OutputStringLength > 0)
+    {
+        OutputString.resize(OutputStringLength);
+        OutputStringLength = ::MultiByteToWideChar(
+            CodePage,
+            0,
+            InputString.data(),
+            static_cast<int>(InputString.size()),
+            &OutputString[0],
+            OutputStringLength);
+        OutputString.resize(OutputStringLength);
+    }
+
+    return OutputString;
+}

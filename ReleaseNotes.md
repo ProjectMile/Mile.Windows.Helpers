@@ -35,3 +35,4 @@
 - Add Mile::FormatWideString method.
 - Add Mile::VFormatString method.
 - Add Mile::FormatString method.
+- Add Mile::ToWideString method.
