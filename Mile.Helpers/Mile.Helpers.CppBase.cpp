@@ -130,3 +130,36 @@ std::wstring Mile::ToWideString(
 
     return OutputString;
 }
+
+std::string Mile::ToString(
+    std::uint32_t CodePage,
+    std::wstring_view const& InputString)
+{
+    std::string OutputString;
+
+    int OutputStringLength = ::WideCharToMultiByte(
+        CodePage,
+        0,
+        InputString.data(),
+        static_cast<int>(InputString.size()),
+        nullptr,
+        0,
+        nullptr,
+        nullptr);
+    if (OutputStringLength > 0)
+    {
+        OutputString.resize(OutputStringLength);
+        OutputStringLength = ::WideCharToMultiByte(
+            CodePage,
+            0,
+            InputString.data(),
+            static_cast<int>(InputString.size()),
+            &OutputString[0],
+            OutputStringLength,
+            nullptr,
+            nullptr);
+        OutputString.resize(OutputStringLength);
+    }
+
+    return OutputString;
+}
