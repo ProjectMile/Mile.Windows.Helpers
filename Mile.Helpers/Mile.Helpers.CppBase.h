@@ -13,6 +13,8 @@
 #ifndef MILE_WINDOWS_HELPERS_CPPBASE
 #define MILE_WINDOWS_HELPERS_CPPBASE
 
+#include "Mile.Helpers.Base.h"
+
 #include <string>
 
 namespace Mile
