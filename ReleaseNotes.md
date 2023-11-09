@@ -27,14 +27,14 @@
 - Add Mile::WinRT::EmptyValue template function.
 - Add Mile::WinRT::Property template class.
 - Add Mile::WinRT::Event template class.
-- Add Mile::WinRT::IsPackagedMode method.
+- Add Mile::WinRT::IsPackagedMode function.
 - Add MileIsCurrentProcessElevated function.
 - Add MileAllowNonClientDefaultDrawingForWindow function.
-- Add Mile::WinRT::GetLocalizedString method.
-- Add Mile::VFormatWideString method.
-- Add Mile::FormatWideString method.
-- Add Mile::VFormatString method.
-- Add Mile::FormatString method.
-- Add Mile::ToWideString method.
-- Add Mile::ToString method.
-- Add Mile::WinRT::ToHResultError method.
+- Add Mile::WinRT::GetLocalizedString function.
+- Add Mile::VFormatWideString function.
+- Add Mile::FormatWideString function.
+- Add Mile::VFormatString function.
+- Add Mile::FormatString function.
+- Add Mile::ToWideString function.
+- Add Mile::ToString function.
+- Add Mile::WinRT::ToHResultError function.
