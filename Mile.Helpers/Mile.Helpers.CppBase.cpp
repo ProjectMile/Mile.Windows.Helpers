@@ -173,7 +173,7 @@ namespace
         // Initialize the SplitArguments.
         std::vector<StringType> SplitArguments;
 
-        wchar_t c = L'\0';
+        typename StringType::value_type c = L'\0';
         int copy_character;                   /* 1 = copy char to *args */
         unsigned numslash;              /* num of backslashes seen */
 
@@ -181,7 +181,8 @@ namespace
         Buffer.reserve(CommandLine.size());
 
         /* first scan the program name, copy it, and count the bytes */
-        wchar_t* p = const_cast<wchar_t*>(CommandLine.c_str());
+        typename StringType::value_type* p =
+            const_cast<typename StringType::value_type*>(CommandLine.c_str());
 
         // A quoted program name is handled here. The handling is much simpler than
         // for other arguments. Basically, whatever lies between the leading
