@@ -178,7 +178,7 @@ EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated();
  *                    maximum string length is 256 characters. The service
  *                    control manager database preserves the case of the
  *                    characters, but service name comparisons are always case
- *                    insensitive. Forward-slash (/) and backslash (\) are
+ *                    insensitive. Forward-slash (/) and backslash (\\) are
  *                    invalid service name characters.
  * @param ServiceStatus A pointer to the process status information for a
  *                      service.
