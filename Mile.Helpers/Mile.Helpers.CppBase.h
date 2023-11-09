@@ -92,6 +92,22 @@ namespace Mile
     std::string ToString(
         std::uint32_t CodePage,
         std::wstring_view const& InputString);
+
+    /**
+     * @brief Disables C++ class copy construction.
+    */
+    class DisableCopyConstruction
+    {
+    protected:
+        DisableCopyConstruction() = default;
+        ~DisableCopyConstruction() = default;
+
+    private:
+        DisableCopyConstruction(
+            const DisableCopyConstruction&) = delete;
+        DisableCopyConstruction& operator=(
+            const DisableCopyConstruction&) = delete;
+    };
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE

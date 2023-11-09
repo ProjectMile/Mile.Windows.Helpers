@@ -39,3 +39,4 @@
 - Add Mile::ToString function.
 - Add Mile::WinRT::ToHResultError function.
 - Add MileStartService function.
+- Add Mile::DisableCopyConstruction class.
