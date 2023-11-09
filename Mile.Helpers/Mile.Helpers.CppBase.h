@@ -173,6 +173,19 @@ namespace Mile
             this->m_Canceled = true;
         }
     };
+
+    /**
+     * @brief Parses a command line string and returns an array of the command
+     *        line arguments, along with a count of such arguments, in a way
+     *        that is similar to the standard C run-time.
+     * @param CommandLine A string that contains the full command line. If this
+     *                    parameter is an empty string the function returns an
+     *                    array with only one empty string.
+     * @return An array of the command line arguments, along with a count of such
+     *         arguments.
+    */
+    std::vector<std::wstring> SplitCommandLineWideString(
+        std::wstring const& CommandLine);
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE

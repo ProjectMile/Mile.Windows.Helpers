@@ -300,3 +300,9 @@ namespace
         return SplitArguments;
     }
 }
+
+std::vector<std::wstring> Mile::SplitCommandLineWideString(
+    std::wstring const& CommandLine)
+{
+    return ::SplitCommandLineStringCommon<std::wstring>(CommandLine);
+}
