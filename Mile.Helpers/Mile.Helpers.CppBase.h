@@ -16,6 +16,7 @@
 #include "Mile.Helpers.Base.h"
 
 #include <string>
+#include <vector>
 
 namespace Mile
 {
