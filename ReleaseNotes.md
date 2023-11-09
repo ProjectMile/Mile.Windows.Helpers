@@ -40,3 +40,4 @@
 - Add Mile::WinRT::ToHResultError function.
 - Add MileStartService function.
 - Add Mile::DisableCopyConstruction class.
+- Add Mile::DisableMoveConstruction class.

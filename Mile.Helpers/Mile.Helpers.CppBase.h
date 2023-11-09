@@ -108,6 +108,22 @@ namespace Mile
         DisableCopyConstruction& operator=(
             const DisableCopyConstruction&) = delete;
     };
+
+    /**
+     * @brief Disables C++ class move construction.
+    */
+    class DisableMoveConstruction
+    {
+    protected:
+        DisableMoveConstruction() = default;
+        ~DisableMoveConstruction() = default;
+
+    private:
+        DisableMoveConstruction(
+            const DisableMoveConstruction&&) = delete;
+        DisableMoveConstruction& operator=(
+            const DisableMoveConstruction&&) = delete;
+    };
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
