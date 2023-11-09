@@ -43,3 +43,4 @@
 - Add Mile::DisableMoveConstruction class.
 - Add Mile::ScopeExitTaskHandler template class.
 - Add Mile::SplitCommandLineWideString function.
+- Add Mile::SplitCommandLineString function.

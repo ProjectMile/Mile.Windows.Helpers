@@ -306,3 +306,9 @@ std::vector<std::wstring> Mile::SplitCommandLineWideString(
 {
     return ::SplitCommandLineStringCommon<std::wstring>(CommandLine);
 }
+
+std::vector<std::string> Mile::SplitCommandLineString(
+    std::string const& CommandLine)
+{
+    return ::SplitCommandLineStringCommon<std::string>(CommandLine);
+}
