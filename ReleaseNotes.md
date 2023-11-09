@@ -38,3 +38,4 @@
 - Add Mile::ToWideString function.
 - Add Mile::ToString function.
 - Add Mile::WinRT::ToHResultError function.
+- Add MileStartService function.

@@ -167,4 +167,27 @@ EXTERN_C HMODULE WINAPI MileLoadLibraryFromSystem32(
 */
 EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated();
 
+/**
+ * @brief Starts a service if not started and retrieves the current status of
+ *        the specified service.
+ * @param ServiceName The name of the service to be started. This is the name
+ *                    specified by the ServiceName parameter of the
+ *                    CreateService function when the service object was
+ *                    created, not the service display name that is shown by
+ *                    user interface applications to identify the service. The
+ *                    maximum string length is 256 characters. The service
+ *                    control manager database preserves the case of the
+ *                    characters, but service name comparisons are always case
+ *                    insensitive. Forward-slash (/) and backslash (\) are
+ *                    invalid service name characters.
+ * @param ServiceStatus A pointer to the process status information for a
+ *                      service.
+ * @return If the function succeeds, the return value is TRUE. If the function
+ *         fails, the return value is FALSE. To get extended error information,
+ *         call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileStartService(
+    _In_ LPCWSTR ServiceName,
+    _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
