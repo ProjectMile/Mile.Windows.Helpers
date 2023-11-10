@@ -286,4 +286,20 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
     _In_ DWORD OutputBufferSize,
     _Out_opt_ LPDWORD BytesReturned);
 
+/**
+ * @brief Retrieves file system attributes for a specified file or directory.
+ * @param FileHandle A handle to the file that contains the information to be
+ *                   retrieved. This handle should not be a pipe handle.
+ * @param FileAttributes The attributes of the specified file or directory. For
+ *                       a list of attribute values and their descriptions, see
+ *                       File Attribute Constants. If the function fails, the
+ *                       return value is INVALID_FILE_ATTRIBUTES.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileGetFileAttributesByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PDWORD FileAttributes);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

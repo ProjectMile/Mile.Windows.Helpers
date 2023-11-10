@@ -46,3 +46,4 @@
 - Add Mile::SplitCommandLineString function.
 - Add MileEnumerateFileByHandle function.
 - Add MileDeviceIoControl function.
+- Add MileGetFileAttributesByHandle function.

@@ -784,3 +784,22 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileGetFileAttributesByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PDWORD FileAttributes)
+{
+    FILE_BASIC_INFO BasicInfo;
+
+    BOOL Result = ::GetFileInformationByHandleEx(
+        FileHandle,
+        FILE_INFO_BY_HANDLE_CLASS::FileBasicInfo,
+        &BasicInfo,
+        sizeof(FILE_BASIC_INFO));
+
+    *FileAttributes = Result
+        ? BasicInfo.FileAttributes
+        : INVALID_FILE_ATTRIBUTES;
+
+    return Result;
+}
