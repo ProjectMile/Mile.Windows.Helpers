@@ -47,3 +47,4 @@
 - Add MileEnumerateFileByHandle function.
 - Add MileDeviceIoControl function.
 - Add MileGetFileAttributesByHandle function.
+- Add MileSetFileAttributesByHandle function.

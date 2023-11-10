@@ -302,4 +302,23 @@ EXTERN_C BOOL WINAPI MileGetFileAttributesByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PDWORD FileAttributes);
 
+/**
+ * @brief Sets the attributes for a file or directory.
+ * @param FileHandle A handle to the file for which to change information. This
+ *                   handle must be opened with the appropriate permissions for
+ *                   the requested change. This handle should not be a pipe
+ *                   handle.
+ * @param FileAttributes The file attributes to set for the file. This parameter
+ *                       can be one or more values, combined using the bitwise -
+ *                       OR operator. However, all other values override
+ *                       FILE_ATTRIBUTE_NORMAL. For more information, see the
+ *                       SetFileAttributes function.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileSetFileAttributesByHandle(
+    _In_ HANDLE FileHandle,
+    _In_ DWORD FileAttributes);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
