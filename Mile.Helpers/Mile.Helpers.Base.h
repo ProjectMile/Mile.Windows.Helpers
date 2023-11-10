@@ -190,4 +190,52 @@ EXTERN_C BOOL WINAPI MileStartService(
     _In_ LPCWSTR ServiceName,
     _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
 
+/**
+ * @brief The information about a found file or directory queried from the
+ *        file enumerator.
+*/
+typedef struct _MILE_FILE_ENUMERATE_INFORMATION
+{
+    FILETIME CreationTime;
+    FILETIME LastAccessTime;
+    FILETIME LastWriteTime;
+    FILETIME ChangeTime;
+    UINT64 FileSize;
+    UINT64 AllocationSize;
+    DWORD FileAttributes;
+    DWORD EaSize;
+    LARGE_INTEGER FileId;
+    WCHAR ShortName[16];
+    WCHAR FileName[256];
+} MILE_FILE_ENUMERATE_INFORMATION, *PMILE_FILE_ENUMERATE_INFORMATION;
+
+/**
+ * @brief The file enumerate callback type.
+ * @param Information The file enumerate information.
+ * @param Context The user context.
+ * @return If the return value is non-zero, the file enumerate will be
+ *         continued. If the return value is zero, the file enumerate
+ *         will be terminated.
+*/
+typedef BOOL(WINAPI* MILE_ENUMERATE_FILE_CALLBACK_TYPE)(
+    _In_ PMILE_FILE_ENUMERATE_INFORMATION Information,
+    _In_opt_ LPVOID Context);
+
+/**
+ * @brief Enumerates files in a directory.
+ * @param FileHandle The handle of the file to be searched a directory for a
+ *                   file or subdirectory with a name. This handle must be
+ *                   opened with the appropriate permissions for the requested
+ *                   change. This handle should not be a pipe handle.
+ * @param Callback The file enumerate callback.
+ * @param Context The user context.
+ * @return If the function succeeds, the return value is TRUE. If the function
+ *         fails, the return value is FALSE. To get extended error information,
+ *         call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
+    _In_ HANDLE FileHandle,
+    _In_ MILE_ENUMERATE_FILE_CALLBACK_TYPE Callback,
+    _In_opt_ LPVOID Context);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
