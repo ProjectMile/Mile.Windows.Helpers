@@ -321,4 +321,17 @@ EXTERN_C BOOL WINAPI MileSetFileAttributesByHandle(
     _In_ HANDLE FileHandle,
     _In_ DWORD FileAttributes);
 
+/**
+ * @brief Retrieves hardlink count for a specified file.
+ * @param FileHandle A handle to the file that contains the information to be
+ *                   retrieved. This handle should not be a pipe handle.
+ * @param HardlinkCount The hardlink count for the file.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileGetFileHardlinkCountByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PDWORD HardlinkCount);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

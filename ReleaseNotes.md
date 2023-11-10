@@ -48,3 +48,4 @@
 - Add MileDeviceIoControl function.
 - Add MileGetFileAttributesByHandle function.
 - Add MileSetFileAttributesByHandle function.
+- Add MileGetFileHardlinkCountByHandle function.
