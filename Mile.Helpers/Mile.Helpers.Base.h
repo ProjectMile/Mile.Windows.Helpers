@@ -334,4 +334,16 @@ EXTERN_C BOOL WINAPI MileGetFileHardlinkCountByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PDWORD HardlinkCount);
 
+/**
+ * @brief Deletes an existing file.
+ * @param FileHandle The handle of the file to be deleted. This handle must be
+ *                   opened with the appropriate permissions for the requested
+ *                   change. This handle should not be a pipe handle.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileDeleteFileByHandle(
+    _In_ HANDLE FileHandle);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

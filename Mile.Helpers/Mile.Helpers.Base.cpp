@@ -846,3 +846,26 @@ EXTERN_C BOOL WINAPI MileGetFileHardlinkCountByHandle(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileDeleteFileByHandle(
+    _In_ HANDLE FileHandle)
+{
+    FILE_DISPOSITION_INFO DispostionInfo;
+    DispostionInfo.DeleteFile = TRUE;
+    if (::SetFileInformationByHandle(
+        FileHandle,
+        FILE_INFO_BY_HANDLE_CLASS::FileDispositionInfo,
+        &DispostionInfo,
+        sizeof(FILE_DISPOSITION_INFO)))
+    {
+        return TRUE;
+    }
+
+    FILE_DISPOSITION_INFO_EX DispostionInfoEx;
+    DispostionInfoEx.Flags = FILE_DISPOSITION_FLAG_DELETE;
+    return ::SetFileInformationByHandle(
+        FileHandle,
+        FILE_INFO_BY_HANDLE_CLASS::FileDispositionInfoEx,
+        &DispostionInfoEx,
+        sizeof(FILE_DISPOSITION_INFO_EX));
+}
