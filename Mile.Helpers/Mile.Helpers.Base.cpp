@@ -869,3 +869,35 @@ EXTERN_C BOOL WINAPI MileDeleteFileByHandle(
         &DispostionInfoEx,
         sizeof(FILE_DISPOSITION_INFO_EX));
 }
+
+EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttributeByHandle(
+    _In_ HANDLE FileHandle)
+{
+    BOOL Result = FALSE;
+
+    DWORD OldAttribute = 0;
+    // Save old attributes.
+    if (::MileGetFileAttributesByHandle(FileHandle, &OldAttribute))
+    {
+        // Get hardlink count.
+        DWORD HardlinkCount = 0;
+        if (::MileGetFileHardlinkCountByHandle(FileHandle, &HardlinkCount))
+        {
+            // Remove readonly attribute.
+            if (::MileSetFileAttributesByHandle(
+                FileHandle,
+                OldAttribute & (-1 ^ FILE_ATTRIBUTE_READONLY)))
+            {
+                // Delete the file.
+                Result = ::MileDeleteFileByHandle(FileHandle);
+                if (!Result || HardlinkCount > 1)
+                {
+                    // Restore attributes if failed or had another hard links.
+                    ::MileSetFileAttributesByHandle(FileHandle, OldAttribute);
+                }
+            }
+        }
+    }
+
+    return Result;
+}

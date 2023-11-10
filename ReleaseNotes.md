@@ -50,3 +50,4 @@
 - Add MileSetFileAttributesByHandle function.
 - Add MileGetFileHardlinkCountByHandle function.
 - Add MileDeleteFileByHandle function.
+- Add MileDeleteFileIgnoreReadonlyAttributeByHandle function.
