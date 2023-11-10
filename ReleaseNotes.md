@@ -45,3 +45,4 @@
 - Add Mile::SplitCommandLineWideString function.
 - Add Mile::SplitCommandLineString function.
 - Add MileEnumerateFileByHandle function.
+- Add MileDeviceIoControl function.

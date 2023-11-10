@@ -238,4 +238,52 @@ EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
     _In_ MILE_ENUMERATE_FILE_CALLBACK_TYPE Callback,
     _In_opt_ LPVOID Context);
 
+/**
+ * @brief Sends a control code directly to a specified device driver, causing
+ *        the corresponding device to perform the corresponding operation.
+ * @param DeviceHandle A handle to the device on which the operation is to be
+ *                     performed. The device is typically a volume, directory,
+ *                     file, or stream. To retrieve a device handle, use the
+ *                     CreateFile function.
+ * @param IoControlCode The control code for the operation. This value
+ *                      identifies the specific operation to be performed
+ *                      and the type of device on which to perform it.
+ * @param InputBuffer A pointer to the input buffer that contains the data
+ *                    required to perform the operation. The format of this data
+ *                    depends on the value of the IoControlCode parameter. This
+ *                    parameter can be nullptr if IoControlCode specifies an
+ *                    operation that does not require input data.
+ * @param InputBufferSize The size of the input buffer, in bytes.
+ * @param OutputBuffer A pointer to the output buffer that is to receive the
+ *                     data returned by the operation. The format of this data
+ *                     depends on the value of the IoControlCode parameter.
+ *                     This parameter can be nullptr if IoControlCode specifies
+ *                     an operation that does not return data.
+ * @param OutputBufferSize The size of the output buffer, in bytes.
+ * @param BytesReturned A pointer to a variable that receives the size of the
+ *                      data stored in the output buffer, in bytes. If the
+ *                      output buffer is too small to receive any data, the call
+ *                      fails, GetLastError returns ERROR_INSUFFICIENT_BUFFER,
+ *                      and BytesReturned is zero. If the output buffer is too
+ *                      small to hold all of the data but can hold some entries,
+ *                      some drivers will return as much data as fits. In this
+ *                      case, the call fails, GetLastError returns
+ *                      ERROR_MORE_DATA, and BytesReturned indicates the amount
+ *                      of data received. Your application should call
+ *                      DeviceIoControl again with the same operation,
+ *                      specifying a new starting point.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+ * @remark For more information, see DeviceIoControl.
+*/
+EXTERN_C BOOL WINAPI MileDeviceIoControl(
+    _In_ HANDLE DeviceHandle,
+    _In_ DWORD IoControlCode,
+    _In_opt_ LPVOID InputBuffer,
+    _In_ DWORD InputBufferSize,
+    _Out_opt_ LPVOID OutputBuffer,
+    _In_ DWORD OutputBufferSize,
+    _Out_opt_ LPDWORD BytesReturned);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

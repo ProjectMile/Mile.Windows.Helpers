@@ -730,3 +730,57 @@ EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
 
     return (::GetLastError() == ERROR_NO_MORE_FILES);
 }
+
+EXTERN_C BOOL WINAPI MileDeviceIoControl(
+    _In_ HANDLE DeviceHandle,
+    _In_ DWORD IoControlCode,
+    _In_opt_ LPVOID InputBuffer,
+    _In_ DWORD InputBufferSize,
+    _Out_opt_ LPVOID OutputBuffer,
+    _In_ DWORD OutputBufferSize,
+    _Out_opt_ LPDWORD BytesReturned)
+{
+    BOOL Result = FALSE;
+    OVERLAPPED Overlapped = { 0 };
+    Overlapped.hEvent = ::CreateEventW(
+        nullptr,
+        TRUE,
+        FALSE,
+        nullptr);
+    if (Overlapped.hEvent)
+    {
+        Result = ::DeviceIoControl(
+            DeviceHandle,
+            IoControlCode,
+            InputBuffer,
+            InputBufferSize,
+            OutputBuffer,
+            OutputBufferSize,
+            BytesReturned,
+            &Overlapped);
+        if (!Result)
+        {
+            if (::GetLastError() == ERROR_IO_PENDING)
+            {
+                DWORD NumberOfBytesTransferred = 0;
+                Result = ::GetOverlappedResult(
+                    DeviceHandle,
+                    &Overlapped,
+                    &NumberOfBytesTransferred,
+                    TRUE);
+                if (BytesReturned)
+                {
+                    *BytesReturned = NumberOfBytesTransferred;
+                }
+            }
+        }
+
+        ::CloseHandle(Overlapped.hEvent);
+    }
+    else
+    {
+        ::SetLastError(ERROR_NO_SYSTEM_RESOURCES);
+    }
+
+    return Result;
+}
