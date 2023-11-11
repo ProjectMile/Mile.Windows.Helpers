@@ -1007,3 +1007,52 @@ EXTERN_C BOOL WINAPI MileReadFile(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileWriteFile(
+    _In_ HANDLE FileHandle,
+    _In_opt_ LPCVOID Buffer,
+    _In_ DWORD NumberOfBytesToWrite,
+    _Out_opt_ LPDWORD NumberOfBytesWritten)
+{
+    BOOL Result = FALSE;
+    DWORD NumberOfBytesTransferred = 0;
+    OVERLAPPED Overlapped = { 0 };
+    Overlapped.hEvent = ::CreateEventW(
+        nullptr,
+        TRUE,
+        FALSE,
+        nullptr);
+    if (Overlapped.hEvent)
+    {
+        Result = ::WriteFile(
+            FileHandle,
+            Buffer,
+            NumberOfBytesToWrite,
+            &NumberOfBytesTransferred,
+            &Overlapped);
+        if (!Result)
+        {
+            if (ERROR_IO_PENDING == ::GetLastError())
+            {
+                Result = ::GetOverlappedResult(
+                    FileHandle,
+                    &Overlapped,
+                    &NumberOfBytesTransferred,
+                    TRUE);
+            }
+        }
+
+        ::CloseHandle(Overlapped.hEvent);
+    }
+    else
+    {
+        ::SetLastError(ERROR_NO_SYSTEM_RESOURCES);
+    }
+
+    if (NumberOfBytesWritten)
+    {
+        *NumberOfBytesWritten = NumberOfBytesTransferred;
+    }
+
+    return Result;
+}

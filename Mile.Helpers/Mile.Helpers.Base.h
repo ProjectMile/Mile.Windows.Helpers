@@ -429,4 +429,31 @@ EXTERN_C BOOL WINAPI MileReadFile(
     _In_ DWORD NumberOfBytesToRead,
     _Out_opt_ LPDWORD NumberOfBytesRead);
 
+/**
+ * @brief Writes data to the specified file or input/output (I/O) device. This
+ *        function is adapted for both synchronous and asynchronous operation.
+ * @param FileHandle A handle to the file or I/O device (for example, a file,
+ *                   file stream, physical disk, volume, console buffer, tape
+ *                   drive, socket, communications resource, mailslot, or pipe).
+ *                   The FileHandle parameter must have been created with the
+ *                   write access.
+ * @param Buffer A pointer to the buffer containing the data to be written to
+ *               the file or device.
+ * @param NumberOfBytesToWrite The number of bytes to be written to the file or
+ *                             device. A value of zero specifies a null write
+ *                             operation. The behavior of a null write operation
+ *                             depends on the underlying file system or
+ *                             communications technology.
+ * @param NumberOfBytesWritten A pointer to the variable that receives the
+ *                             number of bytes written.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileWriteFile(
+    _In_ HANDLE FileHandle,
+    _In_opt_ LPCVOID Buffer,
+    _In_ DWORD NumberOfBytesToWrite,
+    _Out_opt_ LPDWORD NumberOfBytesWritten);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
