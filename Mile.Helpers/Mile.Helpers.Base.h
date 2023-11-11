@@ -358,4 +358,18 @@ EXTERN_C BOOL WINAPI MileDeleteFileByHandle(
 EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttributeByHandle(
     _In_ HANDLE FileHandle);
 
+/**
+ * @brief Retrieves the size of the specified file.
+ * @param FileHandle A handle to the file that contains the information to be
+ *                   retrieved. This handle should not be a pipe handle.
+ * @param FileSize A pointer to a ULONGLONG value that receives the file size,
+ *                 in bytes.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileGetFileSizeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PULONGLONG FileSize);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

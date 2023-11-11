@@ -898,3 +898,22 @@ EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttributeByHandle(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileGetFileSizeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PULONGLONG FileSize)
+{
+    FILE_STANDARD_INFO StandardInfo;
+
+    BOOL Result = ::GetFileInformationByHandleEx(
+        FileHandle,
+        FILE_INFO_BY_HANDLE_CLASS::FileStandardInfo,
+        &StandardInfo,
+        sizeof(FILE_STANDARD_INFO));
+
+    *FileSize = Result
+        ? static_cast<ULONGLONG>(StandardInfo.EndOfFile.QuadPart)
+        : 0;
+
+    return Result;
+}
