@@ -181,8 +181,8 @@ namespace Mile
      * @param CommandLine A string that contains the full command line. If this
      *                    parameter is an empty string the function returns an
      *                    array with only one empty string.
-     * @return An array of the command line arguments, along with a count of such
-     *         arguments.
+     * @return An array of the command line arguments, along with a count of
+     *         such arguments.
     */
     std::vector<std::wstring> SplitCommandLineWideString(
         std::wstring const& CommandLine);
@@ -194,8 +194,8 @@ namespace Mile
      * @param CommandLine A string that contains the full command line. If this
      *                    parameter is an empty string the function returns an
      *                    array with only one empty string.
-     * @return An array of the command line arguments, along with a count of such
-     *         arguments.
+     * @return An array of the command line arguments, along with a count of
+     *         such arguments.
     */
     std::vector<std::string> SplitCommandLineString(
         std::string const& CommandLine);
