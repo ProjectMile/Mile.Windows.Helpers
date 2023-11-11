@@ -529,7 +529,7 @@ EXTERN_C BOOL WINAPI MileStartService(
                         SERVICE_START_PENDING
                         == ServiceStatus->dwCurrentState)
                     {
-                        ULONGLONG nCurrentTick = ::GetTickCount();
+                        ULONGLONG nCurrentTick = ::GetTickCount64();
 
                         if (!nLastTick)
                         {
