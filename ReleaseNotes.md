@@ -53,3 +53,4 @@
 - Add MileDeleteFileIgnoreReadonlyAttributeByHandle function.
 - Add MileGetFileSizeByHandle function.
 - Add MileGetFileAllocationSizeByHandle function.
+- Add MileGetCompressedFileSizeByHandle function.

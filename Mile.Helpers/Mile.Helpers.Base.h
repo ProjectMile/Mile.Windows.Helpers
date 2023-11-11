@@ -386,4 +386,23 @@ EXTERN_C BOOL WINAPI MileGetFileAllocationSizeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PULONGLONG AllocationSize);
 
+/**
+ * @brief Retrieves the actual number of bytes of disk storage used to store a
+ *        specified file. If the file is located on a volume that supports
+ *        compression and the file is compressed, the value obtained is the
+ *        compressed size of the specified file. If the file is located on a
+ *        volume that supports sparse files and the file is a sparse file, the
+ *        value obtained is the sparse size of the specified file.
+ * @param FileHandle A handle to the file that contains the information to be
+ *                   retrieved. This handle should not be a pipe handle.
+ * @param CompressedFileSize A pointer to a ULONGLONG value that receives the
+ *                           compressed file size, in bytes.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileGetCompressedFileSizeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PULONGLONG CompressedFileSize);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

@@ -936,3 +936,24 @@ EXTERN_C BOOL WINAPI MileGetFileAllocationSizeByHandle(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileGetCompressedFileSizeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PULONGLONG CompressedFileSize)
+{
+    FILE_COMPRESSION_INFO FileCompressionInfo;
+
+    if (::GetFileInformationByHandleEx(
+        FileHandle,
+        FILE_INFO_BY_HANDLE_CLASS::FileCompressionInfo,
+        &FileCompressionInfo,
+        sizeof(FILE_COMPRESSION_INFO)))
+    {
+        *CompressedFileSize = static_cast<ULONGLONG>(
+            FileCompressionInfo.CompressedFileSize.QuadPart);
+
+        return TRUE;
+    }
+
+    return ::MileGetFileSizeByHandle(FileHandle, CompressedFileSize);
+}
