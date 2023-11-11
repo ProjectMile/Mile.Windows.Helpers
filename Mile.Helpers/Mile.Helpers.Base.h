@@ -372,4 +372,18 @@ EXTERN_C BOOL WINAPI MileGetFileSizeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PULONGLONG FileSize);
 
+/**
+ * @brief Retrieves the amount of space that is allocated for the file.
+ * @param FileHandle A handle to the file that contains the information to be
+ *                   retrieved. This handle should not be a pipe handle.
+ * @param AllocationSize A pointer to a ULONGLONG value that receives the amount
+ *                       of space that is allocated for the file, in bytes.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileGetFileAllocationSizeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PULONGLONG AllocationSize);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

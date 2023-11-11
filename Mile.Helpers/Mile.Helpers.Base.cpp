@@ -917,3 +917,22 @@ EXTERN_C BOOL WINAPI MileGetFileSizeByHandle(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileGetFileAllocationSizeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PULONGLONG AllocationSize)
+{
+    FILE_STANDARD_INFO StandardInfo;
+
+    BOOL Result = ::GetFileInformationByHandleEx(
+        FileHandle,
+        FILE_INFO_BY_HANDLE_CLASS::FileStandardInfo,
+        &StandardInfo,
+        sizeof(FILE_STANDARD_INFO));
+
+    *AllocationSize = Result
+        ? static_cast<ULONGLONG>(StandardInfo.AllocationSize.QuadPart)
+        : 0;
+
+    return Result;
+}
