@@ -765,8 +765,8 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
                     &Overlapped,
                     &NumberOfBytesTransferred,
                     TRUE);
-                }
             }
+        }
 
         ::CloseHandle(Overlapped.hEvent);
     }
@@ -1203,4 +1203,42 @@ EXTERN_C BOOL WINAPI MileRemoveWofFileCompressionAttributeByHandle(
     }
 
     return Result;
+}
+
+EXTERN_C BOOL WINAPI MileLoadResource(
+    _Out_ PMILE_RESOURCE_INFO ResourceInfo,
+    _In_opt_ HMODULE ModuleHandle,
+    _In_ LPCWSTR Type,
+    _In_ LPCWSTR Name,
+    _In_ WORD Language)
+{
+    if (!ResourceInfo)
+    {
+        ::SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    std::memset(ResourceInfo, 0, sizeof(MILE_RESOURCE_INFO));
+
+    HRSRC ResourceFind = ::FindResourceExW(ModuleHandle, Type, Name, Language);
+    if (!ResourceFind)
+    {
+        return FALSE;
+    }
+
+    ResourceInfo->Size = ::SizeofResource(ModuleHandle, ResourceFind);
+    if (ResourceInfo->Size == 0)
+    {
+        return FALSE;
+    }
+
+    HGLOBAL ResourceLoad = ::LoadResource(ModuleHandle, ResourceFind);
+    if (!ResourceLoad)
+    {
+        return FALSE;
+    }
+
+    ResourceInfo->Pointer = ::LockResource(ResourceLoad);
+
+    return TRUE;
 }

@@ -588,4 +588,40 @@ EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
 EXTERN_C BOOL WINAPI MileRemoveWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle);
 
+typedef struct _MILE_RESOURCE_INFO
+{
+    DWORD Size;
+    LPVOID Pointer;
+} MILE_RESOURCE_INFO, * PMILE_RESOURCE_INFO;
+
+/**
+ * @brief Obtain the best matching resource with the specified type and name in
+ *        the specified module.
+ * @param ResourceInfo The resource info which contains the pointer and size.
+ * @param ModuleHandle A handle to the module whose portable executable file or
+ *                     an accompanying MUI file contains the resource. If this
+ *                     parameter is nullptr, the function searches the module
+ *                     used to create the current process.
+ * @param Type The resource type. Alternately, rather than a pointer, this
+ *             parameter can be MAKEINTRESOURCE(ID), where ID is the integer
+ *             identifier of the given resource type.
+ * @param Name The name of the resource. Alternately, rather than a pointer,
+ *             this parameter can be MAKEINTRESOURCE(ID), where ID is the
+ *             integer identifier of the resource.
+ * @param Language The language of the resource. If this parameter is
+ *                 MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), the current
+ *                 language associated with the calling thread is used. To
+ *                 specify a language other than the current language, use
+ *                 the MAKELANGID macro to create this parameter.
+ * @return If the function succeeds, the return value is TRUE. If the function
+ *         fails, the return value is FALSE. To get extended error information,
+ *         call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileLoadResource(
+    _Out_ PMILE_RESOURCE_INFO ResourceInfo,
+    _In_opt_ HMODULE ModuleHandle,
+    _In_ LPCWSTR Type,
+    _In_ LPCWSTR Name,
+    _In_ WORD Language);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
