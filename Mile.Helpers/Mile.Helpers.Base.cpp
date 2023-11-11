@@ -1103,3 +1103,44 @@ EXTERN_C BOOL WINAPI MileSetNtfsCompressionAttributeByHandle(
         0,
         &BytesReturned);
 }
+
+namespace
+{
+    typedef struct _WOF_FILE_PROVIDER_EXTERNAL_INFO
+    {
+        WOF_EXTERNAL_INFO Wof;
+        FILE_PROVIDER_EXTERNAL_INFO FileProvider;
+    } WOF_FILE_PROVIDER_EXTERNAL_INFO, * PWOF_FILE_PROVIDER_EXTERNAL_INFO;
+}
+
+EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PDWORD CompressionAlgorithm)
+{
+    if (!CompressionAlgorithm)
+    {
+        ::SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = { 0 };
+    DWORD BytesReturned = 0;
+    BOOL Result = ::MileDeviceIoControl(
+        FileHandle,
+        FSCTL_GET_EXTERNAL_BACKING,
+        nullptr,
+        0,
+        &WofInfo,
+        sizeof(WofInfo),
+        &BytesReturned);
+    if (Result)
+    {
+        if (WofInfo.Wof.Version == WOF_CURRENT_VERSION &&
+            WofInfo.Wof.Provider == WOF_PROVIDER_FILE)
+        {
+            *CompressionAlgorithm = WofInfo.FileProvider.Algorithm;
+        }
+    }
+
+    return Result;
+}
