@@ -958,3 +958,52 @@ EXTERN_C BOOL WINAPI MileGetCompressedFileSizeByHandle(
 
     return ::MileGetFileSizeByHandle(FileHandle, CompressedFileSize);
 }
+
+EXTERN_C BOOL WINAPI MileReadFile(
+    _In_ HANDLE FileHandle,
+    _Out_opt_ LPVOID Buffer,
+    _In_ DWORD NumberOfBytesToRead,
+    _Out_opt_ LPDWORD NumberOfBytesRead)
+{
+    BOOL Result = FALSE;
+    DWORD NumberOfBytesTransferred = 0;
+    OVERLAPPED Overlapped = { 0 };
+    Overlapped.hEvent = ::CreateEventW(
+        nullptr,
+        TRUE,
+        FALSE,
+        nullptr);
+    if (Overlapped.hEvent)
+    {
+        Result = ::ReadFile(
+            FileHandle,
+            Buffer,
+            NumberOfBytesToRead,
+            &NumberOfBytesTransferred,
+            &Overlapped);
+        if (!Result)
+        {
+            if (ERROR_IO_PENDING == ::GetLastError())
+            {
+                Result = ::GetOverlappedResult(
+                    FileHandle,
+                    &Overlapped,
+                    &NumberOfBytesTransferred,
+                    TRUE);
+            }
+        }
+
+        ::CloseHandle(Overlapped.hEvent);
+    }
+    else
+    {
+        ::SetLastError(ERROR_NO_SYSTEM_RESOURCES);
+    }
+
+    if (NumberOfBytesRead)
+    {
+        *NumberOfBytesRead = NumberOfBytesTransferred;
+    }
+
+    return Result;
+}

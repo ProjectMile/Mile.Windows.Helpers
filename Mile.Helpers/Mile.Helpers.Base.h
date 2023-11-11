@@ -405,4 +405,28 @@ EXTERN_C BOOL WINAPI MileGetCompressedFileSizeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PULONGLONG CompressedFileSize);
 
+/**
+ * @brief Reads data from the specified file or input/output (I/O) device. Reads
+ *        occur at the position specified by the file pointer if supported by
+ *        the device. This function is adapted for both synchronous and
+ *        asynchronous operation.
+ * @param FileHandle A handle to the device (for example, a file, file stream,
+ *                   physical disk, volume, console buffer, tape drive, socket,
+ *                   communications resource, mailslot, or pipe). The FileHandle
+ *                   parameter must have been created with read access
+ * @param Buffer A pointer to the buffer that receives the data read from a file
+ *               or device.
+ * @param NumberOfBytesToRead The maximum number of bytes to be read.
+ * @param NumberOfBytesRead A pointer to the variable that receives the number
+ *                          of bytes read.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileReadFile(
+    _In_ HANDLE FileHandle,
+    _Out_opt_ LPVOID Buffer,
+    _In_ DWORD NumberOfBytesToRead,
+    _Out_opt_ LPDWORD NumberOfBytesRead);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
