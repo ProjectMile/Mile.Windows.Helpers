@@ -1056,3 +1056,24 @@ EXTERN_C BOOL WINAPI MileWriteFile(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileGetNtfsCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle,
+    _Out_ PUSHORT CompressionAlgorithm)
+{
+    if (!CompressionAlgorithm)
+    {
+        ::SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    DWORD BytesReturned = 0;
+    return ::MileDeviceIoControl(
+        FileHandle,
+        FSCTL_GET_COMPRESSION,
+        nullptr,
+        0,
+        CompressionAlgorithm,
+        sizeof(*CompressionAlgorithm),
+        &BytesReturned);
+}

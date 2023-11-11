@@ -58,3 +58,4 @@
 - Add Mile::EnumerateFileByHandle template function.
 - Add MileReadFile function.
 - Add MileWriteFile function.
+- Add MileGetNtfsCompressionAttributeByHandle function.
