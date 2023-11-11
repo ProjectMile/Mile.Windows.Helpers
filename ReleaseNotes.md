@@ -55,3 +55,4 @@
 - Add MileGetFileAllocationSizeByHandle function.
 - Add MileGetCompressedFileSizeByHandle function.
 - Add Mile::CreateThread template function.
+- Add Mile::EnumerateFileByHandle template function.

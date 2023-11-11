@@ -243,6 +243,53 @@ namespace Mile
             dwCreationFlags,
             lpThreadId);
     }
+
+    /**
+     * @brief Enumerates files in a directory.
+     * @tparam CallbackType The callback type.
+     * @param FileHandle The handle of the file to be searched a directory for
+     *                   a file or subdirectory with a name. This handle must
+     *                   be opened with the appropriate permissions for the
+     *                   requested change. This handle should not be a pipe
+     *                   handle.
+     * @param CallbackFunction The file enumerate callback function.
+     * @return An HResult object containing the error code.
+    */
+    template<class CallbackType>
+    BOOL EnumerateFileByHandle(
+        _In_ HANDLE FileHandle,
+        _In_ CallbackType&& CallbackFunction)
+    {
+        BOOL Result = FALSE;
+
+        CallbackType* CallbackObject = new CallbackType(
+            std::move(CallbackFunction));
+        if (CallbackObject)
+        {
+            auto FileEnumerateCallback = [](
+                _In_ PMILE_FILE_ENUMERATE_INFORMATION Information,
+                _In_opt_ LPVOID Context) -> BOOL
+            {
+                auto Callback = reinterpret_cast<CallbackType*>(Context);
+                BOOL Result = (*Callback)(Information);
+
+                return Result;
+            };
+
+            Result = ::MileEnumerateFileByHandle(
+                FileHandle,
+                FileEnumerateCallback,
+                reinterpret_cast<LPVOID>(CallbackObject));
+
+            delete CallbackObject;
+        }
+        else
+        {
+            ::SetLastError(ERROR_OUTOFMEMORY);
+        }
+
+        return Result;
+    }
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
