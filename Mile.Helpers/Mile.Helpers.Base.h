@@ -588,11 +588,14 @@ EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
 EXTERN_C BOOL WINAPI MileRemoveWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle);
 
+/**
+ * @brief The resource info struct.
+*/
 typedef struct _MILE_RESOURCE_INFO
 {
     DWORD Size;
     LPVOID Pointer;
-} MILE_RESOURCE_INFO, * PMILE_RESOURCE_INFO;
+} MILE_RESOURCE_INFO, *PMILE_RESOURCE_INFO;
 
 /**
  * @brief Obtain the best matching resource with the specified type and name in
