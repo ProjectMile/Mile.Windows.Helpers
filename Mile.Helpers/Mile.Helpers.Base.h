@@ -576,4 +576,16 @@ EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _In_ DWORD CompressionAlgorithm);
 
+/**
+ * @brief Removes the Windows Overlay Filter file compression attribute.
+ * @param FileHandle A handle to the file on which the operation is to be
+ *                   performed. To retrieve a handle, use the CreateFile
+ *                   or a similar API.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileRemoveWofFileCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

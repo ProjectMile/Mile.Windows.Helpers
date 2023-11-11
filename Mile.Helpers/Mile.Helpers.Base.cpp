@@ -1184,3 +1184,23 @@ EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileRemoveWofFileCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle)
+{
+    DWORD BytesReturned = 0;
+    BOOL Result = ::MileDeviceIoControl(
+        FileHandle,
+        FSCTL_DELETE_EXTERNAL_BACKING,
+        nullptr,
+        0,
+        nullptr,
+        0,
+        &BytesReturned);
+    if (ERROR_OBJECT_NOT_EXTERNALLY_BACKED == ::GetLastError())
+    {
+        Result = TRUE;
+    }
+
+    return Result;
+}
