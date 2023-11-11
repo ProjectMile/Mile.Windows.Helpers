@@ -199,6 +199,50 @@ namespace Mile
     */
     std::vector<std::string> SplitCommandLineString(
         std::string const& CommandLine);
+
+    /**
+     * @brief Creates a thread to execute within the virtual address space of
+     *        the calling process.
+     * @tparam FuncType The function type.
+     * @param StartFunction The start function.
+     * @param lpThreadAttributes A pointer to a SECURITY_ATTRIBUTES structure
+     *                           that determines whether the returned handle
+     *                           can be inherited by child processes.
+     * @param dwStackSize The initial size of the stack, in bytes.
+     * @param dwCreationFlags The flags that control the creation of the
+     *                        thread.
+     * @param lpThreadId A pointer to a variable that receives the thread
+     *                   identifier.
+     * @return If the function succeeds, the return value is a handle to the
+     *         new thread. If the function fails, the return value is nullptr.
+     *         To get extended error information, call GetLastError.
+     * @remark For more information, see CreateThread.
+    */
+    template<class FuncType>
+    HANDLE CreateThread(
+        _In_ FuncType&& StartFunction,
+        _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes = nullptr,
+        _In_ SIZE_T dwStackSize = 0,
+        _In_ DWORD dwCreationFlags = 0,
+        _Out_opt_ LPDWORD lpThreadId = nullptr)
+    {
+        auto ThreadFunctionInternal = [](LPVOID lpThreadParameter) -> DWORD
+        {
+            auto function = reinterpret_cast<FuncType*>(
+                lpThreadParameter);
+            (*function)();
+            delete function;
+            return 0;
+        };
+
+        return ::MileCreateThread(
+            lpThreadAttributes,
+            dwStackSize,
+            ThreadFunctionInternal,
+            reinterpret_cast<LPVOID>(new FuncType(std::move(StartFunction))),
+            dwCreationFlags,
+            lpThreadId);
+    }
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
