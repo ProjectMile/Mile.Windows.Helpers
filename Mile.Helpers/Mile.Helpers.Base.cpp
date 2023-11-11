@@ -725,7 +725,7 @@ EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
         }
     }
 
-    return (::GetLastError() == ERROR_NO_MORE_FILES);
+    return (ERROR_NO_MORE_FILES == ::GetLastError());
 }
 
 EXTERN_C BOOL WINAPI MileDeviceIoControl(
