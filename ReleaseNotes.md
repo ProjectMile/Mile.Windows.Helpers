@@ -61,3 +61,4 @@
 - Add MileGetNtfsCompressionAttributeByHandle function.
 - Add MileSetNtfsCompressionAttributeByHandle function.
 - Add MileGetWofFileCompressionAttributeByHandle function.
+- Add MileSetWofFileCompressionAttributeByHandle function.

@@ -540,4 +540,40 @@ EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PDWORD CompressionAlgorithm);
 
+/**
+ * @brief Sets the Windows Overlay Filter file compression attribute.
+ * @param FileHandle A handle to the file on which the operation is to be
+ *                   performed. To retrieve a handle, use the CreateFile
+ *                   or a similar API.
+ * @param CompressionAlgorithm Specifies the compression algorithm that is
+ *                             used to compress this file. Currently defined
+ *                             algorithms are:
+ *                             FILE_PROVIDER_COMPRESSION_XPRESS4K
+ *                                 Indicates that the data for the file should
+ *                                 be compressed in 4kb chunks with the XPress
+ *                                 algorithm. This algorithm is designed to be
+ *                                 computationally lightweight, and provides
+ *                                 for rapid access to data.
+ *                             FILE_PROVIDER_COMPRESSION_LZX
+ *                                 Indicates that the data for the file should
+ *                                 be compressed in 32kb chunks with the LZX
+ *                                 algorithm. This algorithm is designed to be
+ *                                 highly compact, and provides for small
+ *                                 footprint for infrequently accessed data.
+ *                             FILE_PROVIDER_COMPRESSION_XPRESS8K
+ *                                 Indicates that the data for the file should
+ *                                 be compressed in 8kb chunks with the XPress
+ *                                 algorithm.
+ *                             FILE_PROVIDER_COMPRESSION_XPRESS16K
+ *                                 Indicates that the data for the file should
+ *                                 be compressed in 16kb chunks with the XPress
+ *                                 algorithm.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle,
+    _In_ DWORD CompressionAlgorithm);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

@@ -1144,3 +1144,43 @@ EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle,
+    _In_ DWORD CompressionAlgorithm)
+{
+    switch (CompressionAlgorithm)
+    {
+    case FILE_PROVIDER_COMPRESSION_XPRESS4K:
+    case FILE_PROVIDER_COMPRESSION_LZX:
+    case FILE_PROVIDER_COMPRESSION_XPRESS8K:
+    case FILE_PROVIDER_COMPRESSION_XPRESS16K:
+        break;
+    default:
+        ::SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = { 0 };
+    WofInfo.Wof.Version = WOF_CURRENT_VERSION;
+    WofInfo.Wof.Provider = WOF_PROVIDER_FILE;
+    WofInfo.FileProvider.Version = FILE_PROVIDER_CURRENT_VERSION;
+    WofInfo.FileProvider.Flags = 0;
+    WofInfo.FileProvider.Algorithm = CompressionAlgorithm;
+    DWORD BytesReturned = 0;
+    BOOL Result = ::MileDeviceIoControl(
+        FileHandle,
+        FSCTL_SET_EXTERNAL_BACKING,
+        &WofInfo,
+        sizeof(WofInfo),
+        nullptr,
+        0,
+        &BytesReturned);
+    if (ERROR_COMPRESSION_NOT_BENEFICIAL == ::GetLastError() ||
+        ERROR_MR_MID_NOT_FOUND == ::GetLastError())
+    {
+        Result = TRUE;
+    }
+
+    return Result;
+}
