@@ -738,6 +738,7 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
     _Out_opt_ LPDWORD BytesReturned)
 {
     BOOL Result = FALSE;
+    DWORD NumberOfBytesTransferred = 0;
     OVERLAPPED Overlapped = { 0 };
     Overlapped.hEvent = ::CreateEventW(
         nullptr,
@@ -753,30 +754,30 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
             InputBufferSize,
             OutputBuffer,
             OutputBufferSize,
-            BytesReturned,
+            &NumberOfBytesTransferred,
             &Overlapped);
         if (!Result)
         {
-            if (::GetLastError() == ERROR_IO_PENDING)
+            if (ERROR_IO_PENDING == ::GetLastError())
             {
-                DWORD NumberOfBytesTransferred = 0;
                 Result = ::GetOverlappedResult(
                     DeviceHandle,
                     &Overlapped,
                     &NumberOfBytesTransferred,
                     TRUE);
-                if (BytesReturned)
-                {
-                    *BytesReturned = NumberOfBytesTransferred;
                 }
             }
-        }
 
         ::CloseHandle(Overlapped.hEvent);
     }
     else
     {
         ::SetLastError(ERROR_NO_SYSTEM_RESOURCES);
+    }
+
+    if (BytesReturned)
+    {
+        *BytesReturned = NumberOfBytesTransferred;
     }
 
     return Result;
