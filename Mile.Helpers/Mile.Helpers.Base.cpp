@@ -1077,3 +1077,29 @@ EXTERN_C BOOL WINAPI MileGetNtfsCompressionAttributeByHandle(
         sizeof(*CompressionAlgorithm),
         &BytesReturned);
 }
+
+EXTERN_C BOOL WINAPI MileSetNtfsCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle,
+    _In_ USHORT CompressionAlgorithm)
+{
+    switch (CompressionAlgorithm)
+    {
+    case COMPRESSION_FORMAT_NONE:
+    case COMPRESSION_FORMAT_DEFAULT:
+    case COMPRESSION_FORMAT_LZNT1:
+        break;
+    default:
+        ::SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    DWORD BytesReturned = 0;
+    return ::MileDeviceIoControl(
+        FileHandle,
+        FSCTL_SET_COMPRESSION,
+        &CompressionAlgorithm,
+        sizeof(CompressionAlgorithm),
+        nullptr,
+        0,
+        &BytesReturned);
+}

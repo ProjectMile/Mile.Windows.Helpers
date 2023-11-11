@@ -480,4 +480,28 @@ EXTERN_C BOOL WINAPI MileGetNtfsCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PUSHORT CompressionAlgorithm);
 
+/**
+ * @brief Sets the NTFS compression attribute.
+ * @param FileHandle A handle to the file or directory on which the
+ *                   operation is to be performed. To retrieve a handle,
+ *                   use the CreateFile or a similar API.
+ * @param CompressionAlgorithm Specifies the compression algorithm that is
+ *                             used to compress this file. Currently defined
+ *                             algorithms are:
+ *                             COMPRESSION_FORMAT_NONE
+ *                                 Uncompress the file or directory.
+ *                             COMPRESSION_FORMAT_DEFAULT
+ *                                 Compress the file or directory, using the
+ *                                 default compression format.
+ *                             COMPRESSION_FORMAT_LZNT1
+ *                                 Compress the file or directory, using the
+ *                                 LZNT1 compression format.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileSetNtfsCompressionAttributeByHandle(
+    _In_ HANDLE FileHandle,
+    _In_ USHORT CompressionAlgorithm);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

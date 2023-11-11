@@ -59,3 +59,4 @@
 - Add MileReadFile function.
 - Add MileWriteFile function.
 - Add MileGetNtfsCompressionAttributeByHandle function.
+- Add MileSetNtfsCompressionAttributeByHandle function.
