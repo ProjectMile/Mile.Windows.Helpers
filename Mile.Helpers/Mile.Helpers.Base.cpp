@@ -17,6 +17,8 @@
 #include <assert.h>
 #include <process.h>
 
+#include <string>
+
 EXTERN_C LPVOID WINAPI MileAllocateMemory(
     _In_ SIZE_T Size)
 {
@@ -1241,4 +1243,23 @@ EXTERN_C BOOL WINAPI MileLoadResource(
     ResourceInfo->Pointer = ::LockResource(ResourceLoad);
 
     return TRUE;
+}
+
+HANDLE MileCreateFile(
+    _In_ LPCWSTR FileName,
+    _In_ DWORD DesiredAccess,
+    _In_ DWORD ShareMode,
+    _In_opt_ LPSECURITY_ATTRIBUTES SecurityAttributes,
+    _In_ DWORD CreationDisposition,
+    _In_ DWORD FlagsAndAttributes,
+    _In_opt_ HANDLE TemplateFile)
+{
+    return ::CreateFileW(
+        Mile::FormatWideString(L"\\\\?\\%s", FileName).c_str(),
+        DesiredAccess,
+        ShareMode,
+        SecurityAttributes,
+        CreationDisposition,
+        FlagsAndAttributes,
+        TemplateFile);
 }

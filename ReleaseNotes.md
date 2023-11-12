@@ -64,3 +64,4 @@
 - Add MileSetWofFileCompressionAttributeByHandle function.
 - Add MileRemoveWofFileCompressionAttributeByHandle function.
 - Add MileLoadResource function.
+- Add MileCreateFile function.

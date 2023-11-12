@@ -627,4 +627,47 @@ EXTERN_C BOOL WINAPI MileLoadResource(
     _In_ LPCWSTR Name,
     _In_ WORD Language);
 
+/**
+ * @brief Creates or opens a file, directory or drive with long path support.
+ *        The function returns a handle that can be used to access the file,
+ *        directory or drive depending on the flags and attributes specified.
+ * @param FileName The name of the file or device to be created or opened. You
+ *                 may use either forward slashes (/) or backslashes (\\) in
+ *                 this name.
+ * @param DesiredAccess The requested access to the file or device, which can
+ *                      be summarized as read, write, both or neither zero).
+ * @param ShareMode The requested sharing mode of the file or device, which can
+ *                  be read, write, both, delete, all of these, or none (refer
+ *                  to the following table). Access requests to attributes or
+ *                  extended attributes are not affected by this flag.
+ * @param SecurityAttributes A pointer to a SECURITY_ATTRIBUTES structure that
+ *                           contains two separate but related data members: an
+ *                           optional security descriptor, and a Boolean value
+ *                           that determines whether the returned handle can be
+ *                           inherited by child processes. This parameter can be
+ *                           nullptr.
+ * @param CreationDisposition An action to take on a file or device that exists
+ *                            or does not exist.
+ * @param FlagsAndAttributes The file or device attributes and flags,
+ *                           FILE_ATTRIBUTE_NORMAL being the most common default
+ *                           value for files.
+ * @param TemplateFile A valid handle to a template file with the GENERIC_READ
+ *                     access right. The template file supplies file attributes
+ *                     and extended attributes for the file that is being
+ *                     created. This parameter can be nullptr.
+ * @return If the function succeeds, the return value is an open handle to the
+ *         specified file, directory or drive. If the function fails, the return
+ *         value is INVALID_HANDLE_VALUE. To get extended error information,
+ *         call GetLastError.
+ * @remark For more information, see CreateFileW.
+*/
+HANDLE MileCreateFile(
+    _In_ LPCWSTR FileName,
+    _In_ DWORD DesiredAccess,
+    _In_ DWORD ShareMode,
+    _In_opt_ LPSECURITY_ATTRIBUTES SecurityAttributes,
+    _In_ DWORD CreationDisposition,
+    _In_ DWORD FlagsAndAttributes,
+    _In_opt_ HANDLE TemplateFile);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE
