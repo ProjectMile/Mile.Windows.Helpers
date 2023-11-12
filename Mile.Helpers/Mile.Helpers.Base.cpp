@@ -14,7 +14,9 @@
 
 #include <strsafe.h>
 
-#include <assert.h>
+#include <cassert>
+#include <cstring>
+
 #include <process.h>
 
 #include <string>
@@ -477,7 +479,7 @@ EXTERN_C BOOL WINAPI MileStartService(
 
     BOOL Result = FALSE;
 
-    ::memset(ServiceStatus, 0, sizeof(LPSERVICE_STATUS_PROCESS));
+    std::memset(ServiceStatus, 0, sizeof(LPSERVICE_STATUS_PROCESS));
 
     SC_HANDLE ServiceControlManagerHandle = ::OpenSCManagerW(
         nullptr,
