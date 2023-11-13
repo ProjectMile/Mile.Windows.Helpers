@@ -982,6 +982,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
     _Out_opt_ LPDWORD NumberOfBytesRead)
 {
     BOOL Result = FALSE;
+    DWORD Error = ERROR_SUCCESS;
     DWORD NumberOfBytesTransferred = 0;
     OVERLAPPED Overlapped = { 0 };
     Overlapped.hEvent = ::CreateEventW(
@@ -991,6 +992,23 @@ EXTERN_C BOOL WINAPI MileReadFile(
         nullptr);
     if (Overlapped.hEvent)
     {
+        bool FilePointerAvailable = false;
+        LARGE_INTEGER CurrentFilePointer = { 0 };
+        {
+            LARGE_INTEGER DistanceToMove = { 0 };
+            if (::SetFilePointerEx(
+                FileHandle,
+                DistanceToMove,
+                &CurrentFilePointer,
+                FILE_CURRENT))
+            {
+                FilePointerAvailable = true;
+
+                Overlapped.Offset = CurrentFilePointer.LowPart;
+                Overlapped.OffsetHigh = CurrentFilePointer.HighPart;
+            }
+        }
+
         Result = ::ReadFile(
             FileHandle,
             Buffer,
@@ -999,13 +1017,33 @@ EXTERN_C BOOL WINAPI MileReadFile(
             &Overlapped);
         if (!Result)
         {
-            if (ERROR_IO_PENDING == ::GetLastError())
+            Error = ::GetLastError();
+
+            if (ERROR_IO_PENDING == Error)
             {
                 Result = ::GetOverlappedResult(
                     FileHandle,
                     &Overlapped,
                     &NumberOfBytesTransferred,
                     TRUE);
+                if (!Result)
+                {
+                    Error = ::GetLastError();
+            }
+        }
+        }
+
+        if (Result && FilePointerAvailable)
+        {
+            CurrentFilePointer.QuadPart += NumberOfBytesTransferred;
+            Result = ::SetFilePointerEx(
+                FileHandle,
+                CurrentFilePointer,
+                nullptr,
+                FILE_BEGIN);
+            if (!Result)
+            {
+                Error = ::GetLastError();
             }
         }
 
@@ -1013,12 +1051,17 @@ EXTERN_C BOOL WINAPI MileReadFile(
     }
     else
     {
-        ::SetLastError(ERROR_NO_SYSTEM_RESOURCES);
+        Error = ERROR_NO_SYSTEM_RESOURCES;
     }
 
     if (NumberOfBytesRead)
     {
         *NumberOfBytesRead = NumberOfBytesTransferred;
+    }
+
+    if (!Result)
+    {
+        ::SetLastError(Error);
     }
 
     return Result;
