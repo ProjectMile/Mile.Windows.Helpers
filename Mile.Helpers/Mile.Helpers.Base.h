@@ -670,4 +670,15 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
     _In_ DWORD FlagsAndAttributes,
     _In_opt_ HANDLE TemplateFile);
 
+/**
+ * @brief Deletes an existing file, even the file have the readonly attribute.
+ * @param FileName The name of the file to be deleted. You may use either
+ *                 forward slashes (/) or backslashes (\\) in this name.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
+    _In_ LPCWSTR FileName);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

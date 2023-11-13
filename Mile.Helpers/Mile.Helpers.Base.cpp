@@ -1363,3 +1363,25 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
         FlagsAndAttributes,
         TemplateFile);
 }
+
+EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
+    _In_ LPCWSTR FileName)
+{
+    BOOL Result = FALSE;
+
+    HANDLE FileHandle = ::MileCreateFile(
+        FileName,
+        SYNCHRONIZE | DELETE | FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES,
+        FILE_SHARE_READ | FILE_SHARE_WRITE,
+        nullptr,
+        OPEN_EXISTING,
+        FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
+        nullptr);
+    if (INVALID_HANDLE_VALUE != FileHandle)
+    {
+        Result = ::MileDeleteFileIgnoreReadonlyAttributeByHandle(FileHandle);
+        ::CloseHandle(FileHandle);
+    }
+
+    return Result;
+}
