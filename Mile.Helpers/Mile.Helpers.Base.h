@@ -661,7 +661,7 @@ EXTERN_C BOOL WINAPI MileLoadResource(
  *         call GetLastError.
  * @remark For more information, see CreateFileW.
 */
-HANDLE MileCreateFile(
+EXTERN_C HANDLE WINAPI MileCreateFile(
     _In_ LPCWSTR FileName,
     _In_ DWORD DesiredAccess,
     _In_ DWORD ShareMode,
