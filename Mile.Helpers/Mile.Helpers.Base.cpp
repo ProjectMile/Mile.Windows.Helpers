@@ -1385,3 +1385,9 @@ EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileIsDotsName(
+    _In_ LPCWSTR Name)
+{
+    return Name[0] == L'.' && (!Name[1] || (Name[1] == L'.' && !Name[2]));
+}

@@ -681,4 +681,14 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
 EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
     _In_ LPCWSTR FileName);
 
+/**
+ * @brief Tests for the current directory and parent directory markers while
+ *        iterating through files.
+ * @param Name The name of the file or directory for testing.
+ * @return Nonzero if the found file has the name "." or "..", which indicates
+ *         that the found file is actually a directory. Otherwise zero.
+*/
+EXTERN_C BOOL WINAPI MileIsDotsName(
+    _In_ LPCWSTR Name);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

@@ -66,3 +66,4 @@
 - Add MileLoadResource function.
 - Add MileCreateFile function.
 - Add MileDeleteFileIgnoreReadonlyAttribute function.
+- Add MileIsDotsName function.
