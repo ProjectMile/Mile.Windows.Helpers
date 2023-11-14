@@ -691,4 +691,16 @@ EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
 EXTERN_C BOOL WINAPI MileIsDotsName(
     _In_ LPCWSTR Name);
 
+/**
+ * @brief Creates a new directory. If one or more of the intermediate
+ *        directories do not exist, it creates them.
+ * @param PathName The path of the directory to be created. You may use either
+ *                 forward slashes (/) or backslashes (\\) in this name.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call GetLastError.
+*/
+EXTERN_C BOOL WINAPI MileCreateDirectory(
+    _In_ LPCWSTR PathName);
+
 #endif // !MILE_WINDOWS_HELPERS_BASE

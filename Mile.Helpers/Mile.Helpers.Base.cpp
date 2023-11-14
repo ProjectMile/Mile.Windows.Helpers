@@ -1391,3 +1391,69 @@ EXTERN_C BOOL WINAPI MileIsDotsName(
 {
     return Name[0] == L'.' && (!Name[1] || (Name[1] == L'.' && !Name[2]));
 }
+
+EXTERN_C BOOL WINAPI MileCreateDirectory(
+    _In_ LPCWSTR PathName)
+{
+    BOOL Result = FALSE;
+    DWORD LastError = ERROR_SUCCESS;
+
+    const SIZE_T MaximumBufferLength = 32768;
+
+    SIZE_T PathNameLength = 0;
+    if (S_OK == ::StringCchLengthW(
+        PathName,
+        MaximumBufferLength,
+        &PathNameLength))
+    {
+        LPWSTR Buffer = reinterpret_cast<LPWSTR>(::MileAllocateMemory(
+            (PathNameLength + 1) * sizeof(WCHAR)));
+        if (Buffer)
+        {
+            for (SIZE_T i = 0; i < PathNameLength + 1; ++i)
+            {
+                if (PathName[i] != L'\\' &&
+                    PathName[i] != L'/' &&
+                    PathName[i] != L'\0')
+                {
+                    Buffer[i] = PathName[i];
+                }
+                else
+                {
+                    Result = ::CreateDirectoryW(Buffer, nullptr);
+                    if (!Result)
+                    {
+                        LastError = ::GetLastError();
+                        if (ERROR_ALREADY_EXISTS == LastError)
+                        {
+                            Result = TRUE;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    Buffer[i] = (PathName[i] == L'/') ? L'\\' : PathName[i];
+                }
+            }
+
+            ::MileFreeMemory(Buffer);
+        }
+        else
+        {
+            LastError = ERROR_OUTOFMEMORY;
+        }
+    }
+    else
+    {
+        LastError = ERROR_INVALID_PARAMETER;
+    }
+
+    if (!Result)
+    {
+        ::SetLastError(LastError);
+    }
+
+    return Result;
+}
