@@ -1354,14 +1354,78 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
     _In_ DWORD FlagsAndAttributes,
     _In_opt_ HANDLE TemplateFile)
 {
-    return ::CreateFileW(
-        Mile::FormatWideString(L"\\\\?\\%s", FileName).c_str(),
+    HANDLE FileHandle = INVALID_HANDLE_VALUE;
+    DWORD LastError = ERROR_SUCCESS;
+
+    const WCHAR Prefix[] = L"\\\\?\\";
+    const SIZE_T PrefixLength = (sizeof(Prefix) / sizeof(WCHAR)) - 1;
+    const SIZE_T MaximumPathLength = 32767;
+    const SIZE_T MaximumBufferLength = MaximumPathLength - PrefixLength + 1;
+
+    SIZE_T FileNameLength = 0;
+    if (S_OK == ::StringCchLengthW(
+        FileName,
+        MaximumBufferLength,
+        &FileNameLength))
+    {
+        SIZE_T FileNameBufferLength = PrefixLength + FileNameLength + 1;
+        LPWSTR FileNameBuffer = reinterpret_cast<LPWSTR>(
+            ::MileAllocateMemory(FileNameBufferLength * sizeof(WCHAR)));
+        if (FileNameBuffer)
+        {
+            if (S_OK == ::StringCchCopyNW(
+                FileNameBuffer,
+                FileNameBufferLength,
+                Prefix,
+                PrefixLength))
+            {
+                if (S_OK == ::StringCchCatNW(
+                    FileNameBuffer,
+                    FileNameBufferLength,
+                    FileName,
+                    FileNameLength))
+                {
+                    FileHandle = ::CreateFileW(
+                        FileNameBuffer,
         DesiredAccess,
         ShareMode,
         SecurityAttributes,
         CreationDisposition,
         FlagsAndAttributes,
         TemplateFile);
+                    if (INVALID_HANDLE_VALUE == FileHandle)
+                    {
+                        LastError = ::GetLastError();
+                    }
+                }
+                else
+                {
+                    LastError = ERROR_INVALID_PARAMETER;
+                }
+            }
+            else
+            {
+                LastError = ERROR_INVALID_PARAMETER;
+            }
+
+            ::MileFreeMemory(FileNameBuffer);
+        }
+        else
+        {
+            LastError = ERROR_OUTOFMEMORY;
+        }
+    }
+    else
+    {
+        LastError = ERROR_INVALID_PARAMETER;
+    }
+
+    if (INVALID_HANDLE_VALUE == FileHandle)
+    {
+        ::SetLastError(LastError);
+    }
+
+    return FileHandle;
 }
 
 EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
