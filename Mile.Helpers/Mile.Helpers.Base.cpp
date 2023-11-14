@@ -982,7 +982,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
     _Out_opt_ LPDWORD NumberOfBytesRead)
 {
     BOOL Result = FALSE;
-    DWORD Error = ERROR_SUCCESS;
+    DWORD LastError = ERROR_SUCCESS;
     DWORD NumberOfBytesTransferred = 0;
     OVERLAPPED Overlapped = { 0 };
     Overlapped.hEvent = ::CreateEventW(
@@ -1017,9 +1017,9 @@ EXTERN_C BOOL WINAPI MileReadFile(
             &Overlapped);
         if (!Result)
         {
-            Error = ::GetLastError();
+            LastError = ::GetLastError();
 
-            if (ERROR_IO_PENDING == Error)
+            if (ERROR_IO_PENDING == LastError)
             {
                 Result = ::GetOverlappedResult(
                     FileHandle,
@@ -1028,7 +1028,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
                     TRUE);
                 if (!Result)
                 {
-                    Error = ::GetLastError();
+                    LastError = ::GetLastError();
                 }
             }
         }
@@ -1043,7 +1043,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
                 FILE_BEGIN);
             if (!Result)
             {
-                Error = ::GetLastError();
+                LastError = ::GetLastError();
             }
         }
 
@@ -1051,7 +1051,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
     }
     else
     {
-        Error = ERROR_NO_SYSTEM_RESOURCES;
+        LastError = ERROR_NO_SYSTEM_RESOURCES;
     }
 
     if (NumberOfBytesRead)
@@ -1061,7 +1061,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
 
     if (!Result)
     {
-        ::SetLastError(Error);
+        ::SetLastError(LastError);
     }
 
     return Result;
