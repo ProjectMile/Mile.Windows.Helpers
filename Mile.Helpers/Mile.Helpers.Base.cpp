@@ -10,16 +10,12 @@
 
 #include "Mile.Helpers.Base.h"
 
-#include "Mile.Helpers.CppBase.h"
-
 #include <strsafe.h>
 
 #include <cassert>
 #include <cstring>
 
 #include <process.h>
-
-#include <string>
 
 EXTERN_C LPVOID WINAPI MileAllocateMemory(
     _In_ SIZE_T Size)
@@ -581,155 +577,133 @@ EXTERN_C BOOL WINAPI MileStartService(
     return Result;
 }
 
-namespace
-{
-    static void FillFileEnumerateInformation(
-        _In_ PFILE_ID_BOTH_DIR_INFO OriginalInformation,
-        _Out_ PMILE_FILE_ENUMERATE_INFORMATION ConvertedInformation)
-    {
-        ConvertedInformation->CreationTime.dwLowDateTime =
-            OriginalInformation->CreationTime.LowPart;
-        ConvertedInformation->CreationTime.dwHighDateTime =
-            OriginalInformation->CreationTime.HighPart;
-
-        ConvertedInformation->LastAccessTime.dwLowDateTime =
-            OriginalInformation->LastAccessTime.LowPart;
-        ConvertedInformation->LastAccessTime.dwHighDateTime =
-            OriginalInformation->LastAccessTime.HighPart;
-
-        ConvertedInformation->LastWriteTime.dwLowDateTime =
-            OriginalInformation->LastWriteTime.LowPart;
-        ConvertedInformation->LastWriteTime.dwHighDateTime =
-            OriginalInformation->LastWriteTime.HighPart;
-
-        ConvertedInformation->ChangeTime.dwLowDateTime =
-            OriginalInformation->ChangeTime.LowPart;
-        ConvertedInformation->ChangeTime.dwHighDateTime =
-            OriginalInformation->ChangeTime.HighPart;
-
-        ConvertedInformation->FileSize =
-            OriginalInformation->EndOfFile.QuadPart;
-
-        ConvertedInformation->AllocationSize =
-            OriginalInformation->AllocationSize.QuadPart;
-
-        ConvertedInformation->FileAttributes =
-            OriginalInformation->FileAttributes;
-
-        ConvertedInformation->EaSize =
-            OriginalInformation->EaSize;
-
-        ConvertedInformation->FileId =
-            OriginalInformation->FileId;
-
-        ::StringCbCopyNW(
-            ConvertedInformation->ShortName,
-            sizeof(ConvertedInformation->ShortName),
-            OriginalInformation->ShortName,
-            OriginalInformation->ShortNameLength);
-
-        ::StringCbCopyNW(
-            ConvertedInformation->FileName,
-            sizeof(ConvertedInformation->FileName),
-            OriginalInformation->FileName,
-            OriginalInformation->FileNameLength);
-    }
-}
-
 EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
     _In_ HANDLE FileHandle,
     _In_ MILE_ENUMERATE_FILE_CALLBACK_TYPE Callback,
     _In_opt_ LPVOID Context)
 {
-    if (!FileHandle || FileHandle == INVALID_HANDLE_VALUE || !Callback)
-    {
-        ::SetLastError(ERROR_INVALID_PARAMETER);
-        return FALSE;
-    }
+    BOOL Result = FALSE;
+    DWORD LastError = ERROR_SUCCESS;
 
-    const SIZE_T BufferSize = 32768;
-    PBYTE Buffer = nullptr;
-    PFILE_ID_BOTH_DIR_INFO OriginalInformation = nullptr;
-    MILE_FILE_ENUMERATE_INFORMATION ConvertedInformation = { 0 };
-
-    auto ExitHandler = Mile::ScopeExitTaskHandler([&]()
+    if (FileHandle && FileHandle != INVALID_HANDLE_VALUE && Callback)
     {
+        const SIZE_T BufferSize = 32768;
+        PBYTE Buffer = reinterpret_cast<PBYTE>(
+            ::MileAllocateMemory(BufferSize));
         if (Buffer)
         {
+            PFILE_ID_BOTH_DIR_INFO OriginalInformation =
+                reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(Buffer);
+            if (::GetFileInformationByHandleEx(
+                FileHandle,
+                FILE_INFO_BY_HANDLE_CLASS::FileIdBothDirectoryRestartInfo,
+                OriginalInformation,
+                BufferSize))
+            {
+                MILE_FILE_ENUMERATE_INFORMATION ConvertedInformation = { 0 };
+
+                for (;;)
+                {
+                    ConvertedInformation.CreationTime.dwLowDateTime =
+                        OriginalInformation->CreationTime.LowPart;
+                    ConvertedInformation.CreationTime.dwHighDateTime =
+                        OriginalInformation->CreationTime.HighPart;
+
+                    ConvertedInformation.LastAccessTime.dwLowDateTime =
+                        OriginalInformation->LastAccessTime.LowPart;
+                    ConvertedInformation.LastAccessTime.dwHighDateTime =
+                        OriginalInformation->LastAccessTime.HighPart;
+
+                    ConvertedInformation.LastWriteTime.dwLowDateTime =
+                        OriginalInformation->LastWriteTime.LowPart;
+                    ConvertedInformation.LastWriteTime.dwHighDateTime =
+                        OriginalInformation->LastWriteTime.HighPart;
+
+                    ConvertedInformation.ChangeTime.dwLowDateTime =
+                        OriginalInformation->ChangeTime.LowPart;
+                    ConvertedInformation.ChangeTime.dwHighDateTime =
+                        OriginalInformation->ChangeTime.HighPart;
+
+                    ConvertedInformation.FileSize =
+                        OriginalInformation->EndOfFile.QuadPart;
+
+                    ConvertedInformation.AllocationSize =
+                        OriginalInformation->AllocationSize.QuadPart;
+
+                    ConvertedInformation.FileAttributes =
+                        OriginalInformation->FileAttributes;
+
+                    ConvertedInformation.EaSize =
+                        OriginalInformation->EaSize;
+
+                    ConvertedInformation.FileId =
+                        OriginalInformation->FileId;
+
+                    ::StringCbCopyNW(
+                        ConvertedInformation.ShortName,
+                        sizeof(ConvertedInformation.ShortName),
+                        OriginalInformation->ShortName,
+                        OriginalInformation->ShortNameLength);
+
+                    ::StringCbCopyNW(
+                        ConvertedInformation.FileName,
+                        sizeof(ConvertedInformation.FileName),
+                        OriginalInformation->FileName,
+                        OriginalInformation->FileNameLength);
+
+                    if (!Callback(&ConvertedInformation, Context))
+                    {
+                        Result = TRUE;
+                        break;
+                    }
+
+                    if (OriginalInformation->NextEntryOffset)
+                    {
+                        OriginalInformation =
+                            reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(
+                                reinterpret_cast<ULONG_PTR>(OriginalInformation)
+                                + OriginalInformation->NextEntryOffset);
+                    }
+                    else
+                    {
+                        OriginalInformation =
+                            reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(Buffer);
+                        if (!::GetFileInformationByHandleEx(
+                            FileHandle,
+                            FILE_INFO_BY_HANDLE_CLASS::FileIdBothDirectoryInfo,
+                            OriginalInformation,
+                            BufferSize))
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (!Result)
+                {
+                    LastError = ::GetLastError();
+                    Result = (ERROR_NO_MORE_FILES == LastError);
+                }
+            }
+
             ::MileFreeMemory(Buffer);
         }
-    });
-
-    Buffer = reinterpret_cast<PBYTE>(::MileAllocateMemory(BufferSize));
-    if (!Buffer)
-    {
-        ::SetLastError(ERROR_OUTOFMEMORY);
-        return FALSE;
-    }
-
-    OriginalInformation = reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(Buffer);
-
-    if (::GetFileInformationByHandleEx(
-        FileHandle,
-        FILE_INFO_BY_HANDLE_CLASS::FileIdBothDirectoryRestartInfo,
-        OriginalInformation,
-        BufferSize))
-    {
-        for (;;)
+        else
         {
-            ::FillFileEnumerateInformation(
-                OriginalInformation,
-                &ConvertedInformation);
-
-            if (!Callback(&ConvertedInformation, Context))
-            {
-                return TRUE;
-            }
-
-            if (!OriginalInformation->NextEntryOffset)
-            {
-                OriginalInformation =
-                    reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(Buffer);
-                break;
-            }
-
-            OriginalInformation = reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(
-                reinterpret_cast<ULONG_PTR>(OriginalInformation)
-                + OriginalInformation->NextEntryOffset);
-        }
-
-        while (::GetFileInformationByHandleEx(
-            FileHandle,
-            FILE_INFO_BY_HANDLE_CLASS::FileIdBothDirectoryInfo,
-            OriginalInformation,
-            BufferSize))
-        {
-            for (;;)
-            {
-                ::FillFileEnumerateInformation(
-                    OriginalInformation,
-                    &ConvertedInformation);
-
-                if (!Callback(&ConvertedInformation, Context))
-                {
-                    return TRUE;
-                }
-
-                if (!OriginalInformation->NextEntryOffset)
-                {
-                    OriginalInformation =
-                        reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(Buffer);
-                    break;
-                }
-
-                OriginalInformation = reinterpret_cast<PFILE_ID_BOTH_DIR_INFO>(
-                    reinterpret_cast<ULONG_PTR>(OriginalInformation)
-                    + OriginalInformation->NextEntryOffset);
-            }
+            LastError = ERROR_OUTOFMEMORY;
         }
     }
+    else
+    {
+        LastError = ERROR_INVALID_PARAMETER;
+    }
 
-    return (ERROR_NO_MORE_FILES == ::GetLastError());
+    if (!Result)
+    {
+        ::SetLastError(LastError);
+    }
+
+    return Result;
 }
 
 EXTERN_C BOOL WINAPI MileDeviceIoControl(
@@ -1387,12 +1361,12 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
                 {
                     FileHandle = ::CreateFileW(
                         FileNameBuffer,
-        DesiredAccess,
-        ShareMode,
-        SecurityAttributes,
-        CreationDisposition,
-        FlagsAndAttributes,
-        TemplateFile);
+                        DesiredAccess,
+                        ShareMode,
+                        SecurityAttributes,
+                        CreationDisposition,
+                        FlagsAndAttributes,
+                        TemplateFile);
                     if (INVALID_HANDLE_VALUE == FileHandle)
                     {
                         LastError = ::GetLastError();
