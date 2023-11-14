@@ -1331,20 +1331,22 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
     HANDLE FileHandle = INVALID_HANDLE_VALUE;
     DWORD LastError = ERROR_SUCCESS;
 
-    const WCHAR Prefix[] = L"\\\\?\\";
-    const SIZE_T PrefixLength = (sizeof(Prefix) / sizeof(WCHAR)) - 1;
-    const SIZE_T MaximumPathLength = 32767;
-    const SIZE_T MaximumBufferLength = MaximumPathLength - PrefixLength + 1;
+    const wchar_t Prefix[] = L"\\\\?\\";
+    const std::size_t PrefixLength =
+        (sizeof(Prefix) / sizeof(wchar_t)) - 1;
+    const std::size_t MaximumPathLength = 32767;
+    const std::size_t MaximumBufferLength =
+        MaximumPathLength - PrefixLength + 1;
 
-    SIZE_T FileNameLength = 0;
+    std::size_t FileNameLength = 0;
     if (S_OK == ::StringCchLengthW(
         FileName,
         MaximumBufferLength,
         &FileNameLength))
     {
-        SIZE_T FileNameBufferLength = PrefixLength + FileNameLength + 1;
-        LPWSTR FileNameBuffer = reinterpret_cast<LPWSTR>(
-            ::MileAllocateMemory(FileNameBufferLength * sizeof(WCHAR)));
+        std::size_t FileNameBufferLength = PrefixLength + FileNameLength + 1;
+        wchar_t* FileNameBuffer = reinterpret_cast<wchar_t*>(
+            ::MileAllocateMemory(FileNameBufferLength * sizeof(wchar_t)));
         if (FileNameBuffer)
         {
             if (S_OK == ::StringCchCopyNW(
