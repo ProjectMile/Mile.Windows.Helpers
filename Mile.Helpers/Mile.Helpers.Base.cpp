@@ -1438,19 +1438,19 @@ EXTERN_C BOOL WINAPI MileCreateDirectory(
     BOOL Result = FALSE;
     DWORD LastError = ERROR_SUCCESS;
 
-    const SIZE_T MaximumBufferLength = 32768;
+    const std::size_t MaximumBufferLength = 32768;
 
-    SIZE_T PathNameLength = 0;
+    std::size_t PathNameLength = 0;
     if (S_OK == ::StringCchLengthW(
         PathName,
         MaximumBufferLength,
         &PathNameLength))
     {
-        LPWSTR Buffer = reinterpret_cast<LPWSTR>(::MileAllocateMemory(
-            (PathNameLength + 1) * sizeof(WCHAR)));
+        wchar_t* Buffer = reinterpret_cast<wchar_t*>(::MileAllocateMemory(
+            (PathNameLength + 1) * sizeof(wchar_t)));
         if (Buffer)
         {
-            for (SIZE_T i = 0; i < PathNameLength + 1; ++i)
+            for (std::size_t i = 0; i < PathNameLength + 1; ++i)
             {
                 if (PathName[i] != L'\\' &&
                     PathName[i] != L'/' &&
