@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
   PROJECT:   Mouri Internal Library Essentials
   FILE:      Mile.Windows.Helpers.nuspec
@@ -11,7 +11,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Mile.Windows.Helpers</id>
-    <version>1.0.27.0</version>
+    <version>1.0.534.0</version>
     <description>The essential helper functions for the Windows platform</description>
     <authors>Kenji Mouri</authors>
     <projectUrl>https://github.com/ProjectMile/Mile.Windows.Helpers</projectUrl>
@@ -31,12 +31,12 @@
     <file src="Mile.Helpers.CppWinRT.h" target="Source\Native" />
     <file src="Mile.Helpers.CppWinRT.cpp" target="Source\Native" />
 
-    <file src="Mile.Windows.Helpers.props" target="build\native"/>
-    <file src="Mile.Windows.Helpers.targets" target="build\native"/> 
+    <file src="Mile.Windows.Helpers.props" target="build\native" />
+    <file src="Mile.Windows.Helpers.targets" target="build\native" /> 
 
-    <file src="..\ReadMe.md" target="."/>
-    <file src="..\License.md" target="."/>
-    <file src="..\ReleaseNotes.md" target="."/>
+    <file src="..\ReadMe.md" target="." />
+    <file src="..\License.md" target="." />
+    <file src="..\ReleaseNotes.md" target="." />
 
   </files>
 </package>
