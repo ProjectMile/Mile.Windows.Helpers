@@ -313,3 +313,31 @@ std::vector<std::string> Mile::SplitCommandLineString(
 {
     return ::SplitCommandLineStringCommon<std::string>(CommandLine);
 }
+
+std::int32_t Mile::ToInt32(
+    std::string const& Source,
+    std::uint8_t const& Radix)
+{
+    return std::strtol(Source.c_str(), nullptr, Radix);
+}
+
+std::int64_t Mile::ToInt64(
+    std::string const& Source,
+    std::uint8_t const& Radix)
+{
+    return std::strtoll(Source.c_str(), nullptr, Radix);
+}
+
+std::uint32_t Mile::ToUInt32(
+    std::string const& Source,
+    std::uint8_t const& Radix)
+{
+    return std::strtoul(Source.c_str(), nullptr, Radix);
+}
+
+std::uint64_t Mile::ToUInt64(
+    std::string const& Source,
+    std::uint8_t const& Radix)
+{
+    return std::strtoull(Source.c_str(), nullptr, Radix);
+}

@@ -290,6 +290,50 @@ namespace Mile
 
         return Result;
     }
+
+    /**
+     * @brief Converts from the onebyte or multibyte string to the Int32 integer.
+     * @param Source The onebyte or multibyte string.
+     * @param Radix The number base to use.
+     * @return The converted Int32 integer value.
+     * @remark For more information, see strtol.
+     */
+    std::int32_t ToInt32(
+        std::string const& Source,
+        std::uint8_t const& Radix = 10);
+
+    /**
+     * @brief Converts from the onebyte or multibyte string to the Int64 integer.
+     * @param Source The onebyte or multibyte string.
+     * @param Radix The number base to use.
+     * @return The converted Int64 integer value.
+     * @remark For more information, see strtoll.
+     */
+    std::int64_t ToInt64(
+        std::string const& Source,
+        std::uint8_t const& Radix = 10);
+
+    /**
+     * @brief Converts from the onebyte or multibyte string to the UInt32 integer.
+     * @param Source The onebyte or multibyte string.
+     * @param Radix The number base to use.
+     * @return The converted UInt32 integer value.
+     * @remark For more information, see strtoul.
+     */
+    std::uint32_t ToUInt32(
+        std::string const& Source,
+        std::uint8_t const& Radix = 10);
+
+    /**
+     * @brief Converts from the onebyte or multibyte string to the UInt64 integer.
+     * @param Source The onebyte or multibyte string.
+     * @param Radix The number base to use.
+     * @return The converted UInt64 integer value.
+     * @remark For more information, see strtoull.
+     */
+    std::uint64_t ToUInt64(
+        std::string const& Source,
+        std::uint8_t const& Radix = 10);
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
