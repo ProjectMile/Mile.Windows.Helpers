@@ -91,6 +91,23 @@ namespace
 
         return CachedResult;
     }
+
+    static FARPROC GetUxThemeOrdinal133ProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetUxThemeModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    reinterpret_cast<LPCSTR>(133));
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
 }
 
 EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling()
@@ -292,4 +309,77 @@ EXTERN_C HRESULT WINAPI MileAllowNonClientDefaultDrawingForWindow(
         WTA_NONCLIENT,
         &Attribute,
         sizeof(WTA_OPTIONS));
+}
+
+EXTERN_C BOOL WINAPI MileAllowDarkModeForWindow(
+    _In_ HWND WindowHandle,
+    _In_ BOOL NewPolicy)
+{
+    if (::IsWindows10Version1809OrLater())
+    {
+        typedef BOOL(WINAPI* ProcType)(HWND, BOOL);
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetUxThemeOrdinal133ProcAddress());
+        if (ProcAddress)
+        {
+            return ProcAddress(WindowHandle, NewPolicy);
+        }
+    }
+
+    return false;
+}
+
+EXTERN_C BOOL WINAPI MileShouldAppsUseHighContrastMode()
+{
+    HIGHCONTRAST HighContrast;
+    if (::SystemParametersInfoW(
+        SPI_GETHIGHCONTRAST,
+        sizeof(HIGHCONTRASTW),
+        &HighContrast,
+        0))
+    {
+        return HighContrast.dwFlags & HCF_HIGHCONTRASTON;
+    }
+
+    return FALSE;
+}
+
+EXTERN_C BOOL WINAPI MileShouldAppsUseDarkMode()
+{
+    if (!::IsWindows10Version1809OrLater())
+    {
+        return FALSE;
+    }
+
+    BOOL Result = FALSE;
+
+    HKEY PersonalizeKeyHandle = nullptr;
+    if (ERROR_SUCCESS == ::RegOpenKeyExW(
+        HKEY_CURRENT_USER,
+        L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        0,
+        KEY_READ | KEY_WOW64_64KEY,
+        &PersonalizeKeyHandle))
+    {
+        DWORD Type = 0;
+        DWORD Data = FALSE;
+        DWORD Length = sizeof(DWORD);
+        if (ERROR_SUCCESS == ::RegQueryValueExW(
+            PersonalizeKeyHandle,
+            L"AppsUseLightTheme",
+            nullptr,
+            &Type,
+            reinterpret_cast<LPBYTE>(&Data),
+            &Length))
+        {
+            if (Type == REG_DWORD)
+            {
+                Result = !Data;
+            }
+        }
+
+        ::RegCloseKey(PersonalizeKeyHandle);
+    }
+
+    return Result;
 }

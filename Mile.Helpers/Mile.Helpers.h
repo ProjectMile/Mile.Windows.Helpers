@@ -395,4 +395,27 @@ EXTERN_C HRESULT WINAPI MileAllowNonClientDefaultDrawingForWindow(
     _In_ HWND WindowHandle,
     _In_ BOOL NewPolicy);
 
+/**
+ * @brief Specifies the policy for enabling or disabling dark mode for window.
+ * @param WindowHandle The handle to the window for for enabling or disabling
+ *                     dark mode.
+ * @param NewPolicy The policy for enabling or disabling dark mode for window.
+ * @return The previous policy for enabling or disabling dark mode for window.
+ */
+EXTERN_C BOOL WINAPI MileAllowDarkModeForWindow(
+    _In_ HWND WindowHandle,
+    _In_ BOOL NewPolicy);
+
+/**
+ * @brief Check policy for should use high contrast mode or not for app.
+ * @return The policy for should use high contrast mode or not for app.
+ */
+EXTERN_C BOOL WINAPI MileShouldAppsUseHighContrastMode();
+
+/**
+ * @brief Check policy for should use dark mode or not for app.
+ * @return The policy for should use dark mode or not for app.
+ */
+EXTERN_C BOOL WINAPI MileShouldAppsUseDarkMode();
+
 #endif // !MILE_WINDOWS_HELPERS

@@ -72,3 +72,6 @@
 - Add Mile::ToInt64 function.
 - Add Mile::ToUInt32 function.
 - Add Mile::ToUInt64 function.
+- Add MileAllowDarkModeForWindow function.
+- Add MileShouldAppsUseHighContrastMode function.
+- Add MileShouldAppsUseDarkMode function.
