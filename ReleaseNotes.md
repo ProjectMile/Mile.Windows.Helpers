@@ -1,6 +1,6 @@
 ﻿# Mile.Windows.Helpers Release Notes
 
-**Mile.Windows.Helpers 1.0 (1.0.27.0)**
+**Mile.Windows.Helpers 1.0 (1.0.534.0)**
 
 - Provide NuGet package.
 - Add MileIsWindowsVersionAtLeast function.
@@ -68,3 +68,7 @@
 - Add MileDeleteFileIgnoreReadonlyAttribute function.
 - Add MileIsDotsName function.
 - Add MileCreateDirectory function.
+- Add Mile::ToInt32 function.
+- Add Mile::ToInt64 function.
+- Add Mile::ToUInt32 function.
+- Add Mile::ToUInt64 function.
