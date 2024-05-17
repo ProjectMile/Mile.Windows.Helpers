@@ -418,4 +418,9 @@ EXTERN_C BOOL WINAPI MileShouldAppsUseHighContrastMode();
  */
 EXTERN_C BOOL WINAPI MileShouldAppsUseDarkMode();
 
+/**
+ * @brief Refresh the state for immersive color policy.
+ */
+EXTERN_C VOID WINAPI MileRefreshImmersiveColorPolicyState();
+
 #endif // !MILE_WINDOWS_HELPERS

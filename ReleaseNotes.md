@@ -75,3 +75,4 @@
 - Add MileAllowDarkModeForWindow function.
 - Add MileShouldAppsUseHighContrastMode function.
 - Add MileShouldAppsUseDarkMode function.
+- Add MileRefreshImmersiveColorPolicyState function.

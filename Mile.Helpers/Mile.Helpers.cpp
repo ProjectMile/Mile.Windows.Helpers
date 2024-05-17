@@ -108,6 +108,23 @@ namespace
 
         return CachedResult;
     }
+
+    static FARPROC GetUxThemeOrdinal104ProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetUxThemeModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    reinterpret_cast<LPCSTR>(104));
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
 }
 
 EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling()
@@ -385,4 +402,18 @@ EXTERN_C BOOL WINAPI MileShouldAppsUseDarkMode()
     }
 
     return Result;
+}
+
+EXTERN_C VOID WINAPI MileRefreshImmersiveColorPolicyState()
+{
+    if (::IsWindows10Version1809OrLater())
+    {
+        typedef VOID(WINAPI* ProcType)();
+        ProcType ProcAddress = reinterpret_cast<ProcType>(
+            ::GetUxThemeOrdinal104ProcAddress());
+        if (ProcAddress)
+        {
+            ProcAddress();
+        }
+    }
 }
