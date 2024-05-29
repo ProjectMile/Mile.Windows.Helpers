@@ -32,12 +32,6 @@
         <AdditionalProperties>Configuration=Release;Platform=x64</AdditionalProperties>   
       </ProjectReference>
       <ProjectReference Include="$(MSBuildThisFileDirectory)Mile.Helpers.sln">
-        <AdditionalProperties>Configuration=Debug;Platform=ARM</AdditionalProperties>   
-      </ProjectReference>
-      <ProjectReference Include="$(MSBuildThisFileDirectory)Mile.Helpers.sln">
-        <AdditionalProperties>Configuration=Release;Platform=ARM</AdditionalProperties>   
-      </ProjectReference>
-      <ProjectReference Include="$(MSBuildThisFileDirectory)Mile.Helpers.sln">
         <AdditionalProperties>Configuration=Debug;Platform=ARM64</AdditionalProperties>   
       </ProjectReference>
       <ProjectReference Include="$(MSBuildThisFileDirectory)Mile.Helpers.sln">
