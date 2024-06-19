@@ -1497,3 +1497,143 @@ EXTERN_C BOOL WINAPI MileCreateDirectory(
 
     return Result;
 }
+
+EXTERN_C BOOL WINAPI MileSocketRecv(
+    _In_ SOCKET SocketHandle,
+    _Out_opt_ LPVOID Buffer,
+    _In_ DWORD NumberOfBytesToRecv,
+    _Out_opt_ LPDWORD NumberOfBytesRecvd,
+    _Inout_ LPDWORD Flags)
+{
+    BOOL Result = FALSE;
+    int LastError = 0;
+    DWORD NumberOfBytesTransferred = 0;
+    OVERLAPPED Overlapped = { 0 };
+    Overlapped.hEvent = ::CreateEventW(
+        nullptr,
+        TRUE,
+        FALSE,
+        nullptr);
+    if (Overlapped.hEvent)
+    {
+        WSABUF WSABuffer;
+        WSABuffer.len = static_cast<ULONG>(NumberOfBytesToRecv);
+        WSABuffer.buf = const_cast<char*>(
+            reinterpret_cast<const char*>(Buffer));
+
+        Result = (SOCKET_ERROR != ::WSARecv(
+            SocketHandle,
+            &WSABuffer,
+            1,
+            &NumberOfBytesTransferred,
+            Flags,
+            &Overlapped,
+            nullptr));
+        if (!Result)
+        {
+            LastError = ::WSAGetLastError();
+
+            if (WSA_IO_PENDING == LastError)
+            {
+                Result = ::WSAGetOverlappedResult(
+                    SocketHandle,
+                    &Overlapped,
+                    &NumberOfBytesTransferred,
+                    TRUE,
+                    Flags);
+                if (!Result)
+                {
+                    LastError = ::WSAGetLastError();
+                }
+            }
+        }
+
+        ::CloseHandle(Overlapped.hEvent);
+    }
+    else
+    {
+        LastError = WSA_NOT_ENOUGH_MEMORY;
+    }
+
+    if (NumberOfBytesRecvd)
+    {
+        *NumberOfBytesRecvd = NumberOfBytesTransferred;
+    }
+
+    if (!Result)
+    {
+        ::WSASetLastError(LastError);
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL WINAPI MileSocketSend(
+    _In_ SOCKET SocketHandle,
+    _In_opt_ LPCVOID Buffer,
+    _In_ DWORD NumberOfBytesToSend,
+    _Out_opt_ LPDWORD NumberOfBytesSent,
+    _In_ DWORD Flags)
+{
+    BOOL Result = FALSE;
+    int LastError = 0;
+    DWORD NumberOfBytesTransferred = 0;
+    OVERLAPPED Overlapped = { 0 };
+    Overlapped.hEvent = ::CreateEventW(
+        nullptr,
+        TRUE,
+        FALSE,
+        nullptr);
+    if (Overlapped.hEvent)
+    {
+        WSABUF WSABuffer;
+        WSABuffer.len = static_cast<ULONG>(NumberOfBytesToSend);
+        WSABuffer.buf = const_cast<char*>(
+            reinterpret_cast<const char*>(Buffer));
+
+        Result = (SOCKET_ERROR != ::WSASend(
+            SocketHandle,
+            &WSABuffer,
+            1,
+            &NumberOfBytesTransferred,
+            Flags,
+            &Overlapped,
+            nullptr));
+        if (!Result)
+        {
+            LastError = ::WSAGetLastError();
+
+            if (WSA_IO_PENDING == LastError)
+            {
+                Result = ::WSAGetOverlappedResult(
+                    SocketHandle,
+                    &Overlapped,
+                    &NumberOfBytesTransferred,
+                    TRUE,
+                    &Flags);
+                if (!Result)
+                {
+                    LastError = ::WSAGetLastError();
+                }
+            }
+        }
+
+        ::CloseHandle(Overlapped.hEvent);
+    }
+    else
+    {
+        LastError = WSA_NOT_ENOUGH_MEMORY;
+    }
+
+    if (NumberOfBytesSent)
+    {
+        *NumberOfBytesSent = NumberOfBytesTransferred;
+    }
+
+    if (!Result)
+    {
+        ::WSASetLastError(LastError);
+    }
+
+    return Result;
+}

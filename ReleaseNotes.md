@@ -76,3 +76,5 @@
 - Add MileShouldAppsUseHighContrastMode function.
 - Add MileShouldAppsUseDarkMode function.
 - Add MileRefreshImmersiveColorPolicyState function.
+- Add MileSocketRecv function.
+- Add MileSocketSend function.

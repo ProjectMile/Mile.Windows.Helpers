@@ -13,7 +13,13 @@
 #ifndef MILE_WINDOWS_HELPERS_BASE
 #define MILE_WINDOWS_HELPERS_BASE
 
+/* Prevent inclusion of winsock.h in windows.h */
+#ifndef _WINSOCKAPI_
+#define _WINSOCKAPI_ 
+#endif // !_WINSOCKAPI_
+
 #include <Windows.h>
+#include <WinSock2.h>
 
 /**
  * @brief Allocates a block of memory from the default heap of the calling
@@ -702,5 +708,50 @@ EXTERN_C BOOL WINAPI MileIsDotsName(
 */
 EXTERN_C BOOL WINAPI MileCreateDirectory(
     _In_ LPCWSTR PathName);
+
+/**
+ * @brief Receives data from a connected socket or a bound connectionless
+ *        socket.
+ * @param SocketHandle A descriptor identifying a connected socket.
+ * @param Buffer A pointer to the buffer that receives the data read from a
+ *               connected socket or a bound connectionless socket.
+ * @param NumberOfBytesToRecv The maximum number of bytes to be received.
+ * @param NumberOfBytesRecvd A pointer to the number, in bytes, of data
+ *                           received by this call if the receive operation
+ *                           completes immediately.
+ * @param Flags A pointer to flags used to modify the behavior.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call WSAGetLastError. 
+ * @remark For more information, see WSARecv.
+ */
+EXTERN_C BOOL WINAPI MileSocketRecv(
+    _In_ SOCKET SocketHandle,
+    _Out_opt_ LPVOID Buffer,
+    _In_ DWORD NumberOfBytesToRecv,
+    _Out_opt_ LPDWORD NumberOfBytesRecvd,
+    _Inout_ LPDWORD Flags);
+
+/**
+ * @brief Sends data on a connected socket.
+ * @param SocketHandle A descriptor that identifies a connected socket.
+ * @param Buffer A pointer to the buffer containing the data to be sent to a
+ *               connected socket.
+ * @param NumberOfBytesToSend The number of bytes to be sent to a connected
+ *                            socket.
+ * @param NumberOfBytesSent A pointer to the number, in bytes, sent by this
+ *                          call if the I/O operation completes immediately.
+ * @param Flags A pointer to flags used to modify the behavior.
+ * @return If the function succeeds, the return value is nonzero. If the
+ *         function fails, the return value is zero. To get extended error
+ *         information, call WSAGetLastError. 
+ * @remark For more information, see WSASend.
+ */
+EXTERN_C BOOL WINAPI MileSocketSend(
+    _In_ SOCKET SocketHandle,
+    _In_opt_ LPCVOID Buffer,
+    _In_ DWORD NumberOfBytesToSend,
+    _Out_opt_ LPDWORD NumberOfBytesSent,
+    _In_ DWORD Flags);
 
 #endif // !MILE_WINDOWS_HELPERS_BASE
