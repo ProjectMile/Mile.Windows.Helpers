@@ -8,7 +8,14 @@
  * MAINTAINER: MouriNaruto (Kenji.Mouri@outlook.com)
  */
 
+/* Prevent inclusion of winsock.h in windows.h */
+#ifndef _WINSOCKAPI_
+#define _WINSOCKAPI_ 
+#endif // !_WINSOCKAPI_
+
 #include "Mile.Helpers.Base.h"
+
+#include <WinSock2.h>
 
 #include <strsafe.h>
 

@@ -13,13 +13,7 @@
 #ifndef MILE_WINDOWS_HELPERS_BASE
 #define MILE_WINDOWS_HELPERS_BASE
 
-/* Prevent inclusion of winsock.h in windows.h */
-#ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_ 
-#endif // !_WINSOCKAPI_
-
 #include <Windows.h>
-#include <WinSock2.h>
 
 /**
  * @brief Allocates a block of memory from the default heap of the calling
@@ -709,6 +703,8 @@ EXTERN_C BOOL WINAPI MileIsDotsName(
 EXTERN_C BOOL WINAPI MileCreateDirectory(
     _In_ LPCWSTR PathName);
 
+#ifdef _WINSOCK2API_
+
 /**
  * @brief Receives data from a connected socket or a bound connectionless
  *        socket.
@@ -753,5 +749,7 @@ EXTERN_C BOOL WINAPI MileSocketSend(
     _In_ DWORD NumberOfBytesToSend,
     _Out_opt_ LPDWORD NumberOfBytesSent,
     _In_ DWORD Flags);
+
+#endif // _WINSOCK2API_
 
 #endif // !MILE_WINDOWS_HELPERS_BASE
