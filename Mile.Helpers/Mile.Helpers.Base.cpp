@@ -471,19 +471,105 @@ EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated()
     return Result ? TRUE : FALSE;
 }
 
-EXTERN_C BOOL WINAPI MileStartService(
-    _In_ LPCWSTR ServiceName,
+EXTERN_C BOOL WINAPI MileStartServiceByHandle(
+    _In_ SC_HANDLE ServiceHandle,
+    _In_ DWORD NumServiceArgs,
+    _In_opt_ LPCWSTR* ServiceArgVectors,
     _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus)
 {
-    if (!ServiceName || !ServiceStatus)
+    if (!ServiceStatus)
     {
         ::SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
+    std::memset(ServiceStatus, 0, sizeof(LPSERVICE_STATUS_PROCESS));
 
     BOOL Result = FALSE;
 
-    std::memset(ServiceStatus, 0, sizeof(LPSERVICE_STATUS_PROCESS));
+    DWORD PreviousCheckPoint = 0;
+    ULONGLONG StartTick = 0;
+    bool FinalStatusMode = false;
+
+    DWORD BytesNeeded = 0;
+    while (::QueryServiceStatusEx(
+        ServiceHandle,
+        SC_STATUS_PROCESS_INFO,
+        reinterpret_cast<LPBYTE>(ServiceStatus),
+        sizeof(SERVICE_STATUS_PROCESS),
+        &BytesNeeded))
+    {
+        if (SERVICE_RUNNING == ServiceStatus->dwCurrentState)
+        {
+            Result = TRUE;
+            break;
+        }
+        else if (SERVICE_STOPPED == ServiceStatus->dwCurrentState)
+        {
+            // Failed if the service had stopped again.
+            if (FinalStatusMode)
+            {
+                Result = FALSE;
+                ::SetLastError(ERROR_FUNCTION_FAILED);
+                break;
+            }
+
+            Result = ::StartServiceW(
+                ServiceHandle,
+                NumServiceArgs,
+                ServiceArgVectors);
+            if (!Result)
+            {
+                break;
+            }
+
+            FinalStatusMode = true;
+        }
+        else if (
+            SERVICE_STOP_PENDING == ServiceStatus->dwCurrentState ||
+            SERVICE_START_PENDING == ServiceStatus->dwCurrentState)
+        {
+            ULONGLONG CurrentTick = ::GetTickCount64();
+
+            if (!StartTick)
+            {
+                StartTick = CurrentTick;
+                PreviousCheckPoint = ServiceStatus->dwCheckPoint;
+
+                // Same as the .Net System.ServiceProcess, wait 250ms.
+                ::SleepEx(250, FALSE);
+            }
+            else
+            {
+                // Check the timeout if the checkpoint is not increased.
+                if (ServiceStatus->dwCheckPoint <= PreviousCheckPoint)
+                {
+                    ULONGLONG ElapseTick = CurrentTick - StartTick;
+                    if (ElapseTick > ServiceStatus->dwWaitHint)
+                    {
+                        Result = FALSE;
+                        ::SetLastError(ERROR_TIMEOUT);
+                        break;
+                    }
+                }
+
+                // Continue looping.
+                StartTick = 0;
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return Result;
+}
+
+EXTERN_C BOOL WINAPI MileStartService(
+    _In_ LPCWSTR ServiceName,
+    _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus)
+{
+    BOOL Result = FALSE;
 
     SC_HANDLE ServiceControlManagerHandle = ::OpenSCManagerW(
         nullptr,
@@ -497,84 +583,11 @@ EXTERN_C BOOL WINAPI MileStartService(
             SERVICE_QUERY_STATUS | SERVICE_START);
         if (ServiceHandle)
         {
-            DWORD PreviousCheckPoint = 0;
-            ULONGLONG StartTick = 0;
-            bool FinalStatusMode = false;
-
-            DWORD BytesNeeded = 0;
-            while (::QueryServiceStatusEx(
+            Result = ::MileStartServiceByHandle(
                 ServiceHandle,
-                SC_STATUS_PROCESS_INFO,
-                reinterpret_cast<LPBYTE>(ServiceStatus),
-                sizeof(SERVICE_STATUS_PROCESS),
-                &BytesNeeded))
-            {
-                if (SERVICE_RUNNING == ServiceStatus->dwCurrentState)
-                {
-                    Result = TRUE;
-                    break;
-                }
-                else if (SERVICE_STOPPED == ServiceStatus->dwCurrentState)
-                {
-                    // Failed if the service had stopped again.
-                    if (FinalStatusMode)
-                    {
-                        Result = FALSE;
-                        ::SetLastError(ERROR_FUNCTION_FAILED);
-                        break;
-                    }
-
-                    Result = ::StartServiceW(
-                        ServiceHandle,
-                        0,
-                        nullptr);
-                    if (!Result)
-                    {
-                        break;
-                    }
-
-                    FinalStatusMode = true;
-                }
-                else if (
-                    SERVICE_STOP_PENDING == ServiceStatus->dwCurrentState ||
-                    SERVICE_START_PENDING == ServiceStatus->dwCurrentState)
-                {
-                    ULONGLONG CurrentTick = ::GetTickCount64();
-
-                    if (!StartTick)
-                    {
-                        StartTick = CurrentTick;
-                        PreviousCheckPoint = ServiceStatus->dwCheckPoint;
-
-                        // Same as the .Net System.ServiceProcess, wait
-                        // 250ms.
-                        ::SleepEx(250, FALSE);
-                    }
-                    else
-                    {
-                        // Check the timeout if the checkpoint is not
-                        // increased.
-                        if (ServiceStatus->dwCheckPoint
-                            <= PreviousCheckPoint)
-                        {
-                            ULONGLONG ElapseTick = CurrentTick - StartTick;
-                            if (ElapseTick > ServiceStatus->dwWaitHint)
-                            {
-                                Result = FALSE;
-                                ::SetLastError(ERROR_TIMEOUT);
-                                break;
-                            }
-                        }
-
-                        // Continue looping.
-                        StartTick = 0;
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
+                0,
+                nullptr,
+                ServiceStatus);
 
             ::CloseServiceHandle(ServiceHandle);
         }

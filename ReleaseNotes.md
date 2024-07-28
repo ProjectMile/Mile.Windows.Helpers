@@ -78,3 +78,4 @@
 - Add MileRefreshImmersiveColorPolicyState function.
 - Add MileSocketRecv function.
 - Add MileSocketSend function.
+- Add MileStartServiceByHandle function.

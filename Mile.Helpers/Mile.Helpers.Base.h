@@ -170,6 +170,36 @@ EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated();
 /**
  * @brief Starts a service if not started and retrieves the current status of
  *        the specified service.
+ * @param ServiceHandle A handle to the service. This handle is returned by the
+ *                      OpenService or CreateService function, and it must have
+ *                      the SERVICE_START access right.
+ * @param NumServiceArgs The number of strings in the ServiceArgVectors array.
+ *                       If ServiceArgVectors is nullptr, this parameter can be
+ *                       zero.
+ * @param ServiceArgVectors The null-terminated strings to be passed to the
+ *                          ServiceMain function for the service as arguments.
+ *                          If there are no arguments, this parameter can be
+ *                          nullptr. Otherwise, the first argument
+ *                          (ServiceArgVectors[0]) is the name of the service,
+ *                          followed by any additional arguments
+ *                          (ServiceArgVectors[1] through
+ *                          ServiceArgVectors[NumServiceArgs-1]).
+ *                          Driver services do not receive these arguments.
+ * @param ServiceStatus A pointer to the process status information for a
+ *                      service.
+ * @return If the function succeeds, the return value is TRUE. If the function
+ *         fails, the return value is FALSE. To get extended error information,
+ *         call GetLastError.
+ */
+EXTERN_C BOOL WINAPI MileStartServiceByHandle(
+    _In_ SC_HANDLE ServiceHandle,
+    _In_ DWORD NumServiceArgs,
+    _In_opt_ LPCWSTR* ServiceArgVectors,
+    _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
+
+/**
+ * @brief Starts a service if not started and retrieves the current status of
+ *        the specified service.
  * @param ServiceName The name of the service to be started. This is the name
  *                    specified by the ServiceName parameter of the
  *                    CreateService function when the service object was
