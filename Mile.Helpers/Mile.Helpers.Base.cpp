@@ -498,7 +498,8 @@ EXTERN_C BOOL WINAPI MileStartServiceByHandle(
         sizeof(SERVICE_STATUS_PROCESS),
         &BytesNeeded))
     {
-        if (SERVICE_RUNNING == ServiceStatus->dwCurrentState)
+        if (SERVICE_RUNNING == ServiceStatus->dwCurrentState ||
+            SERVICE_PAUSED == ServiceStatus->dwCurrentState)
         {
             Result = TRUE;
             break;
@@ -525,8 +526,10 @@ EXTERN_C BOOL WINAPI MileStartServiceByHandle(
             FinalStatusMode = true;
         }
         else if (
+            SERVICE_START_PENDING == ServiceStatus->dwCurrentState ||
             SERVICE_STOP_PENDING == ServiceStatus->dwCurrentState ||
-            SERVICE_START_PENDING == ServiceStatus->dwCurrentState)
+            SERVICE_CONTINUE_PENDING == ServiceStatus->dwCurrentState ||
+            SERVICE_PAUSE_PENDING == ServiceStatus->dwCurrentState)
         {
             ULONGLONG CurrentTick = ::GetTickCount64();
 
@@ -590,7 +593,8 @@ EXTERN_C BOOL WINAPI MileStopServiceByHandle(
         sizeof(SERVICE_STATUS_PROCESS),
         &BytesNeeded))
     {
-        if (SERVICE_RUNNING == ServiceStatus->dwCurrentState)
+        if (SERVICE_RUNNING == ServiceStatus->dwCurrentState ||
+            SERVICE_PAUSED == ServiceStatus->dwCurrentState)
         {
             // Failed if the service had run again.
             if (FinalStatusMode)
@@ -617,8 +621,10 @@ EXTERN_C BOOL WINAPI MileStopServiceByHandle(
             break;
         }
         else if (
+            SERVICE_START_PENDING == ServiceStatus->dwCurrentState ||
             SERVICE_STOP_PENDING == ServiceStatus->dwCurrentState ||
-            SERVICE_START_PENDING == ServiceStatus->dwCurrentState)
+            SERVICE_CONTINUE_PENDING == ServiceStatus->dwCurrentState ||
+            SERVICE_PAUSE_PENDING == ServiceStatus->dwCurrentState)
         {
             ULONGLONG CurrentTick = ::GetTickCount64();
 
