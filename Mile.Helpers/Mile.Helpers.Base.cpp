@@ -497,17 +497,17 @@ EXTERN_C BOOL WINAPI MileStartService(
             SERVICE_QUERY_STATUS | SERVICE_START);
         if (ServiceHandle)
         {
-            DWORD nBytesNeeded = 0;
-            DWORD nOldCheckPoint = 0;
-            ULONGLONG nLastTick = 0;
-            bool bStartServiceWCalled = false;
+            DWORD PreviousCheckPoint = 0;
+            ULONGLONG StartTick = 0;
+            bool FinalStatusMode = false;
 
+            DWORD BytesNeeded = 0;
             while (::QueryServiceStatusEx(
                 ServiceHandle,
                 SC_STATUS_PROCESS_INFO,
                 reinterpret_cast<LPBYTE>(ServiceStatus),
                 sizeof(SERVICE_STATUS_PROCESS),
-                &nBytesNeeded))
+                &BytesNeeded))
             {
                 if (SERVICE_RUNNING == ServiceStatus->dwCurrentState)
                 {
@@ -517,7 +517,7 @@ EXTERN_C BOOL WINAPI MileStartService(
                 else if (SERVICE_STOPPED == ServiceStatus->dwCurrentState)
                 {
                     // Failed if the service had stopped again.
-                    if (bStartServiceWCalled)
+                    if (FinalStatusMode)
                     {
                         Result = FALSE;
                         ::SetLastError(ERROR_FUNCTION_FAILED);
@@ -533,18 +533,18 @@ EXTERN_C BOOL WINAPI MileStartService(
                         break;
                     }
 
-                    bStartServiceWCalled = true;
+                    FinalStatusMode = true;
                 }
                 else if (
                     SERVICE_STOP_PENDING == ServiceStatus->dwCurrentState ||
                     SERVICE_START_PENDING == ServiceStatus->dwCurrentState)
                 {
-                    ULONGLONG nCurrentTick = ::GetTickCount64();
+                    ULONGLONG CurrentTick = ::GetTickCount64();
 
-                    if (!nLastTick)
+                    if (!StartTick)
                     {
-                        nLastTick = nCurrentTick;
-                        nOldCheckPoint = ServiceStatus->dwCheckPoint;
+                        StartTick = CurrentTick;
+                        PreviousCheckPoint = ServiceStatus->dwCheckPoint;
 
                         // Same as the .Net System.ServiceProcess, wait
                         // 250ms.
@@ -555,10 +555,10 @@ EXTERN_C BOOL WINAPI MileStartService(
                         // Check the timeout if the checkpoint is not
                         // increased.
                         if (ServiceStatus->dwCheckPoint
-                            <= nOldCheckPoint)
+                            <= PreviousCheckPoint)
                         {
-                            ULONGLONG nDiff = nCurrentTick - nLastTick;
-                            if (nDiff > ServiceStatus->dwWaitHint)
+                            ULONGLONG ElapseTick = CurrentTick - StartTick;
+                            if (ElapseTick > ServiceStatus->dwWaitHint)
                             {
                                 Result = FALSE;
                                 ::SetLastError(ERROR_TIMEOUT);
@@ -567,7 +567,7 @@ EXTERN_C BOOL WINAPI MileStartService(
                         }
 
                         // Continue looping.
-                        nLastTick = 0;
+                        StartTick = 0;
                     }
                 }
                 else
