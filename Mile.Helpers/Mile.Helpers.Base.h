@@ -198,6 +198,22 @@ EXTERN_C BOOL WINAPI MileStartServiceByHandle(
     _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
 
 /**
+ * @brief Stops a service if started and retrieves the current status of the
+ *        specified service.
+ * @param ServiceHandle A handle to the service. This handle is returned by the
+ *                      OpenService or CreateService function, and it must have
+ *                      the SERVICE_STOP access right.
+ * @param ServiceStatus A pointer to the process status information for a
+ *                      service.
+ * @return If the function succeeds, the return value is TRUE. If the function
+ *         fails, the return value is FALSE. To get extended error information,
+ *         call GetLastError.
+ */
+EXTERN_C BOOL WINAPI MileStopServiceByHandle(
+    _In_ SC_HANDLE ServiceHandle,
+    _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
+
+/**
  * @brief Starts a service if not started and retrieves the current status of
  *        the specified service.
  * @param ServiceName The name of the service to be started. This is the name

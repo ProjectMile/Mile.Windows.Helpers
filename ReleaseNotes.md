@@ -79,3 +79,4 @@
 - Add MileSocketRecv function.
 - Add MileSocketSend function.
 - Add MileStartServiceByHandle function.
+- Add MileStopServiceByHandle function.
