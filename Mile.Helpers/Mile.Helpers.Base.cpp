@@ -690,6 +690,37 @@ EXTERN_C BOOL WINAPI MileStartService(
     return Result;
 }
 
+EXTERN_C BOOL WINAPI MileStopService(
+    _In_ LPCWSTR ServiceName,
+    _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus)
+{
+    BOOL Result = FALSE;
+
+    SC_HANDLE ServiceControlManagerHandle = ::OpenSCManagerW(
+        nullptr,
+        nullptr,
+        SC_MANAGER_CONNECT);
+    if (ServiceControlManagerHandle)
+    {
+        SC_HANDLE ServiceHandle = ::OpenServiceW(
+            ServiceControlManagerHandle,
+            ServiceName,
+            SERVICE_QUERY_STATUS | SERVICE_STOP);
+        if (ServiceHandle)
+        {
+            Result = ::MileStopServiceByHandle(
+                ServiceHandle,
+                ServiceStatus);
+
+            ::CloseServiceHandle(ServiceHandle);
+        }
+
+        ::CloseServiceHandle(ServiceControlManagerHandle);
+    }
+
+    return Result;
+}
+
 EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
     _In_ HANDLE FileHandle,
     _In_ MILE_ENUMERATE_FILE_CALLBACK_TYPE Callback,

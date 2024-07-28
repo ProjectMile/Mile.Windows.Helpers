@@ -237,6 +237,29 @@ EXTERN_C BOOL WINAPI MileStartService(
     _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
 
 /**
+ * @brief Stops a service if started and retrieves the current status of the
+ *        specified service.
+ * @param ServiceName The name of the service to be stopped. This is the name
+ *                    specified by the ServiceName parameter of the
+ *                    CreateService function when the service object was
+ *                    created, not the service display name that is shown by
+ *                    user interface applications to identify the service. The
+ *                    maximum string length is 256 characters. The service
+ *                    control manager database preserves the case of the
+ *                    characters, but service name comparisons are always case
+ *                    insensitive. Forward-slash (/) and backslash (\\) are
+ *                    invalid service name characters.
+ * @param ServiceStatus A pointer to the process status information for a
+ *                      service.
+ * @return If the function succeeds, the return value is TRUE. If the function
+ *         fails, the return value is FALSE. To get extended error information,
+ *         call GetLastError.
+ */
+EXTERN_C BOOL WINAPI MileStopService(
+    _In_ LPCWSTR ServiceName,
+    _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
+
+/**
  * @brief The information about a found file or directory queried from the
  *        file enumerator.
 */
