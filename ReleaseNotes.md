@@ -81,3 +81,4 @@
 - Add MileStartServiceByHandle function.
 - Add MileStopServiceByHandle function.
 - Add MileStopService function.
+- Add MileCreateCoreWindow function.

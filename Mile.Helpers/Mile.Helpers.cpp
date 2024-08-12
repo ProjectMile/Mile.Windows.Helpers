@@ -125,6 +125,32 @@ namespace
 
         return CachedResult;
     }
+
+    static HMODULE GetWindowsUIModuleHandle()
+    {
+        static HMODULE CachedResult = ::LoadLibraryExW(
+            L"Windows.UI.dll",
+            nullptr,
+            LOAD_LIBRARY_SEARCH_SYSTEM32);
+        return CachedResult;
+    }
+
+    static FARPROC GetPrivateCreateCoreWindowProcAddress()
+    {
+        static FARPROC CachedResult = ([]() -> FARPROC
+        {
+            HMODULE ModuleHandle = ::GetWindowsUIModuleHandle();
+            if (ModuleHandle)
+            {
+                return ::GetProcAddress(
+                    ModuleHandle,
+                    reinterpret_cast<LPCSTR>(1500));
+            }
+            return nullptr;
+        }());
+
+        return CachedResult;
+    }
 }
 
 EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling()
@@ -416,4 +442,75 @@ EXTERN_C VOID WINAPI MileRefreshImmersiveColorPolicyState()
             ProcAddress();
         }
     }
+}
+
+EXTERN_C HRESULT WINAPI MileCreateCoreWindow(
+    _In_ MILE_COREWINDOW_TYPE WindowType,
+    _In_ LPCWSTR pWindowTitle,
+    _In_ INT X,
+    _In_ INT Y,
+    _In_ UINT uWidth,
+    _In_ UINT uHeight,
+    _In_ DWORD dwAttributes,
+    _In_ HWND hOwnerWindow,
+    _In_ REFIID riid,
+    _Out_ void** ppv)
+{
+    FARPROC ProcAddress = ::GetPrivateCreateCoreWindowProcAddress();
+
+    if (ProcAddress)
+    {
+        if (::MileIsWindowsVersionAtLeast(10, 0, 10041))
+        {
+            typedef HRESULT(WINAPI* ProcType)(
+                    _In_ MILE_COREWINDOW_TYPE WindowType,
+                    _In_ LPCWSTR pWindowTitle,
+                    _In_ INT X,
+                    _In_ INT Y,
+                    _In_ UINT uWidth,
+                    _In_ UINT uHeight,
+                    _In_ DWORD dwAttributes,
+                    _In_ HWND hOwnerWindow,
+                    _In_ REFIID riid,
+                    _Out_ void** ppv);
+
+            return reinterpret_cast<ProcType>(ProcAddress)(
+                WindowType,
+                pWindowTitle,
+                X,
+                Y,
+                uWidth,
+                uHeight,
+                dwAttributes,
+                hOwnerWindow,
+                riid,
+                ppv);
+        }
+        else
+        {
+            typedef HRESULT(WINAPI* ProcType)(
+                _In_ MILE_COREWINDOW_TYPE WindowType,
+                _In_ LPCWSTR pWindowTitle,
+                _In_ INT X,
+                _In_ INT Y,
+                _In_ UINT uWidth,
+                _In_ UINT uHeight,
+                _In_ HWND hOwnerWindow,
+                _In_ REFIID riid,
+                _Out_ void** ppv);
+
+            return reinterpret_cast<ProcType>(ProcAddress)(
+                WindowType,
+                pWindowTitle,
+                X,
+                Y,
+                uWidth,
+                uHeight,
+                hOwnerWindow,
+                riid,
+                ppv);
+        }
+    }
+
+    return E_NOTIMPL;
 }

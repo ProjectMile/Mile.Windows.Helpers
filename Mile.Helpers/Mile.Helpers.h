@@ -275,6 +275,56 @@ typedef enum MILE_TOKEN_PRIVILEGE_LUID_CLASS
 } MILE_TOKEN_PRIVILEGE_LUID_CLASS;
 
 /**
+ * @brief Types for the Windows.UI.Core.CoreWindow window.
+ */
+typedef enum _MILE_COREWINDOW_TYPE
+{
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_IMMERSIVE_INACTIVEMOBODY.
+     */
+    MILE_COREWINDOW_IMMERSIVE_BODY = 0x0,
+
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_IMMERSIVE_INACTIVEDOCK.
+     */
+    MILE_COREWINDOW_IMMERSIVE_DOCK = 0x1,
+
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_DEFAULT.
+     */
+    MILE_COREWINDOW_IMMERSIVE_HOSTED = 0x2,
+
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_DEFAULT.
+     */
+    MILE_COREWINDOW_IMMERSIVE_TEST = 0x3,
+
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_IMMERSIVE_ACTIVEMOBODY.
+     */
+    MILE_COREWINDOW_IMMERSIVE_BODY_ACTIVE = 0x4,
+
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_IMMERSIVE_ACTIVEDOCK.
+     */
+    MILE_COREWINDOW_IMMERSIVE_DOCK_ACTIVE = 0x5,
+
+    /**
+     * @brief Create Windows.UI.Core.CoreWindow and correct Z order band to
+     *        ZBID_DEFAULT.
+     * @remarks Introduced in Windows 10 Version 1607.
+     */
+    MILE_COREWINDOW_NOT_IMMERSIVE = 0x6,
+
+} MILE_COREWINDOW_TYPE, *PMILE_COREWINDOW_TYPE;
+
+/**
  * @brief Enables automatic display scaling of the dialogs in high-DPI
  *        displays. Must be called before the creation of dialogs.
  * @return If the function succeeds, the return value is nonzero. If the
@@ -422,5 +472,40 @@ EXTERN_C BOOL WINAPI MileShouldAppsUseDarkMode();
  * @brief Refresh the state for immersive color policy.
  */
 EXTERN_C VOID WINAPI MileRefreshImmersiveColorPolicyState();
+
+/**
+ * @brief Create a Windows.UI.Core.CoreWindow window.
+ * @param WindowType Types for the Windows.UI.Core.CoreWindow window you want
+ *                   to create.
+ * @param pWindowTitle The window title. If the window style specifies a title
+ *                     bar, the window title pointed to by pWindowTitle is
+ *                     displayed in the title bar.
+ * @param X The initial horizontal position of the window.
+ * @param Y The initial vertical position of the window.
+ * @param uWidth The width, in device units, of the window.
+ * @param uHeight The height, in device units, of the window.
+ * @param dwAttributes The attributes of the window which introduced in Windows
+ *                     10 Build 10041.
+ * @param hOwnerWindow A handle to the parent or owner window of the window
+ *                     being created.
+ * @param riid A reference to the identifier of the interface to be used to
+ *             communicate with the Windows.UI.Core.CoreWindow window.
+ * @param ppv Address of pointer variable that receives the interface pointer
+ *            requested in riid. Upon successful return, *ppv contains the
+ *            requested interface pointer. Upon failure, *ppv contains nullptr.
+ * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
+ *         HRESULT error code.
+ */
+EXTERN_C HRESULT WINAPI MileCreateCoreWindow(
+    _In_ MILE_COREWINDOW_TYPE WindowType,
+    _In_ LPCWSTR pWindowTitle,
+    _In_ INT X,
+    _In_ INT Y,
+    _In_ UINT uWidth,
+    _In_ UINT uHeight,
+    _In_ DWORD dwAttributes,
+    _In_ HWND hOwnerWindow,
+    _In_ REFIID riid,
+    _Out_ void** ppv);
 
 #endif // !MILE_WINDOWS_HELPERS
