@@ -83,3 +83,4 @@
 - Add MileStopService function.
 - Add MileCreateCoreWindow function.
 - Add Mile::ComObjectChainHelper template struct.
+- Add Mile::ComObjectQueryHelper template struct.

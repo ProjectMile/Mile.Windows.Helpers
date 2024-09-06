@@ -370,6 +370,80 @@ namespace Mile
             return riid == __uuidof(I0) || riid == __uuidof(I1);
         }
     };
+
+    /**
+     * @brief Primary COM object interfaces query helper template struct.
+     */
+    template <typename ...Interfaces>
+    struct ComObjectQueryHelper;
+
+    /**
+     * @brief Specialized primary COM object interfaces query helper template
+     *        struct for handling multiple interfaces.
+     */
+    template <typename I0, typename ...Interfaces>
+    struct ComObjectQueryHelper<I0, Interfaces...> :
+        I0,
+        ComObjectQueryHelper<Interfaces...>
+    {
+        bool Matches(
+            _In_ REFIID riid,
+            _Out_ LPVOID* ppvObject)
+        {
+            if (riid == __uuidof(I0))
+            {
+                *ppvObject = static_cast<I0*>(this);
+                return true;
+            }
+
+            return ComObjectQueryHelper<Interfaces...>::Matches(
+                riid,
+                ppvObject);
+        }
+    };
+
+    /**
+     * @brief Specialized primary COM object interfaces query helper template
+     *        struct for handling interface chains.
+     */
+    template <typename I0, typename ...Chain, typename ...Interfaces>
+    struct ComObjectQueryHelper<
+        ComObjectChainHelper<I0, Chain...>,
+        Interfaces...> :
+        ComObjectQueryHelper<I0, Interfaces...>
+    {
+        bool Matches(
+            _In_ REFIID riid,
+            _Out_ LPVOID* ppvObject)
+        {
+            if (ComObjectChainHelper<I0, Chain...>::Includes(riid))
+            {
+                *ppvObject = reinterpret_cast<I0*>(this);
+                return true;
+            }
+
+            return ComObjectQueryHelper<I0, Interfaces...>::Matches(
+                riid,
+                ppvObject);
+        }
+    };
+
+    /**
+     * @brief Specialized primary COM object interfaces query helper template
+     *        struct for terminal case which always returns false.
+     */
+    template <>
+    struct ComObjectQueryHelper<>
+    {
+        bool Matches(
+            _In_ REFIID riid,
+            _Out_ LPVOID* ppvObject)
+        {
+            UNREFERENCED_PARAMETER(riid);
+            *ppvObject = nullptr;
+            return false;
+        }
+    };
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
