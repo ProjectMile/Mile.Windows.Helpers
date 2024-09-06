@@ -4,6 +4,12 @@
 
 The essential helper functions for the Windows platform.
 
+## Usage
+
+If you don't want to include C++/WinRT helpers, please set
+`<MileWindowsHelpersNoCppWinRTHelpers>true</MileWindowsHelpersNoCppWinRTHelpers>`
+in your project configuration file.
+
 ## Documents
 
 - [License](https://github.com/ProjectMile/Mile.Windows.Helpers/blob/main/License.md)

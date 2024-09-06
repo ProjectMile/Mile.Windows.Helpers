@@ -85,3 +85,4 @@
 - Add Mile::ComObjectChainHelper template struct.
 - Add Mile::ComObjectQueryHelper template struct.
 - Add Mile::ComObject template struct.
+- Add MileWindowsHelpersNoCppWinRTHelpers MSBuild option.
