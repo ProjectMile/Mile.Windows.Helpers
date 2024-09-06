@@ -82,3 +82,4 @@
 - Add MileStopServiceByHandle function.
 - Add MileStopService function.
 - Add MileCreateCoreWindow function.
+- Add Mile::ComObjectChainHelper template struct.

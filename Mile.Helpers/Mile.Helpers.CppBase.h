@@ -334,6 +334,42 @@ namespace Mile
     std::uint64_t ToUInt64(
         std::string const& Source,
         std::uint8_t const& Radix = 10);
+
+    /**
+     * @brief The COM object interface chaining helper template struct.
+     */
+    template <typename I0, typename I1, typename ...Interfaces>
+    struct ComObjectChainHelper
+    {
+        static_assert(
+            std::is_base_of<I1, I0>::value,
+            "Interface has to derive from I0");
+
+        static bool Includes(
+            _In_ REFIID riid)
+        {
+            return riid == __uuidof(I1)
+                || ComObjectChainHelper<I0, Interfaces...>::Includes(riid);
+        }
+    };
+
+    /**
+     * @brief Specialized COM object interface chaining helper template struct
+     *        for the case when there are only two interfaces.
+     */
+    template <typename I0, typename I1>
+    struct ComObjectChainHelper<I0, I1>
+    {
+        static_assert(
+            std::is_base_of<I1, I0>::value,
+            "Interface has to derive from I0");
+
+        static bool Includes(
+            _In_ REFIID riid)
+        {
+            return riid == __uuidof(I0) || riid == __uuidof(I1);
+        }
+    };
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
