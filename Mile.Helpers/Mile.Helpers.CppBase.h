@@ -444,6 +444,66 @@ namespace Mile
             return false;
         }
     };
+
+    /**
+     * @brief The template class for implementing COM objects.
+     */
+    template <class Derived, typename... Interfaces>
+    class ComObject : public ComObjectQueryHelper<Interfaces...>
+    {
+    private:
+
+        ULONG m_ReferenceCount = 1;
+
+    public:
+
+        ComObject() = default;
+
+        virtual ~ComObject() = default;
+
+        virtual HRESULT STDMETHODCALLTYPE QueryInterface(
+            _In_ REFIID riid,
+            _Out_ LPVOID* ppvObject) noexcept override
+        {
+            if (!ppvObject)
+            {
+                return E_POINTER;
+            }
+            *ppvObject = nullptr;
+
+            if (ComObjectQueryHelper<Interfaces...>::Matches(riid, ppvObject))
+            {
+                this->AddRef();
+                return S_OK;
+            }
+
+            if (riid == __uuidof(IUnknown))
+            {
+                *ppvObject = reinterpret_cast<LPVOID>(
+                    reinterpret_cast<IUnknown*>(this));
+                this->AddRef();
+                return S_OK;
+            }
+
+            return E_NOINTERFACE;
+        }
+
+        virtual ULONG STDMETHODCALLTYPE AddRef() noexcept override
+        {
+            return ::InterlockedIncrement(&this->m_ReferenceCount);
+        }
+
+        virtual ULONG STDMETHODCALLTYPE Release() noexcept override
+        {
+            ULONG CurrentReferenceCount =
+                ::InterlockedDecrement(&this->m_ReferenceCount);
+            if (CurrentReferenceCount == 0)
+            {
+                delete this;
+            }
+            return CurrentReferenceCount;
+        }
+    };
 }
 
 #endif // !MILE_WINDOWS_HELPERS_CPPBASE
