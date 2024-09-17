@@ -100,10 +100,12 @@ namespace Mile
     class DisableCopyConstruction
     {
     protected:
+
         DisableCopyConstruction() = default;
         ~DisableCopyConstruction() = default;
 
     private:
+
         DisableCopyConstruction(
             const DisableCopyConstruction&) = delete;
         DisableCopyConstruction& operator=(
@@ -116,10 +118,12 @@ namespace Mile
     class DisableMoveConstruction
     {
     protected:
+
         DisableMoveConstruction() = default;
         ~DisableMoveConstruction() = default;
 
     private:
+
         DisableMoveConstruction(
             const DisableMoveConstruction&&) = delete;
         DisableMoveConstruction& operator=(
@@ -137,6 +141,7 @@ namespace Mile
         DisableMoveConstruction
     {
     private:
+
         bool m_Canceled;
         TaskHandlerType m_TaskHandler;
 
