@@ -28,8 +28,8 @@ namespace Mile
      * @return A formatted string if successful, an empty string otherwise.
     */
     std::wstring VFormatWideString(
-        _In_z_ _Printf_format_string_ wchar_t const* const Format,
-        _In_z_ _Printf_format_string_ va_list ArgList);
+        _In_ wchar_t const* const Format,
+        _In_ va_list ArgList);
 
     /**
      * @brief Write formatted data to a wide characters string, assumed UTF-16
@@ -39,7 +39,7 @@ namespace Mile
      * @return A formatted string if successful, an empty string otherwise.
     */
     std::wstring FormatWideString(
-        _In_z_ _Printf_format_string_ wchar_t const* const Format,
+        _In_ wchar_t const* const Format,
         ...);
 
     /**
@@ -50,8 +50,8 @@ namespace Mile
      * @return A formatted string if successful, an empty string otherwise.
     */
     std::string VFormatString(
-        _In_z_ _Printf_format_string_ char const* const Format,
-        _In_z_ _Printf_format_string_ va_list ArgList);
+        _In_ char const* const Format,
+        _In_ va_list ArgList);
 
     /**
      * @brief Write formatted data to a onebyte or multibyte string, suggested
@@ -61,7 +61,7 @@ namespace Mile
      * @return A formatted string if successful, an empty string otherwise.
     */
     std::string FormatString(
-        _In_z_ _Printf_format_string_ char const* const Format,
+        _In_ char const* const Format,
         ...);
 
     /**

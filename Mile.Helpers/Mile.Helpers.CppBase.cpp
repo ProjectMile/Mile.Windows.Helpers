@@ -13,31 +13,40 @@
 #include <cstdarg>
 
 std::wstring Mile::VFormatWideString(
-    _In_z_ _Printf_format_string_ wchar_t const* const Format,
-    _In_z_ _Printf_format_string_ va_list ArgList)
+    _In_ wchar_t const* const Format,
+    _In_ va_list ArgList)
 {
-    // Check the argument list.
-    if (Format)
-    {
-        // Get the length of the format result.
-        std::size_t nLength =
-            static_cast<std::size_t>(::_vscwprintf(Format, ArgList)) + 1;
+    int Length = 0;
 
+    // Get the length of the format result.
+    {
+        va_list CurrentArgList;
+        va_copy(CurrentArgList, ArgList);
+        Length = ::_vscwprintf(Format, CurrentArgList);
+        va_end(CurrentArgList);
+    }
+    if (Length > 0)
+    {
         // Allocate for the format result.
-        std::wstring Buffer(nLength + 1, L'\0');
+        std::wstring Buffer;
+        Buffer.resize(static_cast<std::size_t>(Length));
 
         // Format the string.
-        int nWritten = ::_vsnwprintf_s(
-            &Buffer[0],
-            Buffer.size(),
-            nLength,
-            Format,
-            ArgList);
-
-        if (nWritten > 0)
+        {
+            va_list CurrentArgList;
+            va_copy(CurrentArgList, ArgList);
+            Length = ::_vsnwprintf_s(
+                &Buffer[0],
+                Buffer.size() + 1,
+                Buffer.size(),
+                Format,
+                CurrentArgList);
+            va_end(CurrentArgList);
+        }
+        if (Length > 0)
         {
             // If succeed, resize to fit and return result.
-            Buffer.resize(nWritten);
+            Buffer.resize(static_cast<std::size_t>(Length));
             return Buffer;
         }
     }
@@ -47,7 +56,7 @@ std::wstring Mile::VFormatWideString(
 }
 
 std::wstring Mile::FormatWideString(
-    _In_z_ _Printf_format_string_ wchar_t const* const Format,
+    _In_ wchar_t const* const Format,
     ...)
 {
     va_list ArgList;
@@ -58,31 +67,40 @@ std::wstring Mile::FormatWideString(
 }
 
 std::string Mile::VFormatString(
-    _In_z_ _Printf_format_string_ char const* const Format,
-    _In_z_ _Printf_format_string_ va_list ArgList)
+    _In_ char const* const Format,
+    _In_ va_list ArgList)
 {
-    // Check the argument list.
-    if (Format)
-    {
-        // Get the length of the format result.
-        std::size_t nLength =
-            static_cast<std::size_t>(::_vscprintf(Format, ArgList)) + 1;
+    int Length = 0;
 
+    // Get the length of the format result.
+    {
+        va_list CurrentArgList;
+        va_copy(CurrentArgList, ArgList);
+        Length = ::_vscprintf(Format, CurrentArgList);
+        va_end(CurrentArgList);
+    }
+    if (Length > 0)
+    {
         // Allocate for the format result.
-        std::string Buffer(nLength + 1, '\0');
+        std::string Buffer;
+        Buffer.resize(static_cast<std::size_t>(Length));
 
         // Format the string.
-        int nWritten = ::_vsnprintf_s(
-            &Buffer[0],
-            Buffer.size(),
-            nLength,
-            Format,
-            ArgList);
-
-        if (nWritten > 0)
+        {
+            va_list CurrentArgList;
+            va_copy(CurrentArgList, ArgList);
+            Length = ::_vsnprintf_s(
+                &Buffer[0],
+                Buffer.size() + 1,
+                Buffer.size(),
+                Format,
+                CurrentArgList);
+            va_end(CurrentArgList);
+        }
+        if (Length > 0)
         {
             // If succeed, resize to fit and return result.
-            Buffer.resize(nWritten);
+            Buffer.resize(static_cast<std::size_t>(Length));
             return Buffer;
         }
     }
@@ -92,7 +110,7 @@ std::string Mile::VFormatString(
 }
 
 std::string Mile::FormatString(
-    _In_z_ _Printf_format_string_ char const* const Format,
+    _In_ char const* const Format,
     ...)
 {
     va_list ArgList;
