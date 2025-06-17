@@ -336,7 +336,8 @@ std::int32_t Mile::ToInt32(
     std::string const& Source,
     std::uint8_t const& Radix)
 {
-    return std::strtol(Source.c_str(), nullptr, Radix);
+    return static_cast<std::int32_t>(
+        std::strtol(Source.c_str(), nullptr, Radix));
 }
 
 std::int64_t Mile::ToInt64(
@@ -350,7 +351,8 @@ std::uint32_t Mile::ToUInt32(
     std::string const& Source,
     std::uint8_t const& Radix)
 {
-    return std::strtoul(Source.c_str(), nullptr, Radix);
+    return static_cast<std::uint32_t>(
+        std::strtoul(Source.c_str(), nullptr, Radix));
 }
 
 std::uint64_t Mile::ToUInt64(
