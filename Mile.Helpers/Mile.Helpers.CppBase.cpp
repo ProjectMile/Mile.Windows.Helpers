@@ -192,8 +192,8 @@ namespace
         std::vector<StringType> SplitArguments;
 
         typename StringType::value_type c = L'\0';
-        int copy_character;                   /* 1 = copy char to *args */
-        unsigned numslash;              /* num of backslashes seen */
+        int copy_character; /* 1 = copy char to *args */
+        unsigned numslash; /* num of backslashes seen */
 
         StringType Buffer;
         Buffer.reserve(CommandLine.size());
