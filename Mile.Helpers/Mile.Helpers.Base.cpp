@@ -1,16 +1,16 @@
 ﻿/*
- * PROJECT:   Mouri Internal Library Essentials
- * FILE:      Mile.Helpers.Base.cpp
- * PURPOSE:   Implementation for the essential Windows helper functions
+ * PROJECT:    Mouri Internal Library Essentials
+ * FILE:       Mile.Helpers.Base.cpp
+ * PURPOSE:    Implementation for the essential Windows helper functions
  *
- * LICENSE:   The MIT License
+ * LICENSE:    The MIT License
  *
  * MAINTAINER: MouriNaruto (Kenji.Mouri@outlook.com)
  */
 
 /* Prevent inclusion of winsock.h in windows.h */
 #ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_ 
+#define _WINSOCKAPI_
 #endif // !_WINSOCKAPI_
 
 #include "Mile.Helpers.Base.h"

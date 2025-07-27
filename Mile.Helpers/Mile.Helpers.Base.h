@@ -1,9 +1,9 @@
 ﻿/*
- * PROJECT:   Mouri Internal Library Essentials
- * FILE:      Mile.Helpers.Base.h
- * PURPOSE:   Definition for the essential Windows helper functions
+ * PROJECT:    Mouri Internal Library Essentials
+ * FILE:       Mile.Helpers.Base.h
+ * PURPOSE:    Definition for the essential Windows helper functions
  *
- * LICENSE:   The MIT License
+ * LICENSE:    The MIT License
  *
  * MAINTAINER: MouriNaruto (Kenji.Mouri@outlook.com)
  */
@@ -787,7 +787,7 @@ EXTERN_C BOOL WINAPI MileCreateDirectory(
  * @param Flags A pointer to flags used to modify the behavior.
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
- *         information, call WSAGetLastError. 
+ *         information, call WSAGetLastError.
  * @remark For more information, see WSARecv.
  */
 EXTERN_C BOOL WINAPI MileSocketRecv(
@@ -809,7 +809,7 @@ EXTERN_C BOOL WINAPI MileSocketRecv(
  * @param Flags A pointer to flags used to modify the behavior.
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
- *         information, call WSAGetLastError. 
+ *         information, call WSAGetLastError.
  * @remark For more information, see WSASend.
  */
 EXTERN_C BOOL WINAPI MileSocketSend(
