@@ -126,7 +126,7 @@ namespace
      {
         static LPOSVERSIONINFOW CachedResult = ([]() -> LPOSVERSIONINFOW
         {
-            static OSVERSIONINFOW VersionInformation = { 0 };
+            static OSVERSIONINFOW VersionInformation = {};
             VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOW);
 
             if (::MileGetWindowsVersion(&VersionInformation))
@@ -453,7 +453,7 @@ EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated()
         TOKEN_ALL_ACCESS,
         &CurrentProcessAccessToken))
     {
-        TOKEN_ELEVATION Information = { 0 };
+        TOKEN_ELEVATION Information = {};
         DWORD Length = sizeof(Information);
         if (::GetTokenInformation(
             CurrentProcessAccessToken,
@@ -750,7 +750,7 @@ EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
                 OriginalInformation,
                 BufferSize))
             {
-                MILE_FILE_ENUMERATE_INFORMATION ConvertedInformation = { 0 };
+                MILE_FILE_ENUMERATE_INFORMATION ConvertedInformation = {};
 
                 for (;;)
                 {
@@ -868,7 +868,7 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
     BOOL Result = FALSE;
     DWORD LastError = ERROR_SUCCESS;
     DWORD NumberOfBytesTransferred = 0;
-    OVERLAPPED Overlapped = { 0 };
+    OVERLAPPED Overlapped = {};
     Overlapped.hEvent = ::CreateEventW(
         nullptr,
         TRUE,
@@ -946,7 +946,7 @@ EXTERN_C BOOL WINAPI MileSetFileAttributesByHandle(
     _In_ HANDLE FileHandle,
     _In_ DWORD FileAttributes)
 {
-    FILE_BASIC_INFO BasicInfo = { 0 };
+    FILE_BASIC_INFO BasicInfo = {};
     BasicInfo.FileAttributes =
         FileAttributes & (
             FILE_SHARE_READ |
@@ -1108,7 +1108,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
     BOOL Result = FALSE;
     DWORD LastError = ERROR_SUCCESS;
     DWORD NumberOfBytesTransferred = 0;
-    OVERLAPPED Overlapped = { 0 };
+    OVERLAPPED Overlapped = {};
     Overlapped.hEvent = ::CreateEventW(
         nullptr,
         TRUE,
@@ -1117,9 +1117,9 @@ EXTERN_C BOOL WINAPI MileReadFile(
     if (Overlapped.hEvent)
     {
         bool FilePointerAvailable = false;
-        LARGE_INTEGER CurrentFilePointer = { 0 };
+        LARGE_INTEGER CurrentFilePointer = {};
         {
-            LARGE_INTEGER DistanceToMove = { 0 };
+            LARGE_INTEGER DistanceToMove = {};
             if (::SetFilePointerEx(
                 FileHandle,
                 DistanceToMove,
@@ -1200,7 +1200,7 @@ EXTERN_C BOOL WINAPI MileWriteFile(
     BOOL Result = FALSE;
     DWORD LastError = ERROR_SUCCESS;
     DWORD NumberOfBytesTransferred = 0;
-    OVERLAPPED Overlapped = { 0 };
+    OVERLAPPED Overlapped = {};
     Overlapped.hEvent = ::CreateEventW(
         nullptr,
         TRUE,
@@ -1209,9 +1209,9 @@ EXTERN_C BOOL WINAPI MileWriteFile(
     if (Overlapped.hEvent)
     {
         bool FilePointerAvailable = false;
-        LARGE_INTEGER CurrentFilePointer = { 0 };
+        LARGE_INTEGER CurrentFilePointer = {};
         {
-            LARGE_INTEGER DistanceToMove = { 0 };
+            LARGE_INTEGER DistanceToMove = {};
             if (::SetFilePointerEx(
                 FileHandle,
                 DistanceToMove,
@@ -1349,7 +1349,7 @@ EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
         return FALSE;
     }
 
-    WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = { 0 };
+    WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = {};
     DWORD BytesReturned = 0;
     BOOL Result = ::MileDeviceIoControl(
         FileHandle,
@@ -1387,7 +1387,7 @@ EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
         return FALSE;
     }
 
-    WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = { 0 };
+    WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = {};
     WofInfo.Wof.Version = WOF_CURRENT_VERSION;
     WofInfo.Wof.Provider = WOF_PROVIDER_FILE;
     WofInfo.FileProvider.Version = FILE_PROVIDER_CURRENT_VERSION;
@@ -1658,7 +1658,7 @@ EXTERN_C BOOL WINAPI MileSocketRecv(
     BOOL Result = FALSE;
     int LastError = 0;
     DWORD NumberOfBytesTransferred = 0;
-    OVERLAPPED Overlapped = { 0 };
+    OVERLAPPED Overlapped = {};
     Overlapped.hEvent = ::CreateEventW(
         nullptr,
         TRUE,
@@ -1728,7 +1728,7 @@ EXTERN_C BOOL WINAPI MileSocketSend(
     BOOL Result = FALSE;
     int LastError = 0;
     DWORD NumberOfBytesTransferred = 0;
-    OVERLAPPED Overlapped = { 0 };
+    OVERLAPPED Overlapped = {};
     Overlapped.hEvent = ::CreateEventW(
         nullptr,
         TRUE,

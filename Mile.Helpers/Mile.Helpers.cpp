@@ -344,7 +344,7 @@ EXTERN_C HRESULT WINAPI MileAllowNonClientDefaultDrawingForWindow(
     _In_ HWND WindowHandle,
     _In_ BOOL NewPolicy)
 {
-    WTA_OPTIONS Attribute = { 0 };
+    WTA_OPTIONS Attribute = {};
     Attribute.dwMask = WTNCA_NODRAWCAPTION | WTNCA_NODRAWICON;
     Attribute.dwFlags = NewPolicy ? 0 : Attribute.dwMask;
     return ::SetWindowThemeAttribute(
