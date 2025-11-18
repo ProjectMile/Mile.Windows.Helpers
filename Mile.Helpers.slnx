@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Mile.Helpers/Mile.Helpers.Static.vcxproj" Id="3e4924db-1017-4027-bc60-a7ccae00a39f" />
+</Solution>
