@@ -15,6 +15,9 @@
 
 #include "Mile.Helpers.Base.h"
 
+/* Include IUnknown interface definition when WIN32_LEAN_AND_MEAN is defined */
+#include <unknwn.h>
+
 #include <string>
 #include <vector>
 

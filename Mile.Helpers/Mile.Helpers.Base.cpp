@@ -15,6 +15,13 @@
 
 #include "Mile.Helpers.Base.h"
 
+#ifndef _NTDEF_
+typedef _Return_type_success_(return >= 0) LONG NTSTATUS;
+typedef NTSTATUS* PNTSTATUS;
+#endif
+
+#include <winioctl.h>
+
 #include <WinSock2.h>
 #pragma comment(lib, "Ws2_32.lib")
 
