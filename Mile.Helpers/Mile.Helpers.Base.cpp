@@ -15,6 +15,9 @@
 
 #include "Mile.Helpers.Base.h"
 
+#include <winternl.h>
+#include <winioctl.h>
+
 #include <WinSock2.h>
 #pragma comment(lib, "Ws2_32.lib")
 

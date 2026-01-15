@@ -15,6 +15,8 @@
 
 #include "Mile.Helpers.Base.h"
 
+#include <objbase.h>
+
 #include <string>
 #include <vector>
 
