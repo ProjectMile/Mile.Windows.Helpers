@@ -374,17 +374,14 @@ EXTERN_C BOOL WINAPI MileAllowDarkModeForWindow(
 
 EXTERN_C BOOL WINAPI MileShouldAppsUseHighContrastMode()
 {
-    if (::IsWindows10Version1809OrLater())
+    HIGHCONTRAST HighContrast;
+    if (::SystemParametersInfoW(
+        SPI_GETHIGHCONTRAST,
+        sizeof(HIGHCONTRASTW),
+        &HighContrast,
+        0))
     {
-        HIGHCONTRAST HighContrast;
-        if (::SystemParametersInfoW(
-            SPI_GETHIGHCONTRAST,
-            sizeof(HIGHCONTRASTW),
-            &HighContrast,
-            0))
-        {
-            return HighContrast.dwFlags & HCF_HIGHCONTRASTON;
-        }
+        return HighContrast.dwFlags & HCF_HIGHCONTRASTON;
     }
 
     return FALSE;
