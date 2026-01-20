@@ -4,7 +4,6 @@
     <ProjectGuid>{3E4924DB-1017-4027-BC60-A7CCAE00A39F}</ProjectGuid>
     <RootNamespace>Mile.Helpers.Static</RootNamespace>
     <MileProjectType>StaticLibrary</MileProjectType>
-    <MileProjectEnableVCLTLSupport>true</MileProjectEnableVCLTLSupport>
   </PropertyGroup>
   <Import Sdk="Mile.Project.Configurations" Version="1.0.1827" Project="Mile.Project.Platform.x86.props" />
   <Import Sdk="Mile.Project.Configurations" Version="1.0.1827" Project="Mile.Project.Platform.x64.props" />
