@@ -955,15 +955,15 @@ EXTERN_C BOOL WINAPI MileSetFileAttributesByHandle(
 {
     FILE_BASIC_INFO BasicInfo = {};
     BasicInfo.FileAttributes =
-        FileAttributes & (
-            FILE_SHARE_READ |
-            FILE_SHARE_WRITE |
-            FILE_SHARE_DELETE |
+        (FileAttributes & (
+            FILE_ATTRIBUTE_READONLY |
+            FILE_ATTRIBUTE_HIDDEN |
+            FILE_ATTRIBUTE_SYSTEM |
             FILE_ATTRIBUTE_ARCHIVE |
             FILE_ATTRIBUTE_TEMPORARY |
             FILE_ATTRIBUTE_OFFLINE |
             FILE_ATTRIBUTE_NOT_CONTENT_INDEXED |
-            FILE_ATTRIBUTE_NO_SCRUB_DATA) |
+            FILE_ATTRIBUTE_NO_SCRUB_DATA)) |
         FILE_ATTRIBUTE_NORMAL;
 
     return ::SetFileInformationByHandle(
