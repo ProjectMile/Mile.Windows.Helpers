@@ -489,7 +489,7 @@ EXTERN_C BOOL WINAPI MileStartServiceByHandle(
         ::SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
-    std::memset(ServiceStatus, 0, sizeof(LPSERVICE_STATUS_PROCESS));
+    std::memset(ServiceStatus, 0, sizeof(SERVICE_STATUS_PROCESS));
 
     BOOL Result = FALSE;
 
@@ -584,7 +584,7 @@ EXTERN_C BOOL WINAPI MileStopServiceByHandle(
         ::SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
-    std::memset(ServiceStatus, 0, sizeof(LPSERVICE_STATUS_PROCESS));
+    std::memset(ServiceStatus, 0, sizeof(SERVICE_STATUS_PROCESS));
 
     BOOL Result = FALSE;
 
