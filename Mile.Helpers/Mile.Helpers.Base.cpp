@@ -1042,8 +1042,11 @@ EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttributeByHandle(
                 Result = ::MileDeleteFileByHandle(FileHandle);
                 if (!Result || HardlinkCount > 1)
                 {
-                    // Restore attributes if failed or had another hard links.
+                    DWORD PreviousLastError = ::GetLastError();
+                    // Try to restore attributes if failed or had another hard
+                    // links.
                     ::MileSetFileAttributesByHandle(FileHandle, OldAttribute);
+                    ::SetLastError(PreviousLastError);
                 }
             }
         }
