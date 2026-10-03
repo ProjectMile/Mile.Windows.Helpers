@@ -1,6 +1,6 @@
 ﻿# Mile.Windows.Helpers Release Notes
 
-**Mile.Windows.Helpers 1.0 (1.0.1171.0)**
+**Mile.Windows.Helpers 1.0 (1.0.1427.0)**
 
 - Provide NuGet package.
 - Add MileIsWindowsVersionAtLeast function.
