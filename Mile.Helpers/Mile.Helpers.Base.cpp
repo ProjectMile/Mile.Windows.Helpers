@@ -1623,7 +1623,10 @@ EXTERN_C BOOL WINAPI MileCreateDirectory(
                     if (!Result)
                     {
                         LastError = ::GetLastError();
-                        if (ERROR_ALREADY_EXISTS == LastError)
+                        DWORD Attributes = ::GetFileAttributesW(Buffer);
+                        if (ERROR_ALREADY_EXISTS == LastError &&
+                            INVALID_FILE_ATTRIBUTES != Attributes &&
+                            FILE_ATTRIBUTE_DIRECTORY & Attributes)
                         {
                             Result = TRUE;
                         }
