@@ -835,12 +835,12 @@ EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
                         }
                     }
                 }
+            }
 
-                if (!Result)
-                {
-                    LastError = ::GetLastError();
-                    Result = (ERROR_NO_MORE_FILES == LastError);
-                }
+            if (!Result)
+            {
+                LastError = ::GetLastError();
+                Result = (ERROR_NO_MORE_FILES == LastError);
             }
 
             ::MileFreeMemory(Buffer);
