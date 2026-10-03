@@ -459,7 +459,7 @@ EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated()
     HANDLE CurrentProcessAccessToken = nullptr;
     if (::OpenProcessToken(
         ::GetCurrentProcess(),
-        TOKEN_ALL_ACCESS,
+        TOKEN_QUERY,
         &CurrentProcessAccessToken))
     {
         TOKEN_ELEVATION Information = {};
