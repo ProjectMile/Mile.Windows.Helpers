@@ -1357,6 +1357,7 @@ EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
         ::SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
+    *CompressionAlgorithm = static_cast<DWORD>(-1);
 
     WOF_FILE_PROVIDER_EXTERNAL_INFO WofInfo = {};
     DWORD BytesReturned = 0;
@@ -1374,6 +1375,11 @@ EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
             WofInfo.Wof.Provider == WOF_PROVIDER_FILE)
         {
             *CompressionAlgorithm = WofInfo.FileProvider.Algorithm;
+        }
+        else
+        {
+            Result = FALSE;
+            ::SetLastError(ERROR_INVALID_DATA);
         }
     }
 
