@@ -415,28 +415,30 @@ EXTERN_C HMODULE WINAPI MileLoadLibraryFromSystem32(
         nullptr,
         &OldRedirectionLevel);
 
+    HMODULE ModuleHandle = nullptr;
+
     wchar_t System32Directory[MAX_PATH];
     UINT Length = ::GetSystemDirectoryW(System32Directory, MAX_PATH);
-    if (Length == 0 || Length >= MAX_PATH)
+    if (Length && Length < MAX_PATH)
+    {
+        NtUnicodeString ModuleFileName = {};
+        ::RtlInitUnicodeStringWrapper(&ModuleFileName, lpLibFileName);
+
+        NTSTATUS Status = ::LdrLoadDllWrapper(
+            System32Directory,
+            nullptr,
+            &ModuleFileName,
+            reinterpret_cast<PVOID*>(&ModuleHandle));
+        if (!IsNtStatusSuccess(Status))
+        {
+            ::SetLastError(::RtlNtStatusToDosErrorWrapper(Status));
+        }
+    }
+    else
     {
         // The length of the system directory path string (%windows%\system32)
         // should be shorter than the MAX_PATH constant.
         ::SetLastError(ERROR_FUNCTION_FAILED);
-        return nullptr;
-    }
-
-    NtUnicodeString ModuleFileName;
-    ::RtlInitUnicodeStringWrapper(&ModuleFileName, lpLibFileName);
-
-    HMODULE ModuleHandle = nullptr;
-    NTSTATUS Status = ::LdrLoadDllWrapper(
-        System32Directory,
-        nullptr,
-        &ModuleFileName,
-        reinterpret_cast<PVOID*>(&ModuleHandle));
-    if (!IsNtStatusSuccess(Status))
-    {
-        ::SetLastError(::RtlNtStatusToDosErrorWrapper(Status));
     }
 
     // Restore the old status of the WoW64 redirection.
