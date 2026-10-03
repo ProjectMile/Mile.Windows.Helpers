@@ -182,8 +182,8 @@ EXTERN_C ULONGLONG WINAPI MileGetTickCount()
         LARGE_INTEGER PerformanceCount;
         if (::QueryPerformanceCounter(&PerformanceCount))
         {
-            double Result = PerformanceCount.QuadPart;
-            Result /= Frequency.QuadPart;
+            double Result = static_cast<double>(PerformanceCount.QuadPart);
+            Result /= static_cast<double>(Frequency.QuadPart);
             Result *= 1000.0;
             return static_cast<ULONGLONG>(Result);
         }
