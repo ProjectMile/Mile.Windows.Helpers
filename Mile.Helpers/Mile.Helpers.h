@@ -23,7 +23,7 @@ typedef enum MILE_WINDOW_SYSTEM_BACKDROP_TYPE
 {
     /**
      * @brief The default. Let the Desktop Window Manager (DWM) automatically
-              decide the system-drawn backdrop material for this window.
+     *        decide the system-drawn backdrop material for this window.
     */
     MILE_WINDOW_SYSTEM_BACKDROP_TYPE_AUTO = 0,
 
