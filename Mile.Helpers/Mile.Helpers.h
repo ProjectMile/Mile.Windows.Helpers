@@ -18,7 +18,7 @@
 /**
  * @brief Flags for specifying the system-drawn backdrop material of a window,
  *        including behind the non-client area.
-*/
+ */
 typedef enum MILE_WINDOW_SYSTEM_BACKDROP_TYPE
 {
     /**
@@ -54,7 +54,7 @@ typedef enum MILE_WINDOW_SYSTEM_BACKDROP_TYPE
 
 /**
  * @brief Flags for specifying the preferred app color mode.
-*/
+ */
 typedef enum MILE_PREFERRED_APP_MODE
 {
     /**
@@ -84,7 +84,7 @@ typedef enum MILE_PREFERRED_APP_MODE
  *        retrieved from an access token.
  * @remark Definitions are synchronized from in wdm.h of Windows Driver Kit.
  *         These must be converted to LUIDs before use.
-*/
+ */
 typedef enum MILE_TOKEN_PRIVILEGE_LUID_CLASS
 {
     /**
@@ -339,7 +339,7 @@ typedef enum _MILE_COREWINDOW_TYPE
  *                     announcing-windows-10-insider-preview-build-14986-pc
  *          The Windows Notepad in Windows 10 Build 14986 started to use
  *          Per-Monitor (V2) DPI Awareness.
-*/
+ */
 EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling();
 
 /**
@@ -349,7 +349,7 @@ EXTERN_C BOOL WINAPI MileEnablePerMonitorDialogScaling();
  * @param Value The color of the caption for the window.
  * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
  *         HRESULT error code.
-*/
+ */
 EXTERN_C HRESULT WINAPI MileSetWindowCaptionColorAttribute(
     _In_ HWND WindowHandle,
     _In_ COLORREF Value);
@@ -363,7 +363,7 @@ EXTERN_C HRESULT WINAPI MileSetWindowCaptionColorAttribute(
  *              light mode.
  * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
  *         HRESULT error code.
-*/
+ */
 EXTERN_C HRESULT WINAPI MileSetWindowUseImmersiveDarkModeAttribute(
     _In_ HWND WindowHandle,
     _In_ BOOL Value);
@@ -377,7 +377,7 @@ EXTERN_C HRESULT WINAPI MileSetWindowUseImmersiveDarkModeAttribute(
  *              window, including behind the non-client area.
  * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
  *         HRESULT error code.
-*/
+ */
 EXTERN_C HRESULT WINAPI MileGetWindowSystemBackdropTypeAttribute(
     _In_ HWND WindowHandle,
     _Out_ PMILE_WINDOW_SYSTEM_BACKDROP_TYPE Value);
@@ -391,7 +391,7 @@ EXTERN_C HRESULT WINAPI MileGetWindowSystemBackdropTypeAttribute(
  *              window, including behind the non-client area.
  * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
  *         HRESULT error code.
-*/
+ */
 EXTERN_C HRESULT WINAPI MileSetWindowSystemBackdropTypeAttribute(
     _In_ HWND WindowHandle,
     _In_ MILE_WINDOW_SYSTEM_BACKDROP_TYPE Value);
@@ -400,7 +400,7 @@ EXTERN_C HRESULT WINAPI MileSetWindowSystemBackdropTypeAttribute(
  * @brief Specifies the preferred app color mode.
  * @param NewMode The new preferred app color mode.
  * @return The previous preferred app color mode.
-*/
+ */
 EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
     _In_ MILE_PREFERRED_APP_MODE NewMode);
 
@@ -408,7 +408,7 @@ EXTERN_C MILE_PREFERRED_APP_MODE WINAPI MileSetPreferredAppMode(
  * @brief Specifies the policy for enabling or disabling dark mode for app.
  * @param NewPolicy The policy for enabling or disabling dark mode for app.
  * @return The previous policy for enabling or disabling dark mode for app.
-*/
+ */
 EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
     _In_ BOOL NewPolicy);
 
@@ -416,7 +416,7 @@ EXTERN_C BOOL WINAPI MileAllowDarkModeForApp(
  * @brief Gets the default background color value.
  * @param UseImmersiveDarkMode TRUE to use dark mode, FALSE to use light mode.
  * @return The default background color value.
-*/
+ */
 EXTERN_C COLORREF WINAPI MileGetDefaultBackgroundColorValue(
     _In_ BOOL UseImmersiveDarkMode);
 
@@ -427,7 +427,7 @@ EXTERN_C COLORREF WINAPI MileGetDefaultBackgroundColorValue(
  * @param UseImmersiveDarkMode TRUE to use dark mode, FALSE to use light mode.
  * @return If the function succeeds, it returns S_OK. Otherwise, it returns an
  *         HRESULT error code.
-*/
+ */
 EXTERN_C HRESULT WINAPI MileEnableImmersiveDarkModeForWindow(
     _In_ HWND WindowHandle,
     _In_ BOOL UseImmersiveDarkMode);
@@ -440,7 +440,7 @@ EXTERN_C HRESULT WINAPI MileEnableImmersiveDarkModeForWindow(
  * @param NewPolicy TRUE to enable the policy, FALSE to disable the policy.
  * @return If this function succeeds, it returns S_OK. Otherwise, it returns an
  *         HRESULT error code.
-*/
+ */
 EXTERN_C HRESULT WINAPI MileAllowNonClientDefaultDrawingForWindow(
     _In_ HWND WindowHandle,
     _In_ BOOL NewPolicy);

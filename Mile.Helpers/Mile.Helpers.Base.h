@@ -23,7 +23,7 @@
  * @return If the function succeeds, the return value is a pointer to the
  *         allocated memory block. If the function fails, the return value is
  *         nullptr.
-*/
+ */
 EXTERN_C LPVOID WINAPI MileAllocateMemory(
     _In_ SIZE_T Size);
 
@@ -42,7 +42,7 @@ EXTERN_C LPVOID WINAPI MileAllocateMemory(
  * @return If the function succeeds, the return value is a pointer to the
  *         reallocated memory block. If the function fails, the return value is
  *         nullptr.
-*/
+ */
 EXTERN_C LPVOID WINAPI MileReallocateMemory(
     _In_ PVOID Block,
     _In_ SIZE_T Size);
@@ -56,7 +56,7 @@ EXTERN_C LPVOID WINAPI MileReallocateMemory(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. An application can call
  *         GetLastError for extended error information.
-*/
+ */
 EXTERN_C BOOL WINAPI MileFreeMemory(
     _In_ LPVOID Block);
 
@@ -71,7 +71,7 @@ EXTERN_C BOOL WINAPI MileFreeMemory(
  *                           dwOSVersionInfoSize member of the structure to the
  *                           size in bytes of the structure that is used.
  * @return TRUE if the function succeeds; otherwise, FALSE.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetWindowsVersion(
     _Inout_ LPOSVERSIONINFOW VersionInformation);
 
@@ -83,7 +83,7 @@ EXTERN_C BOOL WINAPI MileGetWindowsVersion(
  * @param Build The build number of the operating system.
  * @return TRUE if the specified version matches, or is greater than, the
  *         version of the current Windows operating system; otherwise, FALSE.
-*/
+ */
 EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
     _In_ DWORD Major,
     _In_ DWORD Minor,
@@ -93,7 +93,7 @@ EXTERN_C BOOL WINAPI MileIsWindowsVersionAtLeast(
  * @brief Retrieves the number of milliseconds that have elapsed since the
  *        system was started.
  * @return The number of milliseconds.
-*/
+ */
 EXTERN_C ULONGLONG WINAPI MileGetTickCount();
 
 /**
@@ -113,7 +113,7 @@ EXTERN_C ULONGLONG WINAPI MileGetTickCount();
  *         thread. If the function fails, the return value is nullptr. To get
  *         extended error information, call GetLastError.
  * @remark For more information, see CreateThread.
-*/
+ */
 EXTERN_C HANDLE WINAPI MileCreateThread(
     _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
     _In_ SIZE_T dwStackSize,
@@ -125,7 +125,7 @@ EXTERN_C HANDLE WINAPI MileCreateThread(
 /**
  * @brief Retrieves the number of logical processors in the current group.
  * @return The number of logical processors in the current group.
-*/
+ */
 EXTERN_C DWORD WINAPI MileGetNumberOfHardwareThreads();
 
 /**
@@ -157,14 +157,14 @@ EXTERN_C DWORD WINAPI MileGetNumberOfHardwareThreads();
  * @return If the function succeeds, the return value is a handle to the
  *         module. If the function fails, the return value is nullptr. To get
  *         extended error information, call GetLastError.
-*/
+ */
 EXTERN_C HMODULE WINAPI MileLoadLibraryFromSystem32(
     _In_ LPCWSTR lpLibFileName);
 
 /**
  * @brief Indicates if the current process is elevated.
  * @return TRUE if the current process is elevated; otherwise, FALSE.
-*/
+ */
 EXTERN_C BOOL WINAPI MileIsCurrentProcessElevated();
 
 /**
@@ -231,7 +231,7 @@ EXTERN_C BOOL WINAPI MileStopServiceByHandle(
  * @return If the function succeeds, the return value is TRUE. If the function
  *         fails, the return value is FALSE. To get extended error information,
  *         call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileStartService(
     _In_ LPCWSTR ServiceName,
     _Out_ LPSERVICE_STATUS_PROCESS ServiceStatus);
@@ -262,7 +262,7 @@ EXTERN_C BOOL WINAPI MileStopService(
 /**
  * @brief The information about a found file or directory queried from the
  *        file enumerator.
-*/
+ */
 typedef struct _MILE_FILE_ENUMERATE_INFORMATION
 {
     FILETIME CreationTime;
@@ -285,7 +285,7 @@ typedef struct _MILE_FILE_ENUMERATE_INFORMATION
  * @return If the return value is non-zero, the file enumerate will be
  *         continued. If the return value is zero, the file enumerate
  *         will be terminated.
-*/
+ */
 typedef BOOL(WINAPI* MILE_ENUMERATE_FILE_CALLBACK_TYPE)(
     _In_ PMILE_FILE_ENUMERATE_INFORMATION Information,
     _In_opt_ LPVOID Context);
@@ -301,7 +301,7 @@ typedef BOOL(WINAPI* MILE_ENUMERATE_FILE_CALLBACK_TYPE)(
  * @return If the function succeeds, the return value is TRUE. If the function
  *         fails, the return value is FALSE. To get extended error information,
  *         call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
     _In_ HANDLE FileHandle,
     _In_ MILE_ENUMERATE_FILE_CALLBACK_TYPE Callback,
@@ -345,7 +345,7 @@ EXTERN_C BOOL WINAPI MileEnumerateFileByHandle(
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
  * @remark For more information, see DeviceIoControl.
-*/
+ */
 EXTERN_C BOOL WINAPI MileDeviceIoControl(
     _In_ HANDLE DeviceHandle,
     _In_ DWORD IoControlCode,
@@ -366,7 +366,7 @@ EXTERN_C BOOL WINAPI MileDeviceIoControl(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetFileAttributesByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PDWORD FileAttributes);
@@ -385,7 +385,7 @@ EXTERN_C BOOL WINAPI MileGetFileAttributesByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileSetFileAttributesByHandle(
     _In_ HANDLE FileHandle,
     _In_ DWORD FileAttributes);
@@ -398,7 +398,7 @@ EXTERN_C BOOL WINAPI MileSetFileAttributesByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetFileHardlinkCountByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PDWORD HardlinkCount);
@@ -411,7 +411,7 @@ EXTERN_C BOOL WINAPI MileGetFileHardlinkCountByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileDeleteFileByHandle(
     _In_ HANDLE FileHandle);
 
@@ -423,7 +423,7 @@ EXTERN_C BOOL WINAPI MileDeleteFileByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttributeByHandle(
     _In_ HANDLE FileHandle);
 
@@ -436,7 +436,7 @@ EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttributeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetFileSizeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PULONGLONG FileSize);
@@ -450,7 +450,7 @@ EXTERN_C BOOL WINAPI MileGetFileSizeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetFileAllocationSizeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PULONGLONG AllocationSize);
@@ -469,7 +469,7 @@ EXTERN_C BOOL WINAPI MileGetFileAllocationSizeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetCompressedFileSizeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PULONGLONG CompressedFileSize);
@@ -491,7 +491,7 @@ EXTERN_C BOOL WINAPI MileGetCompressedFileSizeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileReadFile(
     _In_ HANDLE FileHandle,
     _Out_opt_ LPVOID Buffer,
@@ -518,7 +518,7 @@ EXTERN_C BOOL WINAPI MileReadFile(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileWriteFile(
     _In_ HANDLE FileHandle,
     _In_opt_ LPCVOID Buffer,
@@ -544,7 +544,7 @@ EXTERN_C BOOL WINAPI MileWriteFile(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetNtfsCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PUSHORT CompressionAlgorithm);
@@ -568,7 +568,7 @@ EXTERN_C BOOL WINAPI MileGetNtfsCompressionAttributeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileSetNtfsCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _In_ USHORT CompressionAlgorithm);
@@ -604,7 +604,7 @@ EXTERN_C BOOL WINAPI MileSetNtfsCompressionAttributeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _Out_ PDWORD CompressionAlgorithm);
@@ -640,7 +640,7 @@ EXTERN_C BOOL WINAPI MileGetWofFileCompressionAttributeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle,
     _In_ DWORD CompressionAlgorithm);
@@ -653,13 +653,13 @@ EXTERN_C BOOL WINAPI MileSetWofFileCompressionAttributeByHandle(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileRemoveWofFileCompressionAttributeByHandle(
     _In_ HANDLE FileHandle);
 
 /**
  * @brief The resource info struct.
-*/
+ */
 typedef struct _MILE_RESOURCE_INFO
 {
     DWORD Size;
@@ -688,7 +688,7 @@ typedef struct _MILE_RESOURCE_INFO
  * @return If the function succeeds, the return value is TRUE. If the function
  *         fails, the return value is FALSE. To get extended error information,
  *         call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileLoadResource(
     _Out_ PMILE_RESOURCE_INFO ResourceInfo,
     _In_opt_ HMODULE ModuleHandle,
@@ -729,7 +729,7 @@ EXTERN_C BOOL WINAPI MileLoadResource(
  *         value is INVALID_HANDLE_VALUE. To get extended error information,
  *         call GetLastError.
  * @remark For more information, see CreateFileW.
-*/
+ */
 EXTERN_C HANDLE WINAPI MileCreateFile(
     _In_ LPCWSTR FileName,
     _In_ DWORD DesiredAccess,
@@ -746,7 +746,7 @@ EXTERN_C HANDLE WINAPI MileCreateFile(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
     _In_ LPCWSTR FileName);
 
@@ -756,7 +756,7 @@ EXTERN_C BOOL WINAPI MileDeleteFileIgnoreReadonlyAttribute(
  * @param Name The name of the file or directory for testing.
  * @return Nonzero if the found file has the name "." or "..", which indicates
  *         that the found file is actually a directory. Otherwise zero.
-*/
+ */
 EXTERN_C BOOL WINAPI MileIsDotsName(
     _In_ LPCWSTR Name);
 
@@ -768,7 +768,7 @@ EXTERN_C BOOL WINAPI MileIsDotsName(
  * @return If the function succeeds, the return value is nonzero. If the
  *         function fails, the return value is zero. To get extended error
  *         information, call GetLastError.
-*/
+ */
 EXTERN_C BOOL WINAPI MileCreateDirectory(
     _In_ LPCWSTR PathName);
 
